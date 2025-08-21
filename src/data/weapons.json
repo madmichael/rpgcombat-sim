@@ -1,0 +1,336 @@
+{
+  "melee_weapons": [
+    {
+      "d30_roll": 1,
+      "weapon": "Battleaxe",
+      "damage": "1d10",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks.",
+      "cost": "7 gp"
+    },
+    {
+      "d30_roll": 2,
+      "weapon": "Bastard sword",
+      "damage": "1d8/1d10",
+      "range": "-",
+      "notes": "Can be used as a two-handed weapon, if so, use d16 for initiative checks.",
+      "cost": "15 gp"
+    },
+    {
+      "d30_roll": 3,
+      "weapon": "Blackjack",
+      "damage": "1d3/2d6",
+      "range": "-",
+      "notes": "Increased damage on backstab, always causes subdual damage.",
+      "cost": "3 gp"
+    },
+    {
+      "d30_roll": 3,
+      "weapon": "Brass knuckles",
+      "damage": "1d4",
+      "range": "-",
+      "notes": "All damage caused is subdual.",
+      "cost": "1 gp"
+    },
+    {
+      "d30_roll": 4,
+      "weapon": "Cestus",
+      "damage": "1d5",
+      "range": "-",
+      "notes": "All damage caused is subdual.",
+      "cost": "2 gp"
+    },
+    {
+      "d30_roll": 5,
+      "weapon": "Club",
+      "damage": "1d4",
+      "range": "-",
+      "notes": "",
+      "cost": "3 gp"
+    },
+    {
+      "d30_roll": 6,
+      "weapon": "Dagger",
+      "damage": "1d4/1d10 or 1d8",
+      "range": "10/20/30",
+      "notes": "Increased damage on backstab (melee or thrown), STR mod to damage only in melee, AGI mod when thrown.",
+      "cost": "3 gp"
+    },
+    {
+      "d30_roll": 7,
+      "weapon": "Flail",
+      "damage": "1d6",
+      "range": "-",
+      "notes": "",
+      "cost": "6 gp"
+    },
+    {
+      "d30_roll": 8,
+      "weapon": "Garrote",
+      "damage": "1/3d4",
+      "range": "-",
+      "notes": "Increased damage on backstab.",
+      "cost": "2 gp"
+    },
+    {
+      "d30_roll": 9,
+      "weapon": "Handaxe",
+      "damage": "1d6",
+      "range": "10/20/30",
+      "notes": "STR mod to damage only in melee or on close range.",
+      "cost": "4 gp"
+    },
+    {
+      "d30_roll": 10,
+      "weapon": "Heavy flail",
+      "damage": "1d12",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks, fumble range increased to 1-2.",
+      "cost": "12 gp"
+    },
+    {
+      "d30_roll": 11,
+      "weapon": "Hunting spear",
+      "damage": "1d8",
+      "range": "-",
+      "notes": "+2 damage against charging opponents.",
+      "cost": "5 gp"
+    },
+    {
+      "d30_roll": 12,
+      "weapon": "Katana",
+      "damage": "1d8",
+      "range": "-",
+      "notes": "Critical range increased to 19-20.",
+      "cost": "30 gp"
+    },
+    {
+      "d30_roll": 13,
+      "weapon": "Kris",
+      "damage": "1d5",
+      "range": "-",
+      "notes": "",
+      "cost": "5 gp"
+    },
+    {
+      "d30_roll": 14,
+      "weapon": "Lance",
+      "damage": "2d12",
+      "range": "-",
+      "notes": "Can only be used while mounted.",
+      "cost": "25 gp"
+    },
+    {
+      "d30_roll": 15,
+      "weapon": "Longspear",
+      "damage": "1d10",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks, can be used from the second rank of a formation.",
+      "cost": "12 gp"
+    },
+    {
+      "d30_roll": 16,
+      "weapon": "Longsword",
+      "damage": "1d8",
+      "range": "-",
+      "notes": "",
+      "cost": "10 gp"
+    },
+    {
+      "d30_roll": 17,
+      "weapon": "Mace",
+      "damage": "1d6",
+      "range": "-",
+      "notes": "",
+      "cost": "5 gp"
+    },
+    {
+      "d30_roll": 18,
+      "weapon": "Maul",
+      "damage": "1d10",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks.",
+      "cost": "7 gp"
+    },
+    {
+      "d30_roll": 19,
+      "weapon": "Net",
+      "damage": "-",
+      "range": "5/10/15",
+      "notes": "Can entangle (-1d to rolls) if Ref save is failed, DC equal to attack roll; if save successful, target is hampered (-2 to rolls) until an action is spent to clear netting.",
+      "cost": "1 gp"
+    },
+    {
+      "d30_roll": 20,
+      "weapon": "Polearm",
+      "damage": "1d10",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks.",
+      "cost": "7 gp"
+    },
+    {
+      "d30_roll": 21,
+      "weapon": "Rapier",
+      "damage": "1d6",
+      "range": "-",
+      "notes": "Critical range increased to 19-20.",
+      "cost": "20 gp"
+    },
+    {
+      "d30_roll": 22,
+      "weapon": "Sabre",
+      "damage": "1d8",
+      "range": "-",
+      "notes": "Critical range increased to 19-20 while mounted.",
+      "cost": ""
+    },
+    {
+      "d30_roll": 23,
+      "weapon": "Scimitar",
+      "damage": "1d7",
+      "range": "-",
+      "notes": "",
+      "cost": "7 gp"
+    },
+    {
+      "d30_roll": 24,
+      "weapon": "Short sword",
+      "damage": "1d6",
+      "range": "-",
+      "notes": "",
+      "cost": "7 gp"
+    },
+    {
+      "d30_roll": 25,
+      "weapon": "Spear",
+      "damage": "1d8/2d8/1d6",
+      "range": "10/20/30",
+      "notes": "Increased damage while mounted, reduced damage when thrown.",
+      "cost": "3 gp"
+    },
+    {
+      "d30_roll": 26,
+      "weapon": "Staff",
+      "damage": "1d4",
+      "range": "-",
+      "notes": "",
+      "cost": "5 sp"
+    },
+    {
+      "d30_roll": 27,
+      "weapon": "Two-handed sword",
+      "damage": "1d10",
+      "range": "-",
+      "notes": "Two-handed weapon, use d16 on initiative checks.",
+      "cost": "15 gp"
+    },
+    {
+      "d30_roll": 28,
+      "weapon": "Warhammer",
+      "damage": "1d8",
+      "range": "-",
+      "notes": "",
+      "cost": "5 gp"
+    },
+    {
+      "d30_roll": 30,
+      "weapon": "Whip",
+      "damage": "1d4",
+      "range": "-",
+      "notes": "Can hamper (-2 to rolls) if Ref save is failed and contact is maintained, DC equals attack roll result; all damage is subdual.",
+      "cost": "2 gp"
+    }
+  ],
+  "ranged_weapons": [
+    {
+      "d10_roll": 1,
+      "weapon": "Blowgun",
+      "damage": "1d3/1d5",
+      "range": "20/40/60",
+      "notes": "Increased damage on backstab.",
+      "cost": "6 gp",
+      "ammo": "20/5 gp"
+    },
+    {
+      "d10_roll": 2,
+      "weapon": "Crossbow",
+      "damage": "1d6",
+      "range": "80/160/240",
+      "notes": "Two-handed weapon, use d16 on initiative checks.",
+      "cost": "30 gp",
+      "ammo": "30/10 gp"
+    },
+    {
+      "d10_roll": 3,
+      "weapon": "Dart",
+      "damage": "1d4",
+      "range": "20/40/60",
+      "notes": "",
+      "cost": "5 sp",
+      "ammo": "-"
+    },
+    {
+      "d10_roll": 4,
+      "weapon": "Hand crossbow",
+      "damage": "1d4/2d4",
+      "range": "30/60/90",
+      "notes": "Increased damage on backstab.",
+      "cost": "40 gp",
+      "ammo": "30/10 gp"
+    },
+    {
+      "d10_roll": 5,
+      "weapon": "Heavy crossbow",
+      "damage": "1d10",
+      "range": "90/180/270",
+      "notes": "Two-handed weapon, use d16 on initiative checks; takes a round to reload.",
+      "cost": "50 gp",
+      "ammo": "30/10 gp"
+    },
+    {
+      "d10_roll": 6,
+      "weapon": "Javelin",
+      "damage": "1d6",
+      "range": "30/60/90",
+      "notes": "Can be used as a melee weapon, STR mod to damage only in melee or on close range",
+      "cost": "1 gp",
+      "ammo": "-"
+    },
+    {
+      "d10_roll": 7,
+      "weapon": "Longbow",
+      "damage": "1d8",
+      "range": "70/140/210",
+      "notes": "",
+      "cost": "40 gp",
+      "ammo": "20/5 gp"
+    },
+    {
+      "d10_roll": 8,
+      "weapon": "Shortbow",
+      "damage": "1d6",
+      "range": "50/100/150",
+      "notes": "",
+      "cost": "25 gp",
+      "ammo": "20/5 gp"
+    },
+    {
+      "d10_roll": 9,
+      "weapon": "Shuriken",
+      "damage": "1d5",
+      "range": "20/40/60",
+      "notes": "Critical range increased to 19-20.",
+      "cost": "5 gp",
+      "ammo": "-"
+    },
+    {
+      "d10_roll": 10,
+      "weapon": "Sling",
+      "damage": "1d4",
+      "range": "40/80/120",
+      "notes": "",
+      "cost": "2 gp",
+      "ammo": "30/1 gp"
+    }
+  ]
+}

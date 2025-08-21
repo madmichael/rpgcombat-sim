@@ -1,0 +1,152 @@
+[
+  {
+    "d30_roll": 1,
+    "birth_augur": "Harsh winter",
+    "lucky_roll": "All attack rolls"
+  },
+  {
+    "d30_roll": 2,
+    "birth_augur": "The bull",
+    "lucky_roll": "Melee attack rolls"
+  },
+  {
+    "d30_roll": 3,
+    "birth_augur": "Fortunate date",
+    "lucky_roll": "Missile fire attack rolls"
+  },
+  {
+    "d30_roll": 4,
+    "birth_augur": "Raised by wolves",
+    "lucky_roll": "Unarmed attack rolls"
+  },
+  {
+    "d30_roll": 5,
+    "birth_augur": "Conceived on horseback",
+    "lucky_roll": "Mounted attack rolls"
+  },
+  {
+    "d30_roll": 6,
+    "birth_augur": "Born on the battlefield",
+    "lucky_roll": "Damage rolls"
+  },
+  {
+    "d30_roll": 7,
+    "birth_augur": "Path of the bear",
+    "lucky_roll": "Melee damage rolls"
+  },
+  {
+    "d30_roll": 8,
+    "birth_augur": "Hawkeye",
+    "lucky_roll": "Missile fire damage rolls"
+  },
+  {
+    "d30_roll": 9,
+    "birth_augur": "Pack hunter",
+    "lucky_roll": "Attack and damage rolls for 0-level starting weapon"
+  },
+  {
+    "d30_roll": 10,
+    "birth_augur": "Born under the loom",
+    "lucky_roll": "Skill checks (including thief skills)"
+  },
+  {
+    "d30_roll": 11,
+    "birth_augur": "Fox's cunning",
+    "lucky_roll": "Find/disable traps"
+  },
+  {
+    "d30_roll": 12,
+    "birth_augur": "Four-leafed clover",
+    "lucky_roll": "Find secret doors"
+  },
+  {
+    "d30_roll": 13,
+    "birth_augur": "Seventh son",
+    "lucky_roll": "Spell checks"
+  },
+  {
+    "d30_roll": 14,
+    "birth_augur": "The raging storm",
+    "lucky_roll": "Spell damage"
+  },
+  {
+    "d30_roll": 15,
+    "birth_augur": "Righteous heart",
+    "lucky_roll": "Turn unholy checks"
+  },
+  {
+    "d30_roll": 16,
+    "birth_augur": "Survived the plague",
+    "lucky_roll": "Magical healing*"
+  },
+  {
+    "d30_roll": 17,
+    "birth_augur": "Lucky sign",
+    "lucky_roll": "Saving throws"
+  },
+  {
+    "d30_roll": 18,
+    "birth_augur": "Guardian angel",
+    "lucky_roll": "Savings throws to escape traps"
+  },
+  {
+    "d30_roll": 19,
+    "birth_augur": "Survived a spider bite",
+    "lucky_roll": "Saving throws against poison"
+  },
+  {
+    "d30_roll": 20,
+    "birth_augur": "Struck by lightning",
+    "lucky_roll": "Reflex saving throws"
+  },
+  {
+    "d30_roll": 21,
+    "birth_augur": "Lived through famine",
+    "lucky_roll": "Fortitude saving throws"
+  },
+  {
+    "d30_roll": 22,
+    "birth_augur": "Resisted temptation",
+    "lucky_roll": "Willpower saving throws"
+  },
+  {
+    "d30_roll": 23,
+    "birth_augur": "Charmed house",
+    "lucky_roll": "Armor Class"
+  },
+  {
+    "d30_roll": 24,
+    "birth_augur": "Speed of the cobra",
+    "lucky_roll": "Initiative"
+  },
+  {
+    "d30_roll": 25,
+    "birth_augur": "Bountiful harvest",
+    "lucky_roll": "Hit points (applies at each level)"
+  },
+  {
+    "d30_roll": 26,
+    "birth_augur": "Warrior's arm",
+    "lucky_roll": "Critical hit tables**"
+  },
+  {
+    "d30_roll": 27,
+    "birth_augur": "Unholy house",
+    "lucky_roll": "Corruption rolls"
+  },
+  {
+    "d30_roll": 28,
+    "birth_augur": "The Broken Star",
+    "lucky_roll": "Fumbles**"
+  },
+  {
+    "d30_roll": 29,
+    "birth_augur": "Birdsong",
+    "lucky_roll": "Number of languages"
+  },
+  {
+    "d30_roll": 30,
+    "birth_augur": "Wild child",
+    "lucky_roll": "Speed (each +1/-1 = +5'/-5' speed)"
+  }
+]
