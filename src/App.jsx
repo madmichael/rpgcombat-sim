@@ -235,7 +235,7 @@ function App() {
               status={fightStatus}
               onStart={startFight}
               onContinue={continueFight}
-              onRun={runAway}
+              onRun={() => runAway(selectRandomMonster)}
               onMightyDeed={attemptMightyDeed}
               character={character}
               onFindAnother={() => {
@@ -247,6 +247,7 @@ function App() {
                 playSound('swoosh');
                 adjustChallenge(direction);
               }}
+              onReset={gameState.resetGame}
               summary={summary}
               buttonStyles={{
                 start: { backgroundColor: 'red', color: 'white' },
@@ -266,7 +267,6 @@ function App() {
                 monster={monster} 
                 charHp={charHp}
                 monsterHp={monsterHp}
-                onReset={gameState.resetGame}
               />
             )}
           </div>

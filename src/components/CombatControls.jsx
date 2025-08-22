@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, onMightyDeed, onAdjustChallenge, character, summary, buttonStyles = {} }) => {
+const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, onMightyDeed, onAdjustChallenge, onReset, character, summary, buttonStyles = {} }) => {
   const handleKeyDown = (event, action) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -56,6 +56,18 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               <span className="btn-icon">🏃</span>
               <span className="btn-text">Run Away</span>
             </button>
+            
+            <button 
+              className="combat-btn combat-btn-info"
+              onClick={onReset}
+              onKeyDown={(e) => handleKeyDown(e, onReset)}
+              aria-label="Roll up a new character"
+              title="Roll up a new character"
+              aria-describedby="new-character-help"
+            >
+              <span className="btn-icon">🎲</span>
+              <span className="btn-text">New Character</span>
+            </button>
           </div>
         )}
         
@@ -93,7 +105,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               aria-describedby="run-away-help"
             >
               <span className="btn-icon">🏃</span>
-              <span className="btn-text">Retreat</span>
+              <span className="btn-text">Run Away!</span>
             </button>
           </div>
         )}
@@ -163,6 +175,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
         <div id="restart-fight-help">Restart the current fight from the beginning</div>
         <div id="challenge-down-help">Decrease the challenge level and find a weaker monster</div>
         <div id="challenge-up-help">Increase the challenge level and find a stronger monster</div>
+        <div id="new-character-help">Roll up a completely new character with new stats and abilities</div>
       </div>
     </div>
   );

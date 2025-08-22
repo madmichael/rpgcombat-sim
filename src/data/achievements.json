@@ -146,6 +146,615 @@
         "count": 50
       },
       "rarity": "rare"
+    },
+    {
+      "id": "first_blood_beast",
+      "name": "First Blood: Beast",
+      "description": "Defeat your first beast",
+      "icon": "🐺",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "beast",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "bathe_in_beast_blood",
+      "name": "Bathe in Beast Blood",
+      "description": "Defeat 48 beasts",
+      "icon": "🐺",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "beast",
+        "count": 48
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "beast_boss",
+      "name": "Beast Boss",
+      "description": "Defeat all 95 available beasts",
+      "icon": "🐺",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "beast",
+        "count": 95
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "first_blood_dragon",
+      "name": "First Blood: Dragon",
+      "description": "Defeat your first dragon",
+      "icon": "🐉",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "dragon",
+        "count": 1
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "bathe_in_dragon_blood",
+      "name": "Bathe in Dragon Blood",
+      "description": "Defeat 22 dragons",
+      "icon": "🐉",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "dragon",
+        "count": 22
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "dragon_boss",
+      "name": "Dragon Boss",
+      "description": "Defeat all 43 available dragons",
+      "icon": "🐉",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "dragon",
+        "count": 43
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "first_blood_humanoid",
+      "name": "First Blood: Humanoid",
+      "description": "Defeat your first humanoid",
+      "icon": "👤",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "humanoid",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "bathe_in_humanoid_blood",
+      "name": "Bathe in Humanoid Blood",
+      "description": "Defeat 20 humanoids",
+      "icon": "👤",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "humanoid",
+        "count": 20
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "humanoid_boss",
+      "name": "Humanoid Boss",
+      "description": "Defeat all 40 available humanoids",
+      "icon": "👤",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "humanoid",
+        "count": 40
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "first_blood_monstrosity",
+      "name": "First Blood: Monstrosity",
+      "description": "Defeat your first monstrosity",
+      "icon": "👹",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "monstrosity",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "bathe_in_monstrosity_blood",
+      "name": "Bathe in Monstrosity Blood",
+      "description": "Defeat 20 monstrosities",
+      "icon": "👹",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "monstrosity",
+        "count": 20
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "monstrosity_boss",
+      "name": "Monstrosity Boss",
+      "description": "Defeat all 40 available monstrosities",
+      "icon": "👹",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "monstrosity",
+        "count": 40
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "first_blood_fiend",
+      "name": "First Blood: Fiend",
+      "description": "Defeat your first fiend",
+      "icon": "😈",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fiend",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_fiend_blood",
+      "name": "Bathe in Fiend Blood",
+      "description": "Defeat 12 fiends",
+      "icon": "😈",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fiend",
+        "count": 12
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "fiend_boss",
+      "name": "Fiend Boss",
+      "description": "Defeat all 23 available fiends",
+      "icon": "😈",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fiend",
+        "count": 23
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_undead",
+      "name": "First Blood: Undead",
+      "description": "Defeat your first undead",
+      "icon": "🧟",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "undead",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "bathe_in_undead_blood",
+      "name": "Bathe in Undead Blood",
+      "description": "Defeat 10 undead",
+      "icon": "🧟",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "undead",
+        "count": 10
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "undead_boss",
+      "name": "Undead Boss",
+      "description": "Defeat all 20 available undead",
+      "icon": "🧟",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "undead",
+        "count": 20
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "first_blood_elemental",
+      "name": "First Blood: Elemental",
+      "description": "Defeat your first elemental",
+      "icon": "🌪️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "elemental",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "bathe_in_elemental_blood",
+      "name": "Bathe in Elemental Blood",
+      "description": "Defeat 8 elementals",
+      "icon": "🌪️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "elemental",
+        "count": 8
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "elemental_boss",
+      "name": "Elemental Boss",
+      "description": "Defeat all 16 available elementals",
+      "icon": "🌪️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "elemental",
+        "count": 16
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "first_blood_giant",
+      "name": "First Blood: Giant",
+      "description": "Defeat your first giant",
+      "icon": "🗿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "giant",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_giant_blood",
+      "name": "Bathe in Giant Blood",
+      "description": "Defeat 6 giants",
+      "icon": "🗿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "giant",
+        "count": 6
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "giant_boss",
+      "name": "Giant Boss",
+      "description": "Defeat all 11 available giants",
+      "icon": "🗿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "giant",
+        "count": 11
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_construct",
+      "name": "First Blood: Construct",
+      "description": "Defeat your first construct",
+      "icon": "🤖",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "construct",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_construct_blood",
+      "name": "Bathe in Construct Blood",
+      "description": "Defeat 5 constructs",
+      "icon": "🤖",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "construct",
+        "count": 5
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "construct_boss",
+      "name": "Construct Boss",
+      "description": "Defeat all 9 available constructs",
+      "icon": "🤖",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "construct",
+        "count": 9
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_aberration",
+      "name": "First Blood: Aberration",
+      "description": "Defeat your first aberration",
+      "icon": "👁️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "aberration",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_aberration_blood",
+      "name": "Bathe in Aberration Blood",
+      "description": "Defeat 4 aberrations",
+      "icon": "👁️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "aberration",
+        "count": 4
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "aberration_boss",
+      "name": "Aberration Boss",
+      "description": "Defeat all 7 available aberrations",
+      "icon": "👁️",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "aberration",
+        "count": 7
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_plant",
+      "name": "First Blood: Plant",
+      "description": "Defeat your first plant",
+      "icon": "🌿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "plant",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_plant_blood",
+      "name": "Bathe in Plant Blood",
+      "description": "Defeat 4 plants",
+      "icon": "🌿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "plant",
+        "count": 4
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "plant_boss",
+      "name": "Plant Boss",
+      "description": "Defeat all 7 available plants",
+      "icon": "🌿",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "plant",
+        "count": 7
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_fey",
+      "name": "First Blood: Fey",
+      "description": "Defeat your first fey",
+      "icon": "🧚",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fey",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_fey_blood",
+      "name": "Bathe in Fey Blood",
+      "description": "Defeat 3 fey",
+      "icon": "🧚",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fey",
+        "count": 3
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "fey_boss",
+      "name": "Fey Boss",
+      "description": "Defeat all 6 available fey",
+      "icon": "🧚",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fey",
+        "count": 6
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "first_blood_celestial",
+      "name": "First Blood: Celestial",
+      "description": "Defeat your first celestial",
+      "icon": "👼",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "celestial",
+        "count": 1
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "bathe_in_celestial_blood",
+      "name": "Bathe in Celestial Blood",
+      "description": "Defeat 3 celestials",
+      "icon": "👼",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "celestial",
+        "count": 3
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "celestial_boss",
+      "name": "Celestial Boss",
+      "description": "Defeat all 6 available celestials",
+      "icon": "👼",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "celestial",
+        "count": 6
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "first_blood_ooze",
+      "name": "First Blood: Ooze",
+      "description": "Defeat your first ooze",
+      "icon": "🟢",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "ooze",
+        "count": 1
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "bathe_in_ooze_blood",
+      "name": "Bathe in Ooze Blood",
+      "description": "Defeat 2 oozes",
+      "icon": "🟢",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "ooze",
+        "count": 2
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "ooze_boss",
+      "name": "Ooze Boss",
+      "description": "Defeat all 4 available oozes",
+      "icon": "🟢",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "ooze",
+        "count": 4
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "holy_warrior",
+      "name": "Holy Warrior",
+      "description": "Defeat all 23 fiends to cleanse the realm",
+      "icon": "⚡",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "fiend",
+        "count": 23
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "garden_avenger",
+      "name": "Garden Avenger",
+      "description": "Defeat all 7 plants to protect nature's balance",
+      "icon": "🌱",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "plant",
+        "count": 7
+      },
+      "rarity": "epic"
+    },
+    {
+      "id": "beast_master",
+      "name": "Beast Master",
+      "description": "Defeat all 95 beasts to become the apex predator",
+      "icon": "🦁",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "beast",
+        "count": 95
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "whats_the_matter_chicken",
+      "name": "What's the matter? Chicken?",
+      "description": "Run away from a fight",
+      "icon": "🐔",
+      "type": "survival",
+      "requirement": {
+        "type": "retreats",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "better_safe_than_dinner",
+      "name": "Better Safe than Dinner",
+      "description": "Run away from 5 fights",
+      "icon": "🏃",
+      "type": "survival",
+      "requirement": {
+        "type": "retreats",
+        "count": 5
+      },
+      "rarity": "uncommon"
     }
   ]
 }

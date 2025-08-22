@@ -3,7 +3,7 @@ import EnhancedCharacterSummary from './EnhancedCharacterSummary';
 import EnhancedMonsterSummary from './EnhancedMonsterSummary';
 import CombatLogEntry from './CombatLogEntry';
 
-const CombatLog = ({ log, character, monster, charHp, monsterHp, onReset }) => {
+const CombatLog = ({ log, character, monster, charHp, monsterHp }) => {
   // Reverse the log order so most recent entries appear at the top
   const reversedLog = [...log].reverse();
   
@@ -11,12 +11,6 @@ const CombatLog = ({ log, character, monster, charHp, monsterHp, onReset }) => {
     <div className="combat-log">
       <div className="combat-log-header">
         <h2>Combat Log</h2>
-        <button 
-          onClick={onReset} 
-          className="reset-button"
-        >
-          Reset
-        </button>
       </div>
       <div className="combat-log-content">
         <ul className="combat-log-list">

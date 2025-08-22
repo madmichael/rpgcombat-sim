@@ -540,7 +540,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   };
 
 
-  const runAway = () => {
+  const runAway = (selectRandomMonster) => {
     const summaryMessage = `${character.name} ran away from the fight.`;
     setCombatLog(prev => [...prev, { 
       type: 'summary', 
@@ -551,7 +551,16 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     setFightStatus('ran away');
     setSummary(summaryMessage);
     recordDefeat(character, monster);
-    setFightStatus('finished');
+    
+    // Auto-select a new monster after running away
+    if (selectRandomMonster) {
+      setTimeout(() => {
+        selectRandomMonster();
+        setFightStatus('not started');
+      }, 1500); // Brief delay to show the run away message
+    } else {
+      setFightStatus('finished');
+    }
   };
 
   return {
