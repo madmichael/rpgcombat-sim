@@ -1260,6 +1260,168 @@ body {
   .combat-log-section {
     max-height: 400px;
   }
+  
+  /* Fix input field overflow on mobile */
+  .form-input, .form-select {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+  
+  /* Ensure character creator cards don't overflow */
+  .character-creator-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .creation-card, .details-card, .stats-card {
+    margin: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .character-form {
+    padding: 1rem;
+  }
+  
+  /* Fix text wrapping in combat log */
+  .combat-log-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+  
+  /* Ensure buttons don't overflow */
+  .action-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .btn-large {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* Additional mobile fixes for iPhone */
+@media (max-width: 480px) {
+  /* Root container adjustments */
+  #root {
+    padding: 1rem;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  /* Prevent horizontal scrolling */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Character creator mobile fixes */
+  .character-creator {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .creation-card, .details-card {
+    padding: 0;
+    margin: 0 0 1rem 0;
+  }
+  
+  .card-header {
+    padding: 1rem;
+  }
+  
+  .character-form {
+    padding: 1rem;
+  }
+  
+  /* Input field specific fixes */
+  .form-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 12px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: none;
+  }
+  
+  .form-select {
+    font-size: 16px;
+    padding: 12px;
+    width: 100%;
+  }
+  
+  /* Combat log mobile fixes */
+  .combat-log-content {
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+  
+  .combat-log-list li {
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  
+  /* Game actions buttons */
+  .action-buttons {
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+  
+  .action-buttons button {
+    font-size: 0.9rem;
+    padding: 12px 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  /* Stats and achievements buttons */
+  .stats-achievements-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .stats-achievements-buttons button {
+    width: 100%;
+    margin: 0;
+  }
+  
+  /* Ensure modal content fits on mobile */
+  .modal-container {
+    max-width: 95vw;
+    max-height: 95vh;
+    margin: 2.5vh auto;
+  }
+  
+  /* Combat dashboard mobile adjustments */
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0.75rem;
+  }
+  
+  .combatant-status {
+    padding: 1rem;
+  }
+  
+  /* Prevent text overflow in combat entries */
+  .combat-entry {
+    max-width: 100%;
+    overflow: hidden;
+  }
+  
+  .combat-entry p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    margin: 0.25rem 0;
+  }
 }
 
 /* Legacy Combat Layout (for backwards compatibility) */
