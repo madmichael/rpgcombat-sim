@@ -16,6 +16,7 @@ import ChallengeSelector from './components/ChallengeSelector';
 import VictoryStats from './components/VictoryStats';
 import AchievementPanel from './components/AchievementPanel';
 import AchievementNotification from './components/AchievementNotification';
+import Credits from './components/Credits';
 import { useGameState } from './hooks/useGameState';
 import { useAudio } from './hooks/useAudio';
 import { useCombat } from './hooks/useCombat.jsx';
@@ -34,6 +35,7 @@ function App() {
   const monsterSelection = useMonsterSelection(gameState);
   const [showVictoryStats, setShowVictoryStats] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
 
   const {
     character,
@@ -196,6 +198,7 @@ function App() {
         playSound={playSound}
         onShowVictoryStats={() => setShowVictoryStats(true)}
         onShowAchievements={() => setShowAchievements(true)}
+        onShowCredits={() => setShowCredits(true)}
       />
       
       {character && !monster && (
@@ -296,6 +299,12 @@ function App() {
         isOpen={showAchievements} 
         onClose={() => setShowAchievements(false)}
         achievementTracking={achievementTracking}
+      />
+      
+      {/* Credits Modal */}
+      <Credits 
+        isOpen={showCredits} 
+        onClose={() => setShowCredits(false)}
       />
       
       {/* Achievement Notifications */}

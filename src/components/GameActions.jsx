@@ -11,7 +11,8 @@ const GameActions = ({
   onAdjustChallenge,
   playSound,
   onShowVictoryStats,
-  onShowAchievements 
+  onShowAchievements,
+  onShowCredits 
 }) => {
   const handleFindAnotherMonster = () => {
     if (playSound) {
@@ -83,6 +84,33 @@ const GameActions = ({
           title="View achievements and combat milestones"
         >
           🏅 Achievements
+        </button>
+        
+        <button 
+          onClick={onShowCredits}
+          style={{
+            backgroundColor: '#9b59b6',
+            color: 'white',
+            border: 'none',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 12px rgba(155, 89, 182, 0.3)',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = '#8e44ad';
+            e.target.style.transform = 'translateY(-2px)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = '#9b59b6';
+            e.target.style.transform = 'translateY(0)';
+          }}
+          title="View credits and resources used to build this app"
+        >
+          📚 Credits
         </button>
       </div>
     </>

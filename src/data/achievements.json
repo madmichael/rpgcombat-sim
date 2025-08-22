@@ -15,13 +15,13 @@
     {
       "id": "giant_slayer",
       "name": "Giant Slayer", 
-      "description": "Defeat 5 creatures with 50+ HP",
+      "description": "Defeat 5 creatures with 10+ HP",
       "icon": "⚔️",
       "type": "combat",
       "requirement": {
         "type": "high_hp_kills",
         "count": 5,
-        "min_hp": 50
+        "min_hp": 10
       },
       "rarity": "uncommon"
     },
@@ -50,6 +50,30 @@
       "rarity": "common"
     },
     {
+      "id": "town_guard",
+      "name": "Town Guard",
+      "description": "Win 5 combats",
+      "icon": "🛡️",
+      "type": "milestone",
+      "requirement": {
+        "type": "victories",
+        "count": 5
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "guard_captain",
+      "name": "Captain of the Guard",
+      "description": "Win 15 combats",
+      "icon": "🛡️",
+      "type": "milestone",
+      "requirement": {
+        "type": "victories",
+        "count": 15
+      },
+      "rarity": "uncommon"
+    },
+    {
       "id": "veteran_warrior",
       "name": "Veteran Warrior",
       "description": "Win 25 combats",
@@ -59,7 +83,7 @@
         "type": "victories",
         "count": 25
       },
-      "rarity": "uncommon"
+      "rarity": "rare"
     },
     {
       "id": "legendary_hero",
@@ -76,12 +100,12 @@
     {
       "id": "critical_master",
       "name": "Critical Master",
-      "description": "Score 20 critical hits",
+      "description": "Score 10 critical hits",
       "icon": "💫",
       "type": "combat",
       "requirement": {
         "type": "critical_hits",
-        "count": 20
+        "count": 10
       },
       "rarity": "uncommon"
     },

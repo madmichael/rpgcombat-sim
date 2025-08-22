@@ -2439,3 +2439,162 @@ body {
     padding: 8px 12px;
   }
 }
+
+/* Credits Modal Styles */
+.credits-modal {
+  width: 90vw;
+  max-width: 800px;
+  max-height: 90vh;
+}
+
+.credits-header {
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 16px 16px 0 0;
+}
+
+.credits-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.credits-header p {
+  margin: 0;
+  opacity: 0.9;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.credits-content {
+  padding: 2rem;
+}
+
+.credits-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.credit-item {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.credit-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-color: #007bff;
+}
+
+.credit-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: white;
+  border: 2px solid #dee2e6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credit-details {
+  flex: 1;
+}
+
+.credit-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #495057;
+}
+
+.credit-description {
+  margin: 0 0 1rem 0;
+  color: #6c757d;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.credit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background: #e7f3ff;
+  border: 1px solid #007bff;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.credit-link:hover {
+  background: #007bff;
+  color: white;
+  transform: translateX(2px);
+}
+
+.credits-footer {
+  border-top: 2px solid #e9ecef;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.developer-credit h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  color: #495057;
+}
+
+.developer-credit p {
+  margin: 0;
+  color: #6c757d;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Mobile adjustments for credits */
+@media (max-width: 768px) {
+  .credits-modal {
+    width: 95vw;
+    max-height: 95vh;
+  }
+  
+  .credits-header {
+    padding: 1.5rem;
+  }
+  
+  .credits-header h3 {
+    font-size: 1.5rem;
+  }
+  
+  .credits-content {
+    padding: 1.5rem;
+  }
+  
+  .credit-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .credit-icon {
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+}
