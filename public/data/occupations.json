@@ -1,0 +1,602 @@
+[
+  {
+    "Occupation": "Alchemist",
+    "Weapon": "Staff",
+    "Trade Good": "Oil (1 flask)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Animal trainer",
+    "Weapon": "Club",
+    "Trade Good": "Pony",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Armorer",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Steel Helmet",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Astrologer",
+    "Weapon": "Dagger",
+    "Trade Good": "Spyglass",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Barber",
+    "Weapon": "Razor (as dagger)",
+    "Trade Good": "Scissors",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Beadle",
+    "Weapon": "Staff",
+    "Trade Good": "Holy Symbol",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Beekeeper",
+    "Weapon": "Staff",
+    "Trade Good": "Jar of honey",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Blacksmith",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Steel Tongs",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Butcher",
+    "Weapon": "Cleaver (as axe)",
+    "Trade Good": "Side of beef",
+    "weapontype": "axe"
+  },
+  {
+    "Occupation": "Caravan guard",
+    "Weapon": "Short sword",
+    "Trade Good": "Linen (1 yard)",
+    "weapontype": "short sword"
+  },
+  {
+    "Occupation": "Cheesemaker",
+    "Weapon": "Cudgel (as staff)",
+    "Trade Good": "Stinky Cheese",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Cobbler",
+    "Weapon": "Awl (as dagger)",
+    "Trade Good": "Shoehorn",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Confidence artist",
+    "Weapon": "Dagger",
+    "Trade Good": "Quality cloak",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Cooper",
+    "Weapon": "Crowbar (as club)",
+    "Trade Good": "Barrel",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Costermonger",
+    "Weapon": "Knife (as dagger)",
+    "Trade Good": "fruit",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Cutpurse",
+    "Weapon": "Dagger",
+    "Trade Good": "Small chest",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Ditch digger",
+    "Weapon": "Shovel (as staff)",
+    "Trade Good": "Fine dirt (1 lb.)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Dwarven apothacarist",
+    "Weapon": "Cudgel (as staff)",
+    "Trade Good": "Steel vial",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Dwarven blacksmith",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Mithril (1 oz.)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven blacksmith",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Mithril (1 oz.)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven chest-maker",
+    "Weapon": "Chisel (as dagger)",
+    "Trade Good": "Wood (10 lbs)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Dwarven herder",
+    "Weapon": "Staff",
+    "Trade Good": "Sow",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Dwarven miner",
+    "Weapon": "Pick (as club)",
+    "Trade Good": "Lantern",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven miner",
+    "Weapon": "Pick (as club)",
+    "Trade Good": "Lantern",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven mushroom-farmer",
+    "Weapon": "Shovel",
+    "Trade Good": "Sack",
+    "weapontype": "shovel"
+  },
+  {
+    "Occupation": "Dwarven rat-catcher",
+    "Weapon": "Club",
+    "Trade Good": "Net",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven stonemason",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Fine stone (10 lbs)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Dwarven stonemason",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Fine stone (10 lbs)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Elven artisan",
+    "Weapon": "Staff",
+    "Trade Good": "Clay (1 lb.)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Elven barrister",
+    "Weapon": "Quill (as dart)",
+    "Trade Good": "Book",
+    "weapontype": "dart"
+  },
+  {
+    "Occupation": "Elven chandler",
+    "Weapon": "Scissors (as dagger)",
+    "Trade Good": "Candles (20)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Elven falconer",
+    "Weapon": "Dagger",
+    "Trade Good": "Falcon",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Elven forester",
+    "Weapon": "Staff",
+    "Trade Good": "Herbs (1 lb.)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Elven forester",
+    "Weapon": "Staff",
+    "Trade Good": "Herbs (1 lb.)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Elven glassblower",
+    "Weapon": "Hammer (as club)",
+    "Trade Good": "Glass beads",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Elven navigator",
+    "Weapon": "Shortbow",
+    "Trade Good": "Spyglass",
+    "weapontype": "shortbow"
+  },
+  {
+    "Occupation": "Elven sage",
+    "Weapon": "Dagger",
+    "Trade Good": "Parchment and quill pen",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Elven sage",
+    "Weapon": "Dagger",
+    "Trade Good": "Parchment and quill pen",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Farmer",
+    "Weapon": "Pitchfork (as spear)",
+    "Trade Good": "Hen",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Fortune-teller",
+    "Weapon": "Dagger",
+    "Trade Good": "Tarot deck",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Gambler",
+    "Weapon": "Club",
+    "Trade Good": "Dice",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Gongfarmer",
+    "Weapon": "Trowel (as dagger)",
+    "Trade Good": "Sack of night soil",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Grave digger",
+    "Weapon": "Shovel (as staff)",
+    "Trade Good": "Trowel",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Grave digger",
+    "Weapon": "Shovel (as staff)",
+    "Trade Good": "Trowel",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Guild beggar",
+    "Weapon": "Sling",
+    "Trade Good": "Crutches",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Guild beggar",
+    "Weapon": "Sling",
+    "Trade Good": "Crutches",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Halfling chicken butcher",
+    "Weapon": "Handaxe",
+    "Trade Good": "Chicken meat (5 lbs.)",
+    "weapontype": "handaxe"
+  },
+  {
+    "Occupation": "Halfling dyer",
+    "Weapon": "Staff",
+    "Trade Good": "Fabric (3 yards)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Halfling dyer",
+    "Weapon": "Staff",
+    "Trade Good": "Fabric (3 yards)",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Halfling glovemaker",
+    "Weapon": "Awl (as dagger)",
+    "Trade Good": "Gloves (4 pairs)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Halfling gypsy",
+    "Weapon": "Sling",
+    "Trade Good": "Hex doll",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Halfling haberdasher",
+    "Weapon": "Scissors (as dagger)",
+    "Trade Good": "Fine suits (3 sets)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Halfling mariner",
+    "Weapon": "Knife (as dagger)",
+    "Trade Good": "Sailcloth (2 yards)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Halfling moneylender",
+    "Weapon": "Short sword",
+    "Trade Good": "Bag of Coins (5 gp 10 sp 200 cp)",
+    "weapontype": "short sword"
+  },
+  {
+    "Occupation": "Halfling trader",
+    "Weapon": "Short sword",
+    "Trade Good": "Coinpurse (20 sp)",
+    "weapontype": "short sword"
+  },
+  {
+    "Occupation": "Halfling vagrant",
+    "Weapon": "Club",
+    "Trade Good": "Begging bowl",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Healer",
+    "Weapon": "Club",
+    "Trade Good": "Holy water (1 vial)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Herbalist",
+    "Weapon": "Club",
+    "Trade Good": "Herbs (1 lb.)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Herder",
+    "Weapon": "Staff",
+    "Trade Good": "Herding dog",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Hunter",
+    "Weapon": "Shortbow",
+    "Trade Good": "Deer pelt",
+    "weapontype": "shortbow"
+  },
+  {
+    "Occupation": "Hunter",
+    "Weapon": "Shortbow",
+    "Trade Good": "Deer pelt",
+    "weapontype": "shortbow"
+  },
+  {
+    "Occupation": "Indentured servant",
+    "Weapon": "Staff",
+    "Trade Good": "Locket",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Jester",
+    "Weapon": "Dart",
+    "Trade Good": "Silk clothes",
+    "weapontype": "dart"
+  },
+  {
+    "Occupation": "Jeweler",
+    "Weapon": "Dagger",
+    "Trade Good": "Gem worth 20 gp",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Locksmith",
+    "Weapon": "Dagger",
+    "Trade Good": "Fine tools",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Mendicant",
+    "Weapon": "Club",
+    "Trade Good": "Cheese dip",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Mercenary",
+    "Weapon": "Longsword",
+    "Trade Good": "Hide armor",
+    "weapontype": "longsword"
+  },
+  {
+    "Occupation": "Merchant",
+    "Weapon": "Dagger",
+    "Trade Good": "Bag of Coins (4 gp 14 sp 27 cp)",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Miller/baker",
+    "Weapon": "Club",
+    "Trade Good": "Flour (1 lb.)",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Minstrel",
+    "Weapon": "Dagger",
+    "Trade Good": "Ukulele",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Noble",
+    "Weapon": "Longsword",
+    "Trade Good": "Gold ring worth 10 gp",
+    "weapontype": "longsword"
+  },
+  {
+    "Occupation": "Orphan",
+    "Weapon": "Club",
+    "Trade Good": "Rag doll",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Ostler",
+    "Weapon": "Staff",
+    "Trade Good": "Bridle",
+    "weapontype": "staff"
+  },
+  {
+    "Occupation": "Outlaw",
+    "Weapon": "Short sword",
+    "Trade Good": "Leather armor",
+    "weapontype": "short sword"
+  },
+  {
+    "Occupation": "Ropemaker",
+    "Weapon": "Knife (as dagger)",
+    "Trade Good": "Rope (100')",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Scribe",
+    "Weapon": "Dart",
+    "Trade Good": "Parchment (10 sheets)",
+    "weapontype": "dart"
+  },
+  {
+    "Occupation": "Shaman",
+    "Weapon": "Mace",
+    "Trade Good": "Herbs (1 lb.)",
+    "weapontype": "mace"
+  },
+  {
+    "Occupation": "Slave",
+    "Weapon": "Club",
+    "Trade Good": "Strange-looking rock",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Smuggler",
+    "Weapon": "Sling",
+    "Trade Good": "Waterproof sack",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Soldier",
+    "Weapon": "Spear",
+    "Trade Good": "Shield",
+    "weapontype": "spear"
+  },
+  {
+    "Occupation": "Squire",
+    "Weapon": "Longsword",
+    "Trade Good": "Steel helmet",
+    "weapontype": "longsword"
+  },
+  {
+    "Occupation": "Squire",
+    "Weapon": "Longsword",
+    "Trade Good": "Steel helmet",
+    "weapontype": "longsword"
+  },
+  {
+    "Occupation": "Tax collector",
+    "Weapon": "Longsword",
+    "Trade Good": "Bag of Coins (100 cp)",
+    "weapontype": "longsword"
+  },
+  {
+    "Occupation": "Trapper",
+    "Weapon": "Sling",
+    "Trade Good": "Badger pelt",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Trapper",
+    "Weapon": "Sling",
+    "Trade Good": "Badger pelt",
+    "weapontype": "sling"
+  },
+  {
+    "Occupation": "Urchin",
+    "Weapon": "Stick (as club)",
+    "Trade Good": "Begging bowl",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Wainwright",
+    "Weapon": "Club",
+    "Trade Good": "Pushcart",
+    "weapontype": "club"
+  },
+  {
+    "Occupation": "Weaver",
+    "Weapon": "Dagger",
+    "Trade Good": "Fine suit of clothes",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Wizard's apprentice",
+    "Weapon": "Dagger",
+    "Trade Good": "Black grimoire",
+    "weapontype": "dagger"
+  },
+  {
+    "Occupation": "Woodcutter",
+    "Weapon": "Handaxe",
+    "Trade Good": "Bundle of wood",
+    "weapontype": "handaxe"
+  },
+  {
+    "Occupation": "Woodcutter",
+    "Weapon": "Handaxe",
+    "Trade Good": "Bundle of wood",
+    "weapontype": "handaxe"
+  },
+  {
+    "Occupation": "Woodcutter",
+    "Weapon": "Handaxe",
+    "Trade Good": "Bundle of wood",
+    "weapontype": "handaxe"
+  }
+]

@@ -14,11 +14,14 @@ import LuckConfirmModal from './components/LuckConfirmModal';
 import GameActions from './components/GameActions';
 import ChallengeSelector from './components/ChallengeSelector';
 import VictoryStats from './components/VictoryStats';
+import AchievementPanel from './components/AchievementPanel';
+import AchievementNotification from './components/AchievementNotification';
 import { useGameState } from './hooks/useGameState';
 import { useAudio } from './hooks/useAudio';
 import { useCombat } from './hooks/useCombat.jsx';
 import { useMonsterSelection } from './hooks/useMonsterSelection';
 import { useVictoryTracking } from './hooks/useVictoryTracking';
+import { useAchievements } from './hooks/useAchievements';
 import './App.css';
 
 function App() {
@@ -26,9 +29,11 @@ function App() {
   const gameState = useGameState();
   const { playSound, AudioElements } = useAudio();
   const victoryTracking = useVictoryTracking();
-  const combat = useCombat(gameState, playSound, victoryTracking);
+  const achievementTracking = useAchievements();
+  const combat = useCombat(gameState, playSound, victoryTracking, achievementTracking);
   const monsterSelection = useMonsterSelection(gameState);
   const [showVictoryStats, setShowVictoryStats] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
 
   const {
     character,
@@ -174,7 +179,7 @@ function App() {
               onChallengeChange={setSelectedChallenge}
             />
           </div>
-          <CharacterCreator onCreate={handleCreateCharacter} />
+          <CharacterCreator onCharacterCreated={handleCreateCharacter} />
         </>
       )}
       
@@ -190,6 +195,7 @@ function App() {
         onAdjustChallenge={adjustChallenge}
         playSound={playSound}
         onShowVictoryStats={() => setShowVictoryStats(true)}
+        onShowAchievements={() => setShowAchievements(true)}
       />
       
       {character && !monster && (
@@ -284,6 +290,16 @@ function App() {
         onClose={() => setShowVictoryStats(false)}
         victoryTracking={victoryTracking}
       />
+      
+      {/* Achievement Panel Modal */}
+      <AchievementPanel 
+        isOpen={showAchievements} 
+        onClose={() => setShowAchievements(false)}
+        achievementTracking={achievementTracking}
+      />
+      
+      {/* Achievement Notifications */}
+      <AchievementNotification achievementTracking={achievementTracking} />
       
       </main>
     </div>

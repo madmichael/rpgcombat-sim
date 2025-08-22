@@ -2,10 +2,25 @@ import { useState, useEffect } from 'react';
 import { roll1d20, roll1d6, parseDamageString, isRangedWeapon, isFumble, getFumbleResult, calculateAC } from '../utils/diceUtils';
 import { useAudio } from './useAudio';
 import { useVictoryTracking } from './useVictoryTracking';
-import tradeGoodsData from '../data/tradeGoods.json';
+// import tradeGoodsData from '../data/tradeGoods.json';
 
 export const useCombat = (gameState, playSound, victoryTracking, achievementTracking) => {
   const { recordVictory, recordDefeat } = victoryTracking || useVictoryTracking();
+  const [tradeGoodsData, setTradeGoodsData] = useState(null);
+
+  // Load trade goods data on mount
+  useEffect(() => {
+    async function loadTradeGoods() {
+      try {
+        const response = await fetch('/data/tradeGoods.json');
+        const data = await response.json();
+        setTradeGoodsData(data);
+      } catch (error) {
+        console.error('Failed to load trade goods data:', error);
+      }
+    }
+    loadTradeGoods();
+  }, []);
   const [showLuckConfirmModal, setShowLuckConfirmModal] = useState(false);
   const [showLuckModal, setShowLuckModal] = useState(false);
   const [pendingAttack, setPendingAttack] = useState(null);
@@ -155,6 +170,12 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   const performMonsterAttack = () => {
     if (!monster || !monster.Attack || !monster.Damage) return null;
 
+    // Check if monster is still alive
+    const currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+    if (currentMonsterHp <= 0) {
+      return null; // Monster is dead, cannot attack
+    }
+
     // Check if monster should skip this action
     if (monsterEffects.skipNextAction) {
       setMonsterEffects(prev => ({ ...prev, skipNextAction: false }));
@@ -226,20 +247,24 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       setTimeout(() => continueFight(), 1000);
     } else {
       setTimeout(() => {
-        const monsterAttackResult = performMonsterAttack();
-        if (monsterAttackResult) {
-          setCombatLog(prev => [...prev, monsterAttackResult.attack]);
-          
-          if (monsterAttackResult.newCharHp <= 0) {
-            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
-            setCombatLog(prev => [...prev, { 
-              type: 'summary', 
-              message: summaryMessage,
-              timestamp: new Date().toLocaleTimeString()
-            }]);
-            setSummary(summaryMessage);
-            setFightStatus('finished');
-            recordDefeat(character, monster);
+        // Only allow monster attack if monster HP > 0
+        const currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+        if (currentMonsterHp > 0) {
+          const monsterAttackResult = performMonsterAttack();
+          if (monsterAttackResult) {
+            setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+            
+            if (monsterAttackResult.newCharHp <= 0) {
+              const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+              setCombatLog(prev => [...prev, { 
+                type: 'summary', 
+                message: summaryMessage,
+                timestamp: new Date().toLocaleTimeString()
+              }]);
+              setSummary(summaryMessage);
+              setFightStatus('finished');
+              recordDefeat(character, monster);
+            }
           }
         }
       }, 1000);
@@ -349,20 +374,23 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     }
 
     setTimeout(() => {
-      const monsterAttackResult = performMonsterAttack();
-      if (monsterAttackResult) {
-        setCombatLog(prev => [...prev, monsterAttackResult.attack]);
-        
-        if (monsterAttackResult.newCharHp <= 0) {
-          const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
-          setCombatLog(prev => [...prev, { 
-            type: 'summary', 
-            message: summaryMessage,
-            timestamp: new Date().toLocaleTimeString()
-          }]);
-          setSummary(summaryMessage);
-          setFightStatus('finished');
-          recordDefeat(character, monster);
+      // Only allow monster attack if monster HP > 0
+      if (newMonsterHp > 0) {
+        const monsterAttackResult = performMonsterAttack();
+        if (monsterAttackResult) {
+          setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+          
+          if (monsterAttackResult.newCharHp <= 0) {
+            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            setCombatLog(prev => [...prev, { 
+              type: 'summary', 
+              message: summaryMessage,
+              timestamp: new Date().toLocaleTimeString()
+            }]);
+            setSummary(summaryMessage);
+            setFightStatus('finished');
+            recordDefeat(character, monster);
+          }
         }
       }
     }, 1000);
@@ -386,20 +414,24 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     setPendingAttack(null);
     
     setTimeout(() => {
-      const monsterAttackResult = performMonsterAttack();
-      if (monsterAttackResult) {
-        setCombatLog(prev => [...prev, monsterAttackResult.attack]);
-        
-        if (monsterAttackResult.newCharHp <= 0) {
-          const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
-          setCombatLog(prev => [...prev, { 
-            type: 'summary', 
-            message: summaryMessage,
-            timestamp: new Date().toLocaleTimeString()
-          }]);
-          setFightStatus('finished');
-          setSummary(summaryMessage);
-          recordDefeat(character, monster);
+      // Only allow monster attack if monster HP > 0
+      const currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+      if (currentMonsterHp > 0) {
+        const monsterAttackResult = performMonsterAttack();
+        if (monsterAttackResult) {
+          setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+          
+          if (monsterAttackResult.newCharHp <= 0) {
+            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            setCombatLog(prev => [...prev, { 
+              type: 'summary', 
+              message: summaryMessage,
+              timestamp: new Date().toLocaleTimeString()
+            }]);
+            setFightStatus('finished');
+            setSummary(summaryMessage);
+            recordDefeat(character, monster);
+          }
         }
       }
     }, 1000);
@@ -484,20 +516,24 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     }
 
     setTimeout(() => {
-      const monsterAttackResult = performMonsterAttack();
-      if (monsterAttackResult) {
-        setCombatLog(prev => [...prev, monsterAttackResult.attack]);
-        
-        if (monsterAttackResult.newCharHp <= 0) {
-          const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
-          setCombatLog(prev => [...prev, { 
-            type: 'summary', 
-            message: summaryMessage,
-            timestamp: new Date().toLocaleTimeString()
-          }]);
-          setFightStatus('finished');
-          setSummary(summaryMessage);
-          recordDefeat(character, monster);
+      // Only allow monster attack if monster HP > 0
+      const currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+      if (currentMonsterHp > 0) {
+        const monsterAttackResult = performMonsterAttack();
+        if (monsterAttackResult) {
+          setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+          
+          if (monsterAttackResult.newCharHp <= 0) {
+            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            setCombatLog(prev => [...prev, { 
+              type: 'summary', 
+              message: summaryMessage,
+              timestamp: new Date().toLocaleTimeString()
+            }]);
+            setFightStatus('finished');
+            setSummary(summaryMessage);
+            recordDefeat(character, monster);
+          }
         }
       }
     }, 1000);
@@ -637,6 +673,8 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
 
     let mappedTradeGood = tradeGoodMapping[character.tradeGood] || character.tradeGood;
     
+    if (!tradeGoodsData) return; // Wait for data to load
+    
     let tradeGood = tradeGoodsData.tradeGoods.find(tg => tg.name.toLowerCase() === mappedTradeGood.toLowerCase());
     let isImprovisedTradeGood = false;
     if (!tradeGood) {
@@ -668,6 +706,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     let charDmg = 0;
     let damageBreakdown = "";
     let currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+    let finalMonsterHp = currentMonsterHp; // Track the final HP after all damage calculations
     
     // Reveal Monster AC on first successful hit
     if (attackHits && !monsterACRevealed) {
@@ -714,11 +753,11 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
         }
         
         // Apply total damage to monster after bonus calculation
-        const newMonsterHp = Math.max(0, currentMonsterHp - charDmg);
-        setMonsterHp(newMonsterHp);
+        finalMonsterHp = Math.max(0, currentMonsterHp - charDmg);
+        setMonsterHp(finalMonsterHp);
         
         const damageDisplay = damageBreakdown.includes('=') || damageBreakdown.includes('+') ? ` [${damageBreakdown}]` : '';
-        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} CRITICAL HIT for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! ${result} (${newMonsterHp} HP left)`;
+        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} CRITICAL HIT for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! ${result} (${finalMonsterHp} HP left)`;
         setCombatLog(prev => [...prev, deedMessage]);
       } else if (deedSucceeds && rawAttackRoll === 20) {
         // Attack hits with natural 20 AND deed succeeds (but not critical - requires both nat 20 and deed 6)
@@ -740,27 +779,26 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
         }
         
         // Apply total damage to monster after bonus calculation
-        const newMonsterHp = Math.max(0, currentMonsterHp - charDmg);
-        setMonsterHp(newMonsterHp);
+        finalMonsterHp = Math.max(0, currentMonsterHp - charDmg);
+        setMonsterHp(finalMonsterHp);
         
         const damageDisplay = damageBreakdown.includes('=') || damageBreakdown.includes('+') ? ` [${damageBreakdown}]` : '';
-        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} HITS for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! ${result} (${newMonsterHp} HP left)`;
+        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} HITS for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! ${result} (${finalMonsterHp} HP left)`;
         setCombatLog(prev => [...prev, deedMessage]);
       } else {
         // Attack hits but deed fails
         resultType = "DEED FAILED";
         playSound('slash');
         
-        const newMonsterHp = Math.max(0, currentMonsterHp - charDmg);
-        setMonsterHp(newMonsterHp);
+        finalMonsterHp = Math.max(0, currentMonsterHp - charDmg);
+        setMonsterHp(finalMonsterHp);
         
         const damageDisplay = damageBreakdown.includes('=') || damageBreakdown.includes('+') ? ` [${damageBreakdown}]` : '';
-        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} HITS for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! The attack succeeds but the mighty deed fails. (${newMonsterHp} HP left)`;
+        const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} HITS for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! The attack succeeds but the mighty deed fails. (${finalMonsterHp} HP left)`;
         setCombatLog(prev => [...prev, deedMessage]);
       }
       
-      // Check if monster is defeated (get the current monster HP)
-      const finalMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+      // Check if monster is defeated (use the calculated finalMonsterHp)
       if (finalMonsterHp <= 0) {
         const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
         const summaryMessage = (rawAttackRoll === 20 && deedRoll === 6) ? 
@@ -788,22 +826,25 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
 
     // After attempting a mighty deed, monster gets to attack
     setTimeout(() => {
-      const monsterAttackResult = performMonsterAttack();
-      if (monsterAttackResult) {
-        setCombatLog(prev => [...prev, monsterAttackResult.attack]);
-        
-        if (monsterAttackResult.newCharHp <= 0) {
-          const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
-          setCombatLog(prev => [...prev, { 
-            type: 'summary', 
-            message: summaryMessage,
-            timestamp: new Date().toLocaleTimeString()
-          }]);
-          setFightStatus('finished');
-          setSummary(summaryMessage);
-          recordDefeat(character, monster);
+      // Only allow monster attack if monster HP > 0 (use the calculated finalMonsterHp)
+      if (finalMonsterHp > 0) {
+        const monsterAttackResult = performMonsterAttack();
+        if (monsterAttackResult) {
+          setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+          
+          if (monsterAttackResult.newCharHp <= 0) {
+            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            setCombatLog(prev => [...prev, { 
+              type: 'summary', 
+              message: summaryMessage,
+              timestamp: new Date().toLocaleTimeString()
+            }]);
+            setFightStatus('finished');
+            setSummary(summaryMessage);
+            recordDefeat(character, monster);
+          }
         }
       }
-    }, 1500);
+    }, 1000);
   }
 };

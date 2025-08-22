@@ -1,0 +1,127 @@
+{
+  "achievements": [
+    {
+      "id": "fumble_master",
+      "name": "Fumble Master",
+      "description": "Survive 10 fumbles",
+      "icon": "💥",
+      "type": "survival",
+      "requirement": {
+        "type": "fumbles_survived",
+        "count": 10
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "giant_slayer",
+      "name": "Giant Slayer", 
+      "description": "Defeat 5 creatures with 50+ HP",
+      "icon": "⚔️",
+      "type": "combat",
+      "requirement": {
+        "type": "high_hp_kills",
+        "count": 5,
+        "min_hp": 50
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "lucky_strike",
+      "name": "Lucky Strike",
+      "description": "Roll 3 natural 20s in a row",
+      "icon": "🍀",
+      "type": "luck",
+      "requirement": {
+        "type": "consecutive_nat20s",
+        "count": 3
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "first_blood",
+      "name": "First Blood",
+      "description": "Win your first combat",
+      "icon": "🩸",
+      "type": "milestone",
+      "requirement": {
+        "type": "victories",
+        "count": 1
+      },
+      "rarity": "common"
+    },
+    {
+      "id": "veteran_warrior",
+      "name": "Veteran Warrior",
+      "description": "Win 25 combats",
+      "icon": "🛡️",
+      "type": "milestone",
+      "requirement": {
+        "type": "victories",
+        "count": 25
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "legendary_hero",
+      "name": "Legendary Hero",
+      "description": "Win 100 combats",
+      "icon": "👑",
+      "type": "milestone",
+      "requirement": {
+        "type": "victories",
+        "count": 100
+      },
+      "rarity": "legendary"
+    },
+    {
+      "id": "critical_master",
+      "name": "Critical Master",
+      "description": "Score 20 critical hits",
+      "icon": "💫",
+      "type": "combat",
+      "requirement": {
+        "type": "critical_hits",
+        "count": 20
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "dragon_slayer",
+      "name": "Dragon Slayer",
+      "description": "Defeat a dragon",
+      "icon": "🐉",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "dragon",
+        "count": 1
+      },
+      "rarity": "rare"
+    },
+    {
+      "id": "undead_hunter",
+      "name": "Undead Hunter",
+      "description": "Defeat 10 undead creatures",
+      "icon": "🧟",
+      "type": "combat",
+      "requirement": {
+        "type": "monster_type_kill",
+        "monster_type": "undead",
+        "count": 10
+      },
+      "rarity": "uncommon"
+    },
+    {
+      "id": "mighty_deed_master",
+      "name": "Mighty Deed Master",
+      "description": "Successfully perform 50 mighty deeds",
+      "icon": "🎭",
+      "type": "combat",
+      "requirement": {
+        "type": "successful_mighty_deeds",
+        "count": 50
+      },
+      "rarity": "rare"
+    }
+  ]
+}

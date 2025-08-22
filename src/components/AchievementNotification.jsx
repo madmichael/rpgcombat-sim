@@ -1,35 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import AchievementBadge from './AchievementBadge';
 
-const AchievementNotification = ({ achievements, onDismiss }) => {
+const AchievementNotification = ({ achievementTracking }) => {
   const [visible, setVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const newAchievements = achievementTracking?.newAchievements || [];
+
   useEffect(() => {
-    if (achievements.length > 0) {
+    if (newAchievements.length > 0) {
       setVisible(true);
       setCurrentIndex(0);
     }
-  }, [achievements]);
+  }, [newAchievements]);
 
   useEffect(() => {
-    if (visible && achievements.length > 0) {
+    if (visible && newAchievements.length > 0) {
       const timer = setTimeout(() => {
-        if (currentIndex < achievements.length - 1) {
+        if (currentIndex < newAchievements.length - 1) {
           setCurrentIndex(currentIndex + 1);
         } else {
           setVisible(false);
-          setTimeout(() => onDismiss(), 300);
+          setTimeout(() => {
+            if (achievementTracking?.clearNewAchievements) {
+              achievementTracking.clearNewAchievements();
+            }
+          }, 300);
         }
       }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [visible, currentIndex, achievements.length, onDismiss]);
+  }, [visible, currentIndex, newAchievements.length, achievementTracking]);
 
-  if (!visible || achievements.length === 0) return null;
+  if (!visible || newAchievements.length === 0) return null;
 
-  const achievement = achievements[currentIndex];
+  const achievement = newAchievements[currentIndex];
 
   return (
     <div className={`

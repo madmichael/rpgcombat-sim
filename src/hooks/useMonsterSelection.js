@@ -47,7 +47,7 @@ export const useMonsterSelection = (gameState) => {
     // Find full monster data from JSON
     let monsterData = null;
     try {
-      const monstersJson = await (await fetch('src/data/dnd_srd_monsters_with_attacktype.json')).json();
+      const monstersJson = await (await fetch('/data/dnd_srd_monsters_with_attacktype.json')).json();
       monsterData = monstersJson.find(m => m.name === (entry.name || entry));
     } catch (e) {
       monsterData = null;

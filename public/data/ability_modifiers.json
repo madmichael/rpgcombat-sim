@@ -1,0 +1,98 @@
+[
+  {
+    "ability_score": 3,
+    "modifier": -3,
+    "wizard_spells_known": "No spellcasting possible",
+    "max_spell_level": "No spellcasting possible"
+  },
+  {
+    "ability_score": 4,
+    "modifier": -2,
+    "wizard_spells_known": "-2 spells*",
+    "max_spell_level": 1
+  },
+  {
+    "ability_score": 5,
+    "modifier": -2,
+    "wizard_spells_known": "-2 spells*",
+    "max_spell_level": 1
+  },
+  {
+    "ability_score": 6,
+    "modifier": -1,
+    "wizard_spells_known": "-1 spell*",
+    "max_spell_level": 1
+  },
+  {
+    "ability_score": 7,
+    "modifier": -1,
+    "wizard_spells_known": "-1 spell*",
+    "max_spell_level": 1
+  },
+  {
+    "ability_score": 8,
+    "modifier": 0,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 2
+  },
+  {
+    "ability_score": 9,
+    "modifier": 0,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 2
+  },
+  {
+    "ability_score": 10,
+    "modifier": 0,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 3
+  },
+  {
+    "ability_score": 11,
+    "modifier": 0,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 3
+  },
+  {
+    "ability_score": 12,
+    "modifier": 0,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 4
+  },
+  {
+    "ability_score": 13,
+    "modifier": 1,
+    "wizard_spells_known": "No adjustment",
+    "max_spell_level": 4
+  },
+  {
+    "ability_score": 14,
+    "modifier": 1,
+    "wizard_spells_known": "+1 spell",
+    "max_spell_level": 4
+  },
+  {
+    "ability_score": 15,
+    "modifier": 1,
+    "wizard_spells_known": "+1 spell",
+    "max_spell_level": 5
+  },
+  {
+    "ability_score": 16,
+    "modifier": 2,
+    "wizard_spells_known": "+1 spell",
+    "max_spell_level": 5
+  },
+  {
+    "ability_score": 17,
+    "modifier": 2,
+    "wizard_spells_known": "+2 spells",
+    "max_spell_level": 5
+  },
+  {
+    "ability_score": 18,
+    "modifier": 3,
+    "wizard_spells_known": "+2 spells",
+    "max_spell_level": 5
+  }
+]

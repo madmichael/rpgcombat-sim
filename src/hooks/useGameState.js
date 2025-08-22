@@ -16,7 +16,7 @@ export const useGameState = () => {
   useEffect(() => {
     async function fetchMonsterNames() {
       try {
-        const res = await fetch('src/data/dnd_srd_monsters_with_attacktype.json');
+        const res = await fetch('/data/dnd_srd_monsters_with_attacktype.json');
         const data = await res.json();
         setMonsterNames(data.map(m => ({ name: m.name, AttackType: m.AttackType })));
       } catch (e) {

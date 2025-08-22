@@ -10,7 +10,8 @@ const GameActions = ({
   onRestartFight,
   onAdjustChallenge,
   playSound,
-  onShowVictoryStats 
+  onShowVictoryStats,
+  onShowAchievements 
 }) => {
   const handleFindAnotherMonster = () => {
     if (playSound) {
@@ -21,12 +22,14 @@ const GameActions = ({
 
   return (
     <>
-      {/* Victory Stats Button */}
+      {/* Action Buttons */}
       <div style={{ 
         position: 'fixed', 
         top: '20px', 
         right: '20px', 
-        zIndex: 100 
+        zIndex: 100,
+        display: 'flex',
+        gap: '10px'
       }}>
         <button 
           onClick={onShowVictoryStats}
@@ -53,6 +56,33 @@ const GameActions = ({
           title="View victory statistics and battle history"
         >
           🏆 Stats
+        </button>
+        
+        <button 
+          onClick={onShowAchievements}
+          style={{
+            backgroundColor: '#f39c12',
+            color: 'white',
+            border: 'none',
+            padding: '12px 16px',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 4px 12px rgba(243, 156, 18, 0.3)',
+            transition: 'all 0.2s ease'
+          }}
+          onMouseOver={(e) => {
+            e.target.style.backgroundColor = '#e67e22';
+            e.target.style.transform = 'translateY(-2px)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.backgroundColor = '#f39c12';
+            e.target.style.transform = 'translateY(0)';
+          }}
+          title="View achievements and combat milestones"
+        >
+          🏅 Achievements
         </button>
       </div>
     </>

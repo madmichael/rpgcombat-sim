@@ -1,31 +1,39 @@
 import React, { useState } from 'react';
 import AchievementBadge from './AchievementBadge';
 
-const AchievementPanel = ({ achievements, stats, totalAchievements, unlockedCount }) => {
+const AchievementPanel = ({ isOpen, onClose, achievementTracking }) => {
   const [selectedRarity, setSelectedRarity] = useState('all');
+  
+  if (!isOpen) return null;
   
   const rarityFilters = [
     { key: 'all', label: 'All', color: 'bg-gray-500' },
     { key: 'common', label: 'Common', color: 'bg-gray-400' },
-    { key: 'uncommon', label: 'Common', color: 'bg-green-500' },
+    { key: 'uncommon', label: 'Uncommon', color: 'bg-green-500' },
     { key: 'rare', label: 'Rare', color: 'bg-blue-500' },
     { key: 'legendary', label: 'Legendary', color: 'bg-purple-500' }
   ];
+
+  const achievements = achievementTracking?.achievements || [];
+  const stats = achievementTracking?.stats || {};
+  const totalAchievements = achievements.length;
+  const unlockedCount = achievements.filter(a => a.unlocked).length;
 
   const filteredAchievements = selectedRarity === 'all' 
     ? achievements 
     : achievements.filter(a => a.rarity === selectedRarity);
 
-  const completionPercentage = Math.round((unlockedCount / totalAchievements) * 100);
+  const completionPercentage = totalAchievements > 0 ? Math.round((unlockedCount / totalAchievements) * 100) : 0;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-xl font-bold text-gray-800">Achievements</h3>
-        <div className="text-sm text-gray-600">
-          {unlockedCount} / {totalAchievements} ({completionPercentage}%)
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl p-6 max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-bold text-gray-800">Achievements</h3>
+          <div className="text-sm text-gray-600">
+            {unlockedCount} / {totalAchievements} ({completionPercentage}%)
+          </div>
         </div>
-      </div>
 
       {/* Progress Bar */}
       <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
@@ -92,6 +100,17 @@ const AchievementPanel = ({ achievements, stats, totalAchievements, unlockedCoun
             <div className="font-bold text-lg text-purple-600">{stats.consecutive_nat20s}</div>
             <div className="text-gray-600">Best Nat20 Streak</div>
           </div>
+        </div>
+      </div>
+      
+        {/* Close Button */}
+        <div className="flex justify-end mt-4">
+          <button 
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors"
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>

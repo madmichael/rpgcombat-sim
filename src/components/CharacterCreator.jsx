@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import birthAugers from '../data/birth_augers.json';
+import React, { useState, useRef } from 'react';
+// import birthAugers from '../data/birth_augers.json';
 
 const abilities = [
   'Strength',
@@ -172,33 +172,48 @@ function roll1d4() {
   return Math.floor(Math.random() * 4 + 1);
 }
 
-const CharacterCreator = ({ onCreate }) => {
-  // Helper to get random name from array
-  function getRandomName(arr) {
-    return arr.length ? arr[Math.floor(Math.random() * arr.length)] : '';
-  }
-
-  // Dice sound ref
-  const diceRef = React.useRef(null);
-
-  // State for names
+const CharacterCreator = ({ onCharacterCreated }) => {
+  const [character, setCharacter] = useState({
+    name: '',
+    occupation: '',
+    abilities: {},
+    modifiers: {},
+    hp: 0,
+    weapon: '',
+    tradeGood: '',
+    luckySign: '',
+    birthAuger: ''
+  });
   const [firstNames, setFirstNames] = useState([]);
   const [lastNames, setLastNames] = useState([]);
+  const [occupations, setOccupations] = useState([]);
+  const [birthAugers, setBirthAugers] = useState([]);
+  const diceRef = useRef(null);
 
-  // Load names on mount
+  // Load names and birth augers on mount
   React.useEffect(() => {
-    async function loadNames() {
+    async function loadData() {
       try {
-        const first = await import('../data/names_first.json');
-        const last = await import('../data/names_last.json');
-        setFirstNames(Array.isArray(first.default) ? first.default : first);
-        setLastNames(Array.isArray(last.default) ? last.default : last);
+        const [firstResponse, lastResponse, birthResponse] = await Promise.all([
+          fetch('/data/names_first.json'),
+          fetch('/data/names_last.json'),
+          fetch('/data/birth_augers.json')
+        ]);
+        
+        const firstData = await firstResponse.json();
+        const lastData = await lastResponse.json();
+        const birthData = await birthResponse.json();
+        
+        setFirstNames(Array.isArray(firstData) ? firstData : [firstData]);
+        setLastNames(Array.isArray(lastData) ? lastData : [lastData]);
+        setBirthAugers(Array.isArray(birthData) ? birthData : [birthData]);
       } catch (e) {
         setFirstNames(["Aaren", "Abbie", "Ada"]);
         setLastNames(["Aaberg", "Abbott", "Abate"]);
+        setBirthAugers([]);
       }
     }
-    loadNames();
+    loadData();
   }, []);
   // Helper for starting funds
   function roll5d12() {
@@ -245,12 +260,17 @@ const CharacterCreator = ({ onCreate }) => {
   const [stats, setStats] = useState({});
   const [name, setName] = useState('');
 
+  // Helper function to get random name
+  function getRandomName(nameArray) {
+    return nameArray[Math.floor(Math.random() * nameArray.length)];
+  }
+
   // When names are loaded, set a random name
   React.useEffect(() => {
     if (firstNames.length && lastNames.length && !name) {
       setName(`${getRandomName(firstNames)} ${getRandomName(lastNames)}`);
     }
-  }, [firstNames, lastNames]);
+  }, [firstNames, lastNames, name]);
   const [alignment, setAlignment] = useState('Law');
   const [hp, setHp] = useState(null);
   const [occupation, setOccupation] = useState(null);
@@ -276,9 +296,24 @@ const CharacterCreator = ({ onCreate }) => {
     const alignmentsArr = ['Law', 'Neutral', 'Chaos'];
     setAlignment(alignmentsArr[Math.floor(Math.random() * alignmentsArr.length)]);
 
-    // Roll random occupation
-    const occ = occupations[Math.floor(Math.random() * occupations.length)];
+    // Roll random occupation - use hardcoded occupations array since state is empty
+    const hardcodedOccupations = [
+      { Roll: "01", Occupation: "Alchemist", "Trained Weapon": "Staff", "Trade Goods": "Oil, 1 flask", weapontype: "staff" },
+      { Roll: "02", Occupation: "Animal trainer", "Trained Weapon": "Club", "Trade Goods": "Pony", weapontype: "club" },
+      { Roll: "03", Occupation: "Armorer", "Trained Weapon": "Hammer (as club)", "Trade Goods": "Iron helmet", weapontype: "club" },
+      { Roll: "04", Occupation: "Astrologer", "Trained Weapon": "Dagger", "Trade Goods": "Spyglass", weapontype: "dagger" },
+      { Roll: "05", Occupation: "Barber", "Trained Weapon": "Razor (as dagger)", "Trade Goods": "Scissors", weapontype: "dagger" },
+      { Roll: "06", Occupation: "Beadle", "Trained Weapon": "Staff", "Trade Goods": "Holy symbol", weapontype: "staff" },
+      { Roll: "07", Occupation: "Beekeeper", "Trained Weapon": "Staff", "Trade Goods": "Jar of honey", weapontype: "staff" },
+      { Roll: "08", Occupation: "Blacksmith", "Trained Weapon": "Hammer (as club)", "Trade Goods": "Steel tongs", weapontype: "club" },
+      { Roll: "09", Occupation: "Butcher", "Trained Weapon": "Cleaver (as axe)", "Trade Goods": "Side of beef", weapontype: "axe" },
+      { Roll: "10", Occupation: "Caravan guard", "Trained Weapon": "Short sword", "Trade Goods": "Linen, 1 yard", weapontype: "Short sword" }
+    ];
+    const occ = hardcodedOccupations[Math.floor(Math.random() * hardcodedOccupations.length)];
     setOccupation(occ);
+    
+    if (!occ) return; // Guard against undefined occupation
+    
     // Find weapon damage by occupation's weapontype or Trained Weapon from full weapons.json
     let weaponName = occ["Trained Weapon"];
     let weaponType = occ.weapontype;
@@ -315,7 +350,7 @@ const CharacterCreator = ({ onCreate }) => {
     const startingFunds = getStartingFunds();
     const luckySign = getLuckySign();
     const languages = getLanguages(modifiers['Intelligence']);
-    onCreate({
+    onCharacterCreated({
       name,
       alignment,
       ...stats,

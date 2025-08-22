@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import achievementsData from '../data/achievements.json';
+// import achievementsData from '../data/achievements.json';
 
 export const useAchievements = (characterId) => {
   const [achievements, setAchievements] = useState([]);
+  const [achievementsData, setAchievementsData] = useState(null);
   const [stats, setStats] = useState({
     victories: 0,
     fumbles_survived: 0,
@@ -13,6 +14,20 @@ export const useAchievements = (characterId) => {
     successful_mighty_deeds: 0,
     monster_kills: {}
   });
+
+  // Load achievements data and saved progress
+  useEffect(() => {
+    async function loadAchievementsData() {
+      try {
+        const response = await fetch('/data/achievements.json');
+        const data = await response.json();
+        setAchievementsData(data);
+      } catch (error) {
+        console.error('Failed to load achievements data:', error);
+      }
+    }
+    loadAchievementsData();
+  }, []);
 
   // Load achievements and stats from localStorage
   useEffect(() => {
@@ -39,6 +54,8 @@ export const useAchievements = (characterId) => {
   }, [achievements, stats, characterId]);
 
   const checkAchievements = (newStats) => {
+    if (!achievementsData) return [];
+    
     const unlockedAchievements = [];
     
     achievementsData.achievements.forEach(achievement => {
@@ -185,16 +202,23 @@ export const useAchievements = (characterId) => {
     return grouped;
   };
 
+  // Ensure unique achievements by filtering out duplicates
+  const uniqueAchievements = achievements.filter((achievement, index, self) => 
+    index === self.findIndex(a => a.id === achievement.id)
+  );
+
   return {
-    achievements,
+    achievements: uniqueAchievements,
     stats,
+    newAchievements: [],
     recordVictory,
     recordFumbleSurvived,
     recordCriticalHit,
     recordNonCriticalHit,
     recordSuccessfulMightyDeed,
     getAchievementsByRarity,
-    totalAchievements: achievementsData.achievements.length,
-    unlockedCount: achievements.length
+    clearNewAchievements: () => {},
+    totalAchievements: achievementsData ? achievementsData.achievements.length : 0,
+    unlockedCount: uniqueAchievements.length
   };
 };

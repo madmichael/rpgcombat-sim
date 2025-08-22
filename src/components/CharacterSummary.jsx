@@ -1,5 +1,5 @@
 import React from 'react';
-import birthAugers from '../data/birth_augers.json';
+// import birthAugers from '../data/birth_augers.json';
 
 const CharacterSummary = ({ character }) => {
   if (!character) return null;
