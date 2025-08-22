@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, summary, buttonStyles = {} }) => {
+const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, onMightyDeed, onAdjustChallenge, character, summary, buttonStyles = {} }) => {
   const handleKeyDown = (event, action) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -72,6 +72,19 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               <span className="btn-text">Continue Fighting</span>
             </button>
             
+            {character?.tradeGood && (
+              <button 
+                className="combat-btn combat-btn-secondary"
+                onClick={onMightyDeed}
+                onKeyDown={(e) => handleKeyDown(e, onMightyDeed)}
+                aria-label="Attempt a Mighty Deed with your trade good"
+                title={`Use ${character.tradeGood} for a Mighty Deed`}
+              >
+                <span className="btn-icon">🎭</span>
+                <span className="btn-text">Mighty Deed</span>
+              </button>
+            )}
+            
             <button 
               className="combat-btn combat-btn-warning"
               onClick={onRun}
@@ -112,6 +125,32 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               <span className="btn-icon">🔍</span>
               <span className="btn-text">Find Another Monster</span>
             </button>
+            
+            {onAdjustChallenge && (
+              <>
+                <button 
+                  className="combat-btn combat-btn-tertiary combat-btn-medium"
+                  onClick={() => onAdjustChallenge('down')}
+                  onKeyDown={(e) => handleKeyDown(e, () => onAdjustChallenge('down'))}
+                  aria-label="Decrease monster challenge level"
+                  aria-describedby="challenge-down-help"
+                >
+                  <span className="btn-icon">📉</span>
+                  <span className="btn-text">Challenge ↓</span>
+                </button>
+                
+                <button 
+                  className="combat-btn combat-btn-tertiary combat-btn-medium"
+                  onClick={() => onAdjustChallenge('up')}
+                  onKeyDown={(e) => handleKeyDown(e, () => onAdjustChallenge('up'))}
+                  aria-label="Increase monster challenge level"
+                  aria-describedby="challenge-up-help"
+                >
+                  <span className="btn-icon">📈</span>
+                  <span className="btn-text">Challenge ↑</span>
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
@@ -122,6 +161,8 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
         <div id="run-away-help">Escape from combat - you will lose the encounter</div>
         <div id="find-another-help">Search for a different monster at the same challenge level</div>
         <div id="restart-fight-help">Restart the current fight from the beginning</div>
+        <div id="challenge-down-help">Decrease the challenge level and find a weaker monster</div>
+        <div id="challenge-up-help">Increase the challenge level and find a stronger monster</div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CharacterCreator from './components/CharacterCreator';
 import MonsterSelector from './components/MonsterSelector';
 import WeaponSelector from './components/WeaponSelector';
@@ -13,18 +13,22 @@ import LuckModal from './components/LuckModal';
 import LuckConfirmModal from './components/LuckConfirmModal';
 import GameActions from './components/GameActions';
 import ChallengeSelector from './components/ChallengeSelector';
+import VictoryStats from './components/VictoryStats';
 import { useGameState } from './hooks/useGameState';
-import { useAudio } from './hooks/useAudio.jsx';
+import { useAudio } from './hooks/useAudio';
 import { useCombat } from './hooks/useCombat.jsx';
 import { useMonsterSelection } from './hooks/useMonsterSelection';
+import { useVictoryTracking } from './hooks/useVictoryTracking';
 import './App.css';
 
 function App() {
   // Initialize hooks
   const gameState = useGameState();
   const { playSound, AudioElements } = useAudio();
-  const combat = useCombat(gameState, playSound);
+  const victoryTracking = useVictoryTracking();
+  const combat = useCombat(gameState, playSound, victoryTracking);
   const monsterSelection = useMonsterSelection(gameState);
+  const [showVictoryStats, setShowVictoryStats] = useState(false);
 
   const {
     character,
@@ -60,10 +64,11 @@ function App() {
     startFight,
     continueFight,
     burnLuck,
-    runAway
+    runAway,
+    attemptMightyDeed
   } = combat;
 
-  const { selectRandomMonster, getChallengeLabel } = monsterSelection;
+  const { selectRandomMonster, getChallengeLabel, adjustChallenge } = monsterSelection;
 
   const handleCreateCharacter = (char) => {
     setCharacter(char);
@@ -182,7 +187,9 @@ function App() {
         selectedChallenge={selectedChallenge}
         onFindAnotherMonster={handleFindAnotherMonster}
         onRestartFight={restartFight}
+        onAdjustChallenge={adjustChallenge}
         playSound={playSound}
+        onShowVictoryStats={() => setShowVictoryStats(true)}
       />
       
       {character && !monster && (
@@ -215,16 +222,22 @@ function App() {
           
           {/* Combat Controls */}
           <div className="combat-controls-section">
-            <CombatControls
+            <CombatControls 
               status={fightStatus}
               onStart={startFight}
               onContinue={continueFight}
               onRun={runAway}
+              onMightyDeed={attemptMightyDeed}
+              character={character}
               onFindAnother={() => {
                 playSound('swoosh');
                 selectRandomMonster();
               }}
               onRestartFight={restartFight}
+              onAdjustChallenge={(direction) => {
+                playSound('swoosh');
+                adjustChallenge(direction);
+              }}
               summary={summary}
               buttonStyles={{
                 start: { backgroundColor: 'red', color: 'white' },
@@ -249,17 +262,6 @@ function App() {
             )}
           </div>
 
-          {/* Detailed Character and Monster Info */}
-          <div className="combat-details-section">
-            <div className="details-grid">
-              <div className="character-details">
-                <EnhancedCharacterSummary character={character} />
-              </div>
-              <div className="monster-details">
-                <EnhancedMonsterSummary monster={monster} monsterHp={monsterHp} monsterACRevealed={monsterACRevealed} />
-              </div>
-            </div>
-          </div>
 
         </div>
       )}
@@ -275,6 +277,14 @@ function App() {
           onReset={gameState.resetGame}
         />
       )}
+      
+      {/* Victory Stats Modal */}
+      <VictoryStats 
+        isOpen={showVictoryStats} 
+        onClose={() => setShowVictoryStats(false)}
+        victoryTracking={victoryTracking}
+      />
+      
       </main>
     </div>
   );

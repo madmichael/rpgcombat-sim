@@ -1,6 +1,10 @@
 import React from 'react';
+import EnhancedCharacterSummary from './EnhancedCharacterSummary';
+import EnhancedMonsterSummary from './EnhancedMonsterSummary';
 
 function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel }) {
+  const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
+  const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
   const getHealthPercentage = (current, max) => {
     return Math.max(0, (current / max) * 100);
   };
@@ -45,6 +49,15 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
                 <span className="stat-label">ATK</span>
                 <span className="stat-value">+{character?.attackBonus || 0}</span>
               </div>
+              <div className="stat-item">
+                <button 
+                  className="details-toggle-btn"
+                  onClick={() => setShowCharacterDetails(!showCharacterDetails)}
+                  aria-label="Toggle character details"
+                >
+                  {showCharacterDetails ? '▼' : '▶'} Details
+                </button>
+              </div>
             </div>
           </div>
           
@@ -65,6 +78,13 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
               </div>
             </div>
           </div>
+          
+          {/* Expandable Character Details */}
+          {showCharacterDetails && (
+            <div className="character-details-expanded">
+              <EnhancedCharacterSummary character={character} />
+            </div>
+          )}
         </div>
 
         {/* VS Indicator */}
@@ -80,7 +100,7 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
               <span className="combatant-icon">👹</span>
               <div className="combatant-details">
                 <h3 className="combatant-name">{monster?.name || 'Monster'}</h3>
-                <div className="combatant-class">Challenge Level {selectedChallenge}</div>
+                <div className="combatant-class">Challenge Level {getChallengeLabel ? getChallengeLabel() : selectedChallenge}</div>
               </div>
             </div>
             <div className="essential-stats">
@@ -91,6 +111,15 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
               <div className="stat-item">
                 <span className="stat-label">HD</span>
                 <span className="stat-value">{monster?.["Hit Die"] || 'N/A'}</span>
+              </div>
+              <div className="stat-item">
+                <button 
+                  className="details-toggle-btn"
+                  onClick={() => setShowMonsterDetails(!showMonsterDetails)}
+                  aria-label="Toggle monster details"
+                >
+                  {showMonsterDetails ? '▼' : '▶'} Details
+                </button>
               </div>
             </div>
           </div>
@@ -112,6 +141,13 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
               </div>
             </div>
           </div>
+          
+          {/* Expandable Monster Details */}
+          {showMonsterDetails && (
+            <div className="monster-details-expanded">
+              <EnhancedMonsterSummary monster={monster} monsterHp={monsterHp} monsterACRevealed={monsterACRevealed} />
+            </div>
+          )}
         </div>
       </div>
     </div>

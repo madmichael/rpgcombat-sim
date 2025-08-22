@@ -42,13 +42,11 @@ const LuckConfirmModal = ({
             </div>
 
             <div className="luck-question">
-              <h3>🤔 The Question</h3>
+              <h3>🤔 Are you happy with your roll?</h3>
               <p className="question-text">
-                Your attack missed, but you have <strong>{character.Luck}</strong> Luck available to potentially turn this around.
+                Your attack missed, but burning some Luck could potentially turn this around.
               </p>
-              <p className="question-text">
-                <strong>Are you happy with your roll?</strong>
-              </p>
+
             </div>
           </div>
 
@@ -59,7 +57,7 @@ const LuckConfirmModal = ({
               aria-describedby="no-help"
             >
               <span className="btn-icon">😔</span>
-              <span className="btn-text">No, I'll accept the miss</span>
+              <span className="btn-text">Let the dice fall as they may.</span>
             </button>
             <button 
               onClick={onYes}
@@ -67,7 +65,7 @@ const LuckConfirmModal = ({
               aria-describedby="yes-help"
             >
               <span className="btn-icon">🍀</span>
-              <span className="btn-text">Yes, let me try my luck!</span>
+              <span className="btn-text">No, I want to burn some Luck!</span>
             </button>
           </div>
 

@@ -28,6 +28,10 @@ export function roll1d20() {
   return Math.floor(Math.random() * 20) + 1;
 }
 
+export function roll1d6() {
+  return Math.floor(Math.random() * 6) + 1;
+}
+
 export function parseDamageString(damageStr) {
   // Handle undefined or null input
   if (damageStr === undefined || damageStr === null) {
@@ -63,7 +67,11 @@ export function parseDamageString(damageStr) {
   if (modifier !== 0) {
     breakdown += ` ${modifier >= 0 ? '+' : ''}${modifier}`;
   }
-  breakdown += ` = ${Math.max(1, damage)}`;
+  
+  // Only show "= total" if there's more than one component or a modifier
+  if (rolls.length > 1 || modifier !== 0) {
+    breakdown += ` = ${Math.max(1, damage)}`;
+  }
   
   return { damage: Math.max(1, damage), breakdown }; // Minimum 1 damage
 }
@@ -74,4 +82,29 @@ export function calculateAC(character) {
 
 export function isRangedWeapon(weaponName) {
   return weaponName && /bow|sling|crossbow/i.test(weaponName);
+}
+
+export function isFumble(rawAttackRoll, weapon) {
+  // Natural 1 is always a fumble
+  return rawAttackRoll === 1;
+}
+
+export function getFumbleResult() {
+  const fumbleDie = roll1d4();
+  const rawRoll = fumbleDie;
+  
+  // Fumble table based on DCC rules
+  const fumbleTable = {
+    1: "The attack goes wide. No additional effect.",
+    2: "The character drops their weapon. It takes an action to retrieve it.",
+    3: "The character trips and falls prone. They must spend their next action getting up.",
+    4: "The character accidentally strikes themselves for normal weapon damage."
+  };
+  
+  return {
+    rawRoll,
+    fumbleDie: "1d4",
+    adjustedRoll: rawRoll,
+    result: fumbleTable[rawRoll] || fumbleTable[1]
+  };
 }

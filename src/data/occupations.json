@@ -14,7 +14,7 @@
   {
     "Occupation": "Armorer",
     "Weapon": "Hammer (as club)",
-    "Trade Good": "Iron helmet",
+    "Trade Good": "Steel Helmet",
     "weapontype": "club"
   },
   {
@@ -44,7 +44,7 @@
   {
     "Occupation": "Blacksmith",
     "Weapon": "Hammer (as club)",
-    "Trade Good": "Steel tongs",
+    "Trade Good": "Steel Tongs",
     "weapontype": "club"
   },
   {
@@ -62,7 +62,7 @@
   {
     "Occupation": "Cheesemaker",
     "Weapon": "Cudgel (as staff)",
-    "Trade Good": "Stinky cheese",
+    "Trade Good": "Stinky Cheese",
     "weapontype": "staff"
   },
   {
@@ -368,13 +368,13 @@
   {
     "Occupation": "Halfling moneylender",
     "Weapon": "Short sword",
-    "Trade Good": "5 gp 10 sp 200 cp",
+    "Trade Good": "Bag of Coins (5 gp 10 sp 200 cp)",
     "weapontype": "short sword"
   },
   {
     "Occupation": "Halfling trader",
     "Weapon": "Short sword",
-    "Trade Good": "20 sp",
+    "Trade Good": "Coinpurse (20 sp)",
     "weapontype": "short sword"
   },
   {
@@ -452,7 +452,7 @@
   {
     "Occupation": "Merchant",
     "Weapon": "Dagger",
-    "Trade Good": "4 gp 14 sp 27 cp",
+    "Trade Good": "Bag of Coins (4 gp 14 sp 27 cp)",
     "weapontype": "dagger"
   },
   {
@@ -542,7 +542,7 @@
   {
     "Occupation": "Tax collector",
     "Weapon": "Longsword",
-    "Trade Good": "100 cp",
+    "Trade Good": "Bag of Coins (100 cp)",
     "weapontype": "longsword"
   },
   {

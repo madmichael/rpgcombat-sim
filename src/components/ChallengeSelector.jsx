@@ -4,7 +4,7 @@ const challengeLevels = [
   { 
     value: 'patheticCreatures', 
     label: 'Pathetic Creatures', 
-    description: 'Weakest foes for beginners (1 HP)',
+    description: 'Weakest foes for beginners',
     icon: '🐭',
     difficulty: 1,
     arrayIndex: 0
@@ -12,7 +12,7 @@ const challengeLevels = [
   { 
     value: 'veryWeakCreatures', 
     label: 'Very Weak Creatures', 
-    description: 'Still learning the ropes (2 HP)',
+    description: 'Still learning the ropes',
     icon: '🐰',
     difficulty: 2,
     arrayIndex: 1
@@ -20,7 +20,7 @@ const challengeLevels = [
   { 
     value: 'weakCreatures', 
     label: 'Weak Creatures', 
-    description: 'Getting more challenging (3 HP)',
+    description: 'Getting more challenging',
     icon: '🐺',
     difficulty: 3,
     arrayIndex: 2
@@ -28,7 +28,7 @@ const challengeLevels = [
   { 
     value: 'standardCreatures', 
     label: 'Standard Creatures', 
-    description: 'Balanced encounters (4 HP)',
+    description: 'Balanced encounters',
     icon: '🐻',
     difficulty: 4,
     arrayIndex: 3
@@ -36,7 +36,7 @@ const challengeLevels = [
   { 
     value: 'strongCreatures', 
     label: 'Strong Creatures', 
-    description: 'Serious threats (6 HP)',
+    description: 'Serious threats',
     icon: '🦁',
     difficulty: 5,
     arrayIndex: 4
@@ -44,7 +44,7 @@ const challengeLevels = [
   { 
     value: 'veryStrongCreatures', 
     label: 'Very Strong Creatures', 
-    description: 'Dangerous adversaries (8 HP)',
+    description: 'Dangerous adversaries',
     icon: '🐉',
     difficulty: 6,
     arrayIndex: 5
@@ -52,7 +52,7 @@ const challengeLevels = [
   { 
     value: 'extremeCreatures', 
     label: 'Legendary Creatures', 
-    description: 'Only for the bravest heroes (10 HP)',
+    description: 'Only for the bravest heroes',
     icon: '💀',
     difficulty: 7,
     arrayIndex: 6

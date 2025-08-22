@@ -1,6 +1,7 @@
 import React from 'react';
+import AchievementBadge from './AchievementBadge';
 
-const EnhancedCharacterSummary = ({ character, charHp }) => {
+const EnhancedCharacterSummary = ({ character, charHp, achievements = [] }) => {
   if (!character) return null;
 
   const abilityList = ['Strength', 'Agility', 'Stamina', 'Personality', 'Intelligence', 'Luck'];
@@ -205,6 +206,44 @@ const EnhancedCharacterSummary = ({ character, charHp }) => {
           </div>
         )}
       </div>
+
+      {/* Achievements */}
+      {achievements.length > 0 && (
+        <div style={sectionStyle}>
+          <h3 style={{ margin: '0 0 12px 0', color: '#9b59b6', fontSize: '18px' }}>🏅 Achievements</h3>
+          <div style={{ 
+            display: 'flex', 
+            flexWrap: 'wrap', 
+            gap: '8px',
+            justifyContent: 'flex-start'
+          }}>
+            {achievements.slice(0, 8).map(achievement => (
+              <AchievementBadge
+                key={achievement.id}
+                achievement={achievement}
+                size="small"
+              />
+            ))}
+            {achievements.length > 8 && (
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: 'rgba(155, 89, 182, 0.1)',
+                border: '2px solid rgba(155, 89, 182, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                color: '#9b59b6'
+              }}>
+                +{achievements.length - 8}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Battle History */}
       {character.battlesWonByLevel && Object.keys(character.battlesWonByLevel).length > 0 && (

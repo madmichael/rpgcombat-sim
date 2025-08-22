@@ -323,6 +323,7 @@ const CharacterCreator = ({ onCreate }) => {
       hp,
       occupation,
       weapon: assignedWeapon,
+      tradeGood: occupation ? occupation["Trade Goods"] : null,
       startingFunds,
       luckySign,
       languages

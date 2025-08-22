@@ -70,6 +70,8 @@ export const useMonsterSelection = (gameState) => {
         : (template.AttackType && typeof template.AttackType === 'string' && template.AttackType.trim().length > 0
             ? template.AttackType.trim()
             : undefined),
+      challengeLevel: selectedChallenge,
+      challengeLabel: getChallengeLabel(),
       ...template,
       hp: rolledHp, // Override any template HP with rolled value
       maxHp: rolledHp, // Store max HP for reference
@@ -88,13 +90,44 @@ export const useMonsterSelection = (gameState) => {
   const getChallengeLabel = () => {
     return selectedChallenge
       .replace(/Creatures$/, '')
-      .replace(/([A-Z])/g, ' $1')
+      .replace(/([a-z])([A-Z])/g, '$1 $2')
       .replace(/^./, s => s.toUpperCase())
       .trim();
   };
 
+  const adjustChallenge = (direction) => {
+    const challengeOrder = [
+      'patheticCreatures',
+      'veryWeakCreatures', 
+      'weakCreatures',
+      'standardCreatures',
+      'strongCreatures',
+      'veryStrongCreatures',
+      'extremeCreatures'
+    ];
+    
+    const currentIndex = challengeOrder.indexOf(selectedChallenge);
+    let newIndex;
+    
+    if (direction === 'up') {
+      newIndex = Math.min(currentIndex + 1, challengeOrder.length - 1);
+    } else {
+      newIndex = Math.max(currentIndex - 1, 0);
+    }
+    
+    if (newIndex !== currentIndex) {
+      const newChallenge = challengeOrder[newIndex];
+      gameState.setSelectedChallenge(newChallenge);
+      // Auto-generate new monster with the new challenge level
+      setTimeout(() => selectRandomMonster(), 100);
+      return true; // Challenge was changed
+    }
+    return false; // Challenge at min/max limit
+  };
+
   return {
     selectRandomMonster,
-    getChallengeLabel
+    getChallengeLabel,
+    adjustChallenge
   };
 };

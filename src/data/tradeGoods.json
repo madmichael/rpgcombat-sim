@@ -1,0 +1,1492 @@
+{ "tradeGoods": [ { "name": "Sack of Grain", "description": "A heavy burlap sack filled with wheat or barley", "mightyDeeds": { "fumble": { "text": "The sack tears open, spilling grain everywhere and creating a slippery mess. You fall prone and the enemy gains +2 to their next attack.", "effects": { "monsterAttackBonus": 2, "monsterAttackBonusDuration": 1 } }, "success": { "text": "You swing the heavy sack with surprising force, stunning your opponent. Enemy loses their next action.", "effects": { "monsterSkipNextAttack": true, "characterExtraAttack": true } }, "critical": { "text": "The sack bursts open in a cloud of grain dust, blinding all enemies within 10 feet for 2 rounds while you deliver a devastating blow for +1d4 damage.", "effects": { "bonusDamage": "1d4" } } } }, { "name": "Iron Pot", "description": "A sturdy cooking pot made of cast iron", "mightyDeeds": { "fumble": { "text": "The pot gets stuck on your head! You are blinded until you spend an action to remove it.", "effects": { "characterAttackPenalty": 4, "characterAttackPenaltyDuration": 2 } }, "success": { "text": "You ring the pot like a bell next to the enemy's ear, causing disorientation. Enemy suffers -2 to all rolls for 2 rounds.", "effects": { "monsterAttackPenalty": 2, "monsterAttackPenaltyDuration": 2 } }, "critical": { "text": "You deliver a resounding blow with the pot that echoes across the battlefield. All enemies within 20 feet are deafened and take 1d3 damage from the sonic boom.", "effects": { "bonusDamage": "1d3" } } } }, { "name": "Rope (50 feet)", "description": "A coil of sturdy hemp rope", "mightyDeeds": { "fumble": { "text": "You get tangled in your own rope! You are restrained until you spend an action to free yourself.", "effects": { "characterSkipNextAttack": true } }, "success": { "text": "You expertly lasso the enemy, pulling them off balance. Enemy is knocked prone.", "effects": { "monsterAttackPenalty": 2, "monsterAttackPenaltyDuration": 1 } }, "critical": { "text": "You create an impromptu snare that trips multiple foes. All enemies within 15 feet must make a Reflex save or be knocked prone and take 1d2 damage.", "effects": { "bonusDamage": "1d2" } } } }, { "name": "Barrel of Ale", "description": "A wooden barrel filled with frothy ale", "mightyDeeds": { "fumble": { "text": "The barrel breaks open, soaking you in ale. You smell strongly of alcohol and suffer -1 to all social interactions for the rest of the day.", "effects": { "characterAttackPenalty": 1, "characterAttackPenaltyDuration": 5 } }, "success": { "text": "You splash ale in the enemy's eyes, temporarily blinding them. Enemy suffers -4 to attack rolls for 1 round.", "effects": { "monsterAttackPenalty": 4, "monsterAttackPenaltyDuration": 1 } }, "critical": { "text": "The barrel explodes in a shower of ale and wood splinters. All creatures within 10 feet take 1d6 damage and are knocked prone by the alcoholic explosion.", "effects": { "bonusDamage": "1d6" } } } }, { "name": "Bag of Salt", "description": "A leather pouch filled with precious salt crystals", "mightyDeeds": { "fumble": { "text": "You accidentally pour salt in your own eyes! You are blinded for 1 round.", "effects": { "characterAttackPenalty": 4, "characterAttackPenaltyDuration": 1 } }, "success": { "text": "You throw salt in the enemy's wounds, causing excruciating pain. Enemy takes 1 additional damage and -1 to their next attack.", "effects": { "bonusDamage": "1", "monsterAttackPenalty": 1, "monsterAttackPenaltyDuration": 1 } }, "critical": { "text": "You create a ring of salt that burns unholy creatures. All undead or demonic enemies within 15 feet take 2d4 damage and must make a Will save or flee for 2 rounds.", "effects": { "bonusDamage": "2d4" } } } }, { "name": "Bolt of Cloth", "description": "A roll of fine linen or wool fabric", "mightyDeeds": { "fumble": { "text": "The cloth unravels and wraps around your legs. You are slowed (half movement) for 2 rounds.", "effects": { "characterAttackPenalty": 2, "characterAttackPenaltyDuration": 2 } }, "success": { "text": "You unfurl the cloth dramatically, confusing your foe. Enemy loses their next action as they try to figure out what just happened.", "effects": { "monsterSkipNextAttack": true, "characterExtraAttack": true } }, "critical": { "text": "You create an impromptu cloak of concealment. You become invisible for 1 round and your next attack gains +4 to hit and +2 damage.", "effects": { "characterAttackBonus": 4, "characterAttackBonusDuration": 1, "bonusDamage": "2" } } } }, { "name": "Oil (1 flask)", "description": "A clay flask filled with lamp oil", "mightyDeeds": { "fumble": { "text": "You accidentally spill oil on yourself! You become slippery and suffer -2 to all attack rolls for 2 rounds.", "effects": { "characterAttackPenalty": 2, "characterAttackPenaltyDuration": 2 } }, "success": { "text": "You splash oil on the enemy, making them slippery. Enemy suffers -2 to attack rolls for 2 rounds.", "effects": { "monsterAttackPenalty": 2, "monsterAttackPenaltyDuration": 2 } }, "critical": { "text": "You create a slick oil trap that causes the enemy to slip and fall hard, taking extra damage and losing their footing.", "effects": { "bonusDamage": "1d3", "monsterSkipNextAttack": true } } } }, { "name": "Bag of Coins", "description": "A heavy purse filled with various coins", "mightyDeeds": { "fumble": { "text": "The bag tears open and coins scatter everywhere! You slip on the coins and fall prone, giving the enemy +2 to their next attack.", "effects": { "monsterAttackBonus": 2, "monsterAttackBonusDuration": 1 } }, "success": { "text": "You swing the heavy bag of coins like a flail, stunning your opponent with the weight of wealth. Enemy loses their next action.", "effects": { "monsterSkipNextAttack": true, "characterExtraAttack": true } }, "critical": { "text": "You scatter coins in the enemy's eyes while delivering a devastating blow with the bag itself, blinding and damaging them.", "effects": { "bonusDamage": "1d4", "monsterAttackPenalty": 3, "monsterAttackPenaltyDuration": 1 } } } },
+  {
+        "name": "Black Grimoire",
+        "description": "A sinister tome bound in black leather, filled with ominous runes",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The book snaps shut on your fingers with unnatural force. You take 1d2 damage.",
+            "effects": {
+              "selfDamage": "1d2"
+            }
+          },
+          "success": {
+            "text": "You wave the book and mutter strange words. Enemy hesitates, losing their next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "The book pulses with dark power, unleashing a wave of dread. All enemies within 15 feet must save or flee for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Book",
+        "description": "A plain, worn volume of common tales or knowledge",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You drop the book and stumble over it, falling prone.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You slap the enemy with the book’s weight. They suffer -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You read a surprisingly cutting line aloud, distracting the foe. Your next attack gains +2 damage.",
+            "effects": {
+              "bonusDamage": "2"
+            }
+          }
+        }
+      },
+      {
+        "name": "Bridle",
+        "description": "A leather bridle with iron bit, used for controlling horses",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The bridle tangles in your arms. You are restrained until you spend an action freeing yourself.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You whip the bridle across your foe’s face. They suffer -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You loop the bridle around the enemy’s neck and yank, choking them. They take +1d4 damage and lose their next action.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Bundle of Wood",
+        "description": "A bundle of kindling tied with rope",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The bundle bursts apart, scattering across the ground and tripping you. You fall prone.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the bundle like a club, splintering wood against your foe. They suffer -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You smash the bundle on your enemy, showering them with splinters. They take +1d3 damage and are blinded for 1 round.",
+            "effects": {
+              "bonusDamage": "1d3",
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Candles (20)",
+        "description": "A bundle of wax candles, bound together with string",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "A candle breaks and hot wax drips on you. You take 1 damage and suffer -1 to next attack.",
+            "effects": {
+              "selfDamage": "1",
+              "characterAttackPenalty": 1,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You fling burning candles at your enemy. They suffer -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You scatter candles at your foe’s feet, flames catching on their clothing. They take +1d4 fire damage and are distracted.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Cheese Dip",
+        "description": "A bowl of pungent melted cheese",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The cheese spills onto you, leaving you sticky and embarrassed. You suffer -1 to attack for 2 rounds.",
+            "effects": {
+              "characterAttackPenalty": 1,
+              "characterAttackPenaltyDuration": 2
+            }
+          },
+          "success": {
+            "text": "You fling hot cheese at your foe. They take 1 damage and -1 to next attack.",
+            "effects": {
+              "bonusDamage": "1",
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You splash the cheese across your enemy’s eyes, blinding them for 1 round.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Chicken Meat (5 lbs.)",
+        "description": "A wrapped bundle of raw chicken meat",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The meat slips from your hands, leaving you off balance. Enemy gains +1 to next attack.",
+            "effects": {
+              "monsterAttackBonus": 1,
+              "monsterAttackBonusDuration": 1
+            }
+          },
+          "success": {
+            "text": "You slap your foe with raw chicken, humiliating them. They suffer -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You hurl the meat in a perfect arc, distracting multiple foes as stray dogs or vermin swarm. All enemies suffer -1 to attack for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Clay (1 lb.)",
+        "description": "A lump of soft gray clay",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The clay crumbles in your hand, coating you and reducing your grip. -1 to attack next round.",
+            "effects": {
+              "characterAttackPenalty": 1,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You hurl clay at your foe’s face, blinding them for 1 round.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "You smear clay across your enemy’s weapon, clogging it. Their next attack suffers -3 penalty.",
+            "effects": {
+              "monsterAttackPenalty": 3,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Crutches",
+        "description": "A worn pair of wooden crutches",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You get tangled in the crutches and fall prone.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You jab a crutch at your foe’s stomach, knocking them back. Enemy is knocked prone.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You slam both crutches together on your enemy’s head, stunning them. Enemy loses next action and takes +1d4 damage.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Deer Pelt",
+        "description": "A thick pelt from a hunted deer",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The pelt slips from your hands, tangling your legs. You are slowed for 1 round.",
+            "effects": {
+              "characterAttackPenalty": 1,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You toss the pelt in your foe’s face, blinding them temporarily. Enemy loses next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "You wrap the pelt around your foe’s head, choking them briefly. They take +1d3 damage and -2 to next attack.",
+            "effects": {
+              "bonusDamage": "1d3",
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Dice",
+        "description": "A pair of carved bone dice",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The dice slip, scattering across the ground. You waste your action retrieving them.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You flick a die at your enemy’s eye, distracting them. They suffer -1 to attack next round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You roll the dice with uncanny luck, and the gods smile. Gain +2 to your next attack roll.",
+            "effects": {
+              "characterAttackBonus": 2,
+              "characterAttackBonusDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Fabric (3 yards)",
+        "description": "A colorful stretch of fabric, cut into 3 yards",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The fabric wraps around your arms, hindering movement. You take -2 to attack for 1 round.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You wave the fabric like a matador’s cape, tricking the foe into missing. Gain +2 to AC against their next attack.",
+            "effects": {
+              "characterDefenseBonus": 2,
+              "characterDefenseBonusDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You use the fabric to bind your enemy’s arms, leaving them helpless. They lose next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Falcon",
+        "description": "A trained hunting bird with sharp talons",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The falcon mistakes you for prey and claws you. Take 1d3 damage.",
+            "effects": {
+              "selfDamage": "1d3"
+            }
+          },
+          "success": {
+            "text": "You command the falcon to dive at your enemy’s face. Enemy suffers -2 to attack rolls next round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The falcon tears into the foe’s eyes with precision. Enemy takes +1d6 damage and is blinded for 1 round.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Fine Dirt (1 lb.)",
+        "description": "A small sack of carefully sifted, smooth dirt",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The dirt spills in your own face, blinding you for 1 round.",
+            "effects": {
+              "characterAttackPenalty": 4,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You throw dirt in your enemy’s eyes, blinding them. They lose next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "You scatter dirt in a wide arc, blinding multiple foes. All enemies within 10 feet suffer -2 to next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Fine Stone (10 lbs.)",
+        "description": "A heavy, polished block of stone",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You drop the stone on your foot. Take 1d4 damage.",
+            "effects": {
+              "selfDamage": "1d4"
+            }
+          },
+          "success": {
+            "text": "You heave the stone at your foe, knocking them flat. Enemy is prone.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "The stone crashes down with crushing force. Enemy takes +1d6 damage and suffers -2 to attack rolls for 1 round.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Fine Suit of Clothes",
+        "description": "An elegant suit of noble finery",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You trip over your finery while trying to use it dramatically. Lose next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You distract your foe with a flourish of fine clothing. Enemy suffers -1 to attack rolls.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You strike a dazzling pose in fine clothes, unsettling enemies. All foes within 10 feet suffer -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Fine Suits (3 sets)",
+        "description": "Three matching sets of fancy clothes",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You get tangled in the extra fabric, hindering your movement. -2 to attacks this round.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You hurl the extra suits at your foe, distracting them. They suffer -2 to next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You drape the suits dramatically across the battlefield. Enemies within 10 feet are distracted, giving you +2 on next attack.",
+            "effects": {
+              "characterAttackBonus": 2,
+              "characterAttackBonusDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Fine Tools",
+        "description": "A set of precision tools crafted for artisans",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You stab yourself with a sharp tool. Take 1d2 damage.",
+            "effects": {
+              "selfDamage": "1d2"
+            }
+          },
+          "success": {
+            "text": "You jab a sharp tool into your foe. They take +1 damage.",
+            "effects": {
+              "bonusDamage": "1"
+            }
+          },
+          "critical": {
+            "text": "You drive a tool into a weak spot in enemy armor. Enemy takes +1d4 damage and suffers -1 to attack rolls.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Flour (1 lb.)",
+        "description": "A small sack of fine flour",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You spill flour all over yourself, sneezing uncontrollably. Lose next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You throw flour in your enemy’s eyes, blinding them. They lose next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "You create a flour cloud in the air, choking and blinding foes. All enemies within 10 feet suffer -2 to attacks for 2 rounds.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 2
+            }
+          }
+        }
+      },
+         {
+        "name": "Gem worth 20 gp",
+        "description": "A glittering gemstone, small but valuable",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The gem slips from your hand and shatters on the ground. You lose 20 gp of value and your action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You hurl the gem with surprising force, striking your foe’s temple. Enemy suffers -2 to next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The gem flashes with inner brilliance as it hits, dazzling all who see it. Your foe takes +1d4 damage and all enemies within 10 feet suffer -1 to attack rolls for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Glass Beads",
+        "description": "A string of colorful glass beads, fragile but eye-catching",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The beads scatter across the ground, causing you to slip and fall prone.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You snap the beads into your foe’s eyes, distracting them. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The beads shatter in a dazzling spray of colors, momentarily blinding all enemies within 10 feet. Each suffers -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Gloves (4 pairs)",
+        "description": "Four pairs of leather or cloth gloves, sturdy but simple",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You fumble with the extra gloves and drop your weapon. Lose next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You slap your foe across the face with a glove in a humiliating challenge. Enemy suffers -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You stuff a glove into your foe’s mouth, choking them briefly. They take +1d3 damage and lose their next action.",
+            "effects": {
+              "bonusDamage": "1d3",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Gold Ring worth 10 gp",
+        "description": "A plain but valuable gold band",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You slip the ring on your finger and it gets stuck, distracting you. Lose next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You flick the ring at your foe’s eye with surprising force. They suffer -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The ring glitters brilliantly in the light, dazzling your foe as you strike. Gain +2 to hit and +2 damage on your next attack.",
+            "effects": {
+              "characterAttackBonus": 2,
+              "characterAttackBonusDuration": 1,
+              "bonusDamage": "2"
+            }
+          }
+        }
+      },
+      {
+        "name": "Hen",
+        "description": "A clucking hen, flustered and noisy when disturbed",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The hen pecks and flaps wildly, scratching you and flying from your grip. You take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You fling the hen into your foe’s face, distracting them with feathers and claws. They suffer -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The hen goes berserk, pecking and clawing ferociously. Your foe takes +1d4 damage and is forced to move back 5 feet.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterForcedMovement": 5
+            }
+          }
+        }
+      },
+      {
+        "name": "Herbs (1d6 bunches)",
+        "description": "Bundles of pungent herbs, useful in cooking or medicine",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The herbs crumble in your hand, filling your nose with choking dust. You cough violently and lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You hurl a bunch of herbs into your foe’s face, stinging their eyes. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The herbs release a cloud of choking pollen. All enemies within 10 feet take -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Herding Dog",
+        "description": "A loyal and energetic dog, trained to control livestock",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The dog turns on you in confusion, knocking you prone. Lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "The dog lunges and snaps at your foe, keeping them at bay. Enemy suffers -1 to their attack roll until your next turn.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The dog clamps onto the foe’s arm or leg, shaking violently. The enemy takes +1d6 damage and loses their next action.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Holy Symbol",
+        "description": "An emblem of divine power, carved from wood or etched in metal",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "Your grip slips and the symbol falls, clattering loudly. You are distracted and lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You brandish the symbol with conviction, unnerving your foe. They suffer -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The symbol glows with divine radiance, forcing enemies within 10 feet to avert their eyes. They all take -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Horn",
+        "description": "A loud war-horn, used for signals and intimidation",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You blow too hard and the horn splits with a shriek. The noise deafens you briefly, imposing -2 on your next attack roll.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You blast the horn at close range, startling your foe. They suffer -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The horn’s thunderous call echoes with supernatural force, causing enemies within 20 feet to falter. They each take -1d3 damage and suffer -2 to their next attack.",
+            "effects": {
+              "bonusDamage": "1d3",
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Lantern",
+        "description": "An iron lantern, useful for light but also a sturdy bludgeon",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The lantern slips, spilling burning oil dangerously close to you. Take 1 fire damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the lantern into your foe’s face, dazing them. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The lantern shatters across your foe, spraying oil and flame. They take +1d6 fire damage and are set ablaze, taking 1 additional damage on their next turn.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "ongoingDamage": "1"
+            }
+          }
+        }
+      },
+      {
+        "name": "Lizard, Pet",
+        "description": "A small lizard with sharp claws and quick movements",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The lizard bites your hand and scurries away. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You fling the lizard onto your foe, where it scratches and claws. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The lizard clamps onto your foe’s face, scratching eyes and skin. Enemy takes +1d4 damage and is blinded for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterBlindedDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Livestock (2 sheep)",
+        "description": "Two bleating sheep, stubborn and heavy",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The sheep panic and knock you over. You are prone and lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You drive a sheep into your foe’s legs, unbalancing them. They take -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "Both sheep slam into your foe, bowling them over. Enemy takes +1d6 damage and is knocked prone.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Net",
+        "description": "A tangle of rope netting, perfect for ensnaring foes",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The net wraps around you instead. You are entangled and suffer -2 to your next attack.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You cast the net over your foe, hampering their movements. They suffer -2 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The net tangles tightly, immobilizing your foe. They cannot move for 1 round and suffer -2 to their attack.",
+            "effects": {
+              "monsterImmobilizedDuration": 1,
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Oil (1 flask)",
+        "description": "A flask of slippery and flammable oil",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The flask bursts in your hand, spilling over you. You are slick with oil and suffer -2 to your next action.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You splash oil at your foe, making their footing treacherous. They suffer -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The oil splashes across your foe, leaving them vulnerable. If struck with flame next round, they take +1d6 fire damage.",
+            "effects": {
+              "conditionalBonusDamage": "1d6 fire if ignited"
+            }
+          }
+        }
+      },
+      {
+        "name": "Ox, Teamster’s",
+        "description": "A large, stubborn ox trained for hauling",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The ox ignores you and tramples past. You take 1 damage from being shoved aside.",
+            "effects": {
+              "damageToCharacter": "1"
+            }
+          },
+          "success": {
+            "text": "You urge the ox forward, striking your foe. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The ox charges full force into your foe, goring them. They take +1d8 damage and are knocked prone.",
+            "effects": {
+              "bonusDamage": "1d8",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Parchment & Quill",
+        "description": "A sheet of parchment and a writing quill, useful for scribbles or blinding dust",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The parchment tears uselessly and ink splashes into your eyes. You suffer -2 to your next attack.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You flick ink or dust from the quill into your foe’s eyes. They suffer -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The ink blinds your foe completely. They are blinded for 1 round and take -4 to attacks.",
+            "effects": {
+              "monsterBlindedDuration": 1,
+              "monsterAttackPenalty": 4,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Pony",
+        "description": "A sturdy, small horse trained for carrying loads",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The pony balks and kicks you instead. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You drive the pony forward, striking your foe with hooves. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The pony tramples your foe, knocking them down. They take +1d6 damage and are knocked prone.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Pots & Pans",
+        "description": "A rattling set of cookware, useful for clanging distractions",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You drop a pan on your foot with a loud crash. Take 1 damage and suffer -1 to your next attack.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterAttackPenalty": 1,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You bash your foe with a pot, leaving them dazed. They suffer -1 to attacks for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The pot rings like a gong on your foe’s head. They take +1d4 damage and are stunned for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterStunnedDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Sack",
+        "description": "A large burlap sack, perfect for carrying or capturing",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You trip over the sack, entangling yourself. You are prone and lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true,
+              "characterKnockedProne": true
+            }
+          },
+          "success": {
+            "text": "You throw the sack over your foe, hindering them. They suffer -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You bag your foe entirely, trapping them inside the sack. They are immobilized for 1 round and suffer -2 to attacks.",
+            "effects": {
+              "monsterImmobilizedDuration": 1,
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Shovel",
+        "description": "A sturdy digging tool with a metal blade",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You trip over the shovel, hitting yourself. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the shovel at your foe, striking their legs. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You deliver a powerful overhead strike with the shovel. Enemy takes +1d6 damage and is knocked prone.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Side of Beef",
+        "description": "A large cut of meat, heavy and unwieldy",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The beef slips from your hands and hits you. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the side of beef at your foe, knocking them off balance. They suffer -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The side of beef smashes into your foe with devastating force. They take +1d8 damage and are knocked prone.",
+            "effects": {
+              "bonusDamage": "1d8",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Spyglass",
+        "description": "A small telescope, handy for distant observations",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The spyglass slips and hits you in the eye. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You whack your foe with the spyglass, causing them to stagger. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You smash the spyglass across your foe’s face. They take +1d4 damage and are blinded for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterBlindedDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Steel Helmet",
+        "description": "A heavy iron or steel helmet, useful for protection or bludgeoning",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The helmet slips and hits your own head. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You slam the helmet into your foe’s head, stunning them briefly. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You bash the helmet with full force, dealing +1d6 damage and knocking the foe prone.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Steel Tongs",
+        "description": "A set of sturdy steel tongs, useful for gripping or pinching",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The tongs snap shut on your own fingers. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You clamp the tongs onto your foe’s arm, pinching hard. They suffer -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You clamp the tongs onto your foe viciously. They take +1d4 damage and lose their next action.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Steel Vial",
+        "description": "A small steel container, potentially filled with liquids",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The vial slips and hits your own foot. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You hurl the vial at your foe, causing a painful sting. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The vial smashes, spraying contents that sting and distract. Enemy takes +1d4 damage and suffers -1 to attacks for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Stinky Cheese",
+        "description": "A pungent wheel of cheese with a powerful odor",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You drop the cheese on yourself, suffering the stench. You are distracted and lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You fling the cheese at your foe’s face, making them gag. They suffer -2 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You smash the stinky cheese onto your foe, overwhelming all enemies nearby with the smell. They take +1d4 damage and -2 to attacks for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Strange-looking Rock",
+        "description": "A bizarre rock with unusual shapes or colors",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You trip over the rock while trying to throw it. Lose next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You hurl the rock at your foe, catching them off guard. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The rock hits with unexpected weight and shape, stunning your foe. They take +1d4 damage and lose their next action.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Tarot Deck",
+        "description": "A mystical deck of cards used for fortune-telling",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The cards scatter wildly, confusing you. Lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You slap a card onto your foe’s face, distracting them. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You throw the whole deck in a flurry, each card slicing and disorienting your foe. They take +1d6 damage and are stunned for 1 round.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterStunnedDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Trowel",
+        "description": "A small hand tool for digging or spreading",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You poke yourself with the trowel. Take 1 damage and lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You jab the trowel at your foe, causing minor cuts. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You thrust the trowel with precision, dealing +1d4 damage and leaving your foe slowed for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Ukulele",
+        "description": "A small stringed instrument, capable of creating distraction",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You hit yourself with the ukulele while strumming. Lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You strum a loud, off-key chord, distracting your foe. They suffer -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You unleash a blindingly loud chord. All enemies within 10 feet take +1d4 damage and are stunned for 1 round.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterStunnedDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Waterproof Sack",
+        "description": "A durable sack that keeps contents dry, made of oiled cloth",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The sack slips from your grip, spilling everything inside. Lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the waterproof sack at your foe, hitting them with its weight. Enemy suffers -1 to their next attack.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You hurl the sack with precision, hitting multiple foes if they are nearby. Each enemy takes +1d4 damage.",
+            "effects": {
+              "bonusDamage": "1d4"
+            }
+          }
+        }
+      },
+      {
+        "name": "Wood (10 lbs)",
+        "description": "A bundle of firewood or planks, moderately heavy",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You trip over the wood bundle and take 1 damage. Lose your next action.",
+            "effects": {
+              "damageToCharacter": "1",
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the wood at your foe, striking them with force. Enemy suffers -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The wood strikes with crushing force. Enemy takes +1d6 damage and is knocked prone.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "monsterKnockedProne": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Fruit",
+        "description": "Fresh fruit, can be tossed or used to distract",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The fruit squashes in your hand. Lose your next action.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You throw the fruit at your foe’s face, causing them to flinch. Enemy suffers -1 to attack rolls for 1 round.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "You hurl multiple fruits in a flurry, hitting all foes in a 10-foot radius. Each takes +1d4 damage.",
+            "effects": {
+              "bonusDamage": "1d4"
+            }
+          }
+        }
+      },
+      {
+        "name": "Scissors",
+        "description": "A pair of sharp cutting scissors",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "You accidentally cut yourself with the scissors. Take 1 damage.",
+            "effects": {
+              "selfDamage": "1"
+            }
+          },
+          "success": {
+            "text": "You snip at the enemy's clothing or equipment, hampering their movement. Enemy suffers -1 to attack rolls for 2 rounds.",
+            "effects": {
+              "monsterAttackPenalty": 1,
+              "monsterAttackPenaltyDuration": 2
+            }
+          },
+          "critical": {
+            "text": "You make a precise cut that damages the enemy's gear and wounds them. +1d4 damage and enemy loses their next action.",
+            "effects": {
+              "bonusDamage": "1d4",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Jar of honey",
+        "description": "A clay jar filled with sticky golden honey",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The jar breaks and honey spills all over you. You become sticky and suffer -2 to all rolls for 3 rounds.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 3
+            }
+          },
+          "success": {
+            "text": "You splash honey in the enemy's eyes, blinding them temporarily. Enemy suffers -3 to attack rolls for 2 rounds.",
+            "effects": {
+              "monsterAttackPenalty": 3,
+              "monsterAttackPenaltyDuration": 2
+            }
+          },
+          "critical": {
+            "text": "You coat the enemy in sticky honey, severely hampering their movement. Enemy loses their next action and takes +1d3 damage from bee stings.",
+            "effects": {
+              "bonusDamage": "1d3",
+              "monsterSkipNextAttack": true
+            }
+          }
+        }
+      },
+      {
+        "name": "Mithril (1 oz.)",
+        "description": "A small piece of precious mithril, incredibly light yet strong",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The mithril slips from your grasp and you stumble trying to catch it. You fall prone.",
+            "effects": {
+              "characterSkipNextAttack": true
+            }
+          },
+          "success": {
+            "text": "You swing the heavy sack with surprising force, stunning your opponent. Enemy loses their next action.",
+            "effects": {
+              "monsterSkipNextAttack": true
+            }
+          },
+          "critical": {
+            "text": "The mithril glows with inner light as you strike, dealing devastating damage. +2d4 damage and enemy is blinded for 1 round.",
+            "effects": {
+              "bonusDamage": "2d4",
+              "monsterAttackPenalty": 4,
+              "monsterAttackPenaltyDuration": 1
+            }
+          }
+        }
+      },
+      {
+        "name": "Locket",
+        "description": "A small ornamental case worn on a chain, containing a precious memento",
+        "mightyDeeds": {
+          "fumble": {
+            "text": "The locket chain tangles around your wrist, restricting your movement. -2 to your next attack roll.",
+            "effects": {
+              "characterAttackPenalty": 2,
+              "characterAttackPenaltyDuration": 1
+            }
+          },
+          "success": {
+            "text": "You swing the locket by its chain, the metal case striking with surprising force. Enemy is momentarily dazed.",
+            "effects": {
+              "monsterAttackPenalty": 2,
+              "monsterAttackPenaltyDuration": 1
+            }
+          },
+          "critical": {
+            "text": "The locket opens mid-swing, revealing a cherished memory that fills you with determination. +1d6 damage and you gain +2 to your next attack roll.",
+            "effects": {
+              "bonusDamage": "1d6",
+              "characterAttackBonus": 2,
+              "characterAttackBonusDuration": 1
+            }
+          }
+        }
+      }
+    ]
+  }
+  
