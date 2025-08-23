@@ -239,6 +239,14 @@
       "range": "-",
       "notes": "Can hamper (-2 to rolls) if Ref save is failed and contact is maintained, DC equals attack roll result; all damage is subdual.",
       "cost": "2 gp"
+    },
+    {
+      "d30_roll": 9,
+      "weapon": "Axe",
+      "damage": "1d6",
+      "range": "10/20/30",
+      "notes": "STR mod to damage only in melee or on close range.",
+      "cost": "4 gp"
     }
   ],
   "ranged_weapons": [

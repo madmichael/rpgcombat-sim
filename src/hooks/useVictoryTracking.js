@@ -167,6 +167,18 @@ export const useVictoryTracking = () => {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  const loadStatsFromUrl = (urlStats) => {
+    // Convert achievement tracking stats format to victory tracking format
+    const newData = {
+      totalWins: urlStats.victories || 0,
+      totalLosses: 0, // URL doesn't track losses separately
+      characterStats: {},
+      monsterDefeats: {},
+      recentBattles: []
+    };
+    setVictories(newData);
+  };
+
   return {
     victories,
     recordVictory,
@@ -175,6 +187,7 @@ export const useVictoryTracking = () => {
     getWinRate,
     getMostDefeatedMonster,
     getBestCharacter,
-    clearAllData
+    clearAllData,
+    loadStatsFromUrl
   };
 };

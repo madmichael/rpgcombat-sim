@@ -2,7 +2,7 @@ import React from 'react';
 import EnhancedCharacterSummary from './EnhancedCharacterSummary';
 import EnhancedMonsterSummary from './EnhancedMonsterSummary';
 
-function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel }) {
+function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {} }) {
   const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
   const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
   const getHealthPercentage = (current, max) => {
@@ -47,7 +47,7 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
               </div>
               <div className="stat-item">
                 <span className="stat-label">ATK</span>
-                <span className="stat-value">+{character?.attackBonus || 0}</span>
+                <span className="stat-value">+{character?.modifiers?.Strength || 0}</span>
               </div>
               <div className="stat-item">
                 <button 
@@ -82,7 +82,12 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
           {/* Expandable Character Details */}
           {showCharacterDetails && (
             <div className="character-details-expanded">
-              <EnhancedCharacterSummary character={character} />
+              <EnhancedCharacterSummary 
+                character={character} 
+                charHp={charHp}
+                achievements={achievements}
+                stats={stats}
+              />
             </div>
           )}
         </div>

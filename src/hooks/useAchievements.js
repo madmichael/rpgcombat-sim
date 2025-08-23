@@ -207,6 +207,15 @@ export const useAchievements = (characterId) => {
     index === self.findIndex(a => a.id === achievement.id)
   );
 
+  // Functions to load achievements and stats from external sources (like URL loading)
+  const loadAchievements = (newAchievements) => {
+    setAchievements(newAchievements);
+  };
+
+  const loadStats = (newStats) => {
+    setStats(newStats);
+  };
+
   return {
     achievements: uniqueAchievements,
     stats,
@@ -219,6 +228,9 @@ export const useAchievements = (characterId) => {
     getAchievementsByRarity,
     clearNewAchievements: () => {},
     totalAchievements: achievementsData ? achievementsData.achievements.length : 0,
-    unlockedCount: uniqueAchievements.length
+    unlockedCount: uniqueAchievements.length,
+    // Export loader functions for URL loading
+    loadAchievements,
+    loadStats
   };
 };

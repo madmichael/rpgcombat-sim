@@ -23,6 +23,7 @@ import { useCombat } from './hooks/useCombat.jsx';
 import { useMonsterSelection } from './hooks/useMonsterSelection';
 import { useVictoryTracking } from './hooks/useVictoryTracking';
 import { useAchievements } from './hooks/useAchievements';
+import { getCharacterFromUrl, updateUrlWithCharacter, clearCharacterFromUrl } from './utils/characterUrl';
 import './App.css';
 
 function App() {
@@ -30,13 +31,7 @@ function App() {
   const gameState = useGameState();
   const { playSound, AudioElements } = useAudio();
   const victoryTracking = useVictoryTracking();
-  const achievementTracking = useAchievements();
-  const combat = useCombat(gameState, playSound, victoryTracking, achievementTracking);
-  const monsterSelection = useMonsterSelection(gameState);
-  const [showVictoryStats, setShowVictoryStats] = useState(false);
-  const [showAchievements, setShowAchievements] = useState(false);
-  const [showCredits, setShowCredits] = useState(false);
-
+  
   const {
     character,
     monster,
@@ -54,6 +49,14 @@ function App() {
     resetCombat,
     restartFight
   } = gameState;
+
+  // Initialize achievement tracking with character name
+  const achievementTracking = useAchievements(character?.name);
+  const combat = useCombat(gameState, playSound, victoryTracking, achievementTracking);
+  const monsterSelection = useMonsterSelection(gameState);
+  const [showVictoryStats, setShowVictoryStats] = useState(false);
+  const [showAchievements, setShowAchievements] = useState(false);
+  const [showCredits, setShowCredits] = useState(false);
 
   const {
     showLuckConfirmModal,
@@ -79,10 +82,10 @@ function App() {
 
   const handleCreateCharacter = (char) => {
     setCharacter(char);
-    setCharHp(char.hp);
+    updateUrlWithCharacter(char, achievementTracking.achievements, achievementTracking.stats);
+    playSound('success');
     resetCombat();
     playSound('door');
-    
     // Monster selection will be handled by useEffect when monster names are ready
   };
 
@@ -102,12 +105,51 @@ function App() {
     }
   }, [character, monster, weapon]);
 
+  // Load character from URL on initial page load
+  useEffect(() => {
+    const urlCharacter = getCharacterFromUrl();
+    if (urlCharacter && !character) {
+      console.log('Loading character from URL:', urlCharacter);
+      setCharacter(urlCharacter);
+      
+      // Load achievements and stats if they exist in the URL data
+      console.log('URL character achievements:', urlCharacter.achievements);
+      console.log('URL character combatStats:', urlCharacter.combatStats);
+      
+      // Use setTimeout to ensure achievement tracking is initialized
+      setTimeout(() => {
+        if (urlCharacter.achievements && urlCharacter.achievements.length > 0) {
+          console.log('Loading achievements:', urlCharacter.achievements);
+          achievementTracking.loadAchievements(urlCharacter.achievements);
+        }
+        
+        if (urlCharacter.combatStats && Object.keys(urlCharacter.combatStats).length > 0) {
+          console.log('Loading combat stats:', urlCharacter.combatStats);
+          achievementTracking.loadStats(urlCharacter.combatStats);
+          // Also load stats into victory tracking system for the Stats modal
+          victoryTracking.loadStatsFromUrl(urlCharacter.combatStats);
+        }
+      }, 100);
+      
+      playSound('success');
+    }
+  }, []);
+
   // Auto-select monster when character exists but monster doesn't and monster names are loaded
   useEffect(() => {
     if (character && !monster && monsterNames.length > 0) {
       selectRandomMonster();
     }
   }, [character, monster, monsterNames]);
+
+  // Update URL when character, achievements, or stats change
+  useEffect(() => {
+    if (character) {
+      updateUrlWithCharacter(character, achievementTracking.achievements, achievementTracking.stats);
+    } else {
+      clearCharacterFromUrl();
+    }
+  }, [character, achievementTracking.achievements, achievementTracking.stats]);
 
   // Auto-start fight when character and monster are ready
   useEffect(() => {
@@ -227,6 +269,8 @@ function App() {
             monsterACRevealed={monsterACRevealed}
             selectedChallenge={selectedChallenge}
             getChallengeLabel={getChallengeLabel}
+            achievements={achievementTracking.achievements}
+            stats={achievementTracking.stats}
           />
           
           {/* Combat Controls */}
@@ -238,6 +282,7 @@ function App() {
               onRun={() => runAway(selectRandomMonster)}
               onMightyDeed={attemptMightyDeed}
               character={character}
+              isActionInProgress={combat.isActionInProgress}
               onFindAnother={() => {
                 playSound('swoosh');
                 selectRandomMonster();

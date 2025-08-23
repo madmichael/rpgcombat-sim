@@ -26,6 +26,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   const [pendingAttack, setPendingAttack] = useState(null);
   const [luckToBurn, setLuckToBurn] = useState(1);
   const [monsterACRevealed, setMonsterACRevealed] = useState(false);
+  const [isActionInProgress, setIsActionInProgress] = useState(false);
   const [characterEffects, setCharacterEffects] = useState({
     attackPenalty: 0,
     opponentAttackBonus: 0,
@@ -244,7 +245,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     setCombatLog([initiativeMessage]);
     
     if (charInitiative) {
-      setTimeout(() => continueFight(), 1000);
+      setTimeout(() => {
+        setIsActionInProgress(false); // Enable buttons for character's turn
+      }, 1000);
     } else {
       setTimeout(() => {
         // Only allow monster attack if monster HP > 0
@@ -267,11 +270,15 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
             }
           }
         }
+        setIsActionInProgress(false); // Enable buttons after monster's attack
       }, 1000);
     }
   };
 
   const continueFight = () => {
+    if (isActionInProgress) return; // Prevent multiple clicks
+    setIsActionInProgress(true);
+    
     if (fightStatus === 'finished') {
       const summaryMessage = `${character.name} ran away from the fight.`;
       setCombatLog(prev => [...prev, { 
@@ -281,6 +288,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       }]);
       setFightStatus('finished');
       setSummary(summaryMessage);
+      setIsActionInProgress(false);
       return;
     }
 
@@ -393,6 +401,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           }
         }
       }
+      setIsActionInProgress(false); // Re-enable buttons after action completes
     }, 1000);
   };
 
@@ -576,6 +585,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     handleLuckConfirmNo,
     monsterACRevealed,
     setMonsterACRevealed,
+    isActionInProgress,
     startFight,
     continueFight,
     burnLuck,
@@ -660,7 +670,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   }
 
   function attemptMightyDeed() {
+    if (isActionInProgress) return; // Prevent multiple clicks
     if (!character || !character.tradeGood || fightStatus !== 'in progress') return;
+    setIsActionInProgress(true);
 
     // Map occupation trade goods to our Mighty Deed trade goods
     const tradeGoodMapping = {
@@ -768,11 +780,11 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
         const damageDisplay = damageBreakdown.includes('=') || damageBreakdown.includes('+') ? ` [${damageBreakdown}]` : '';
         const deedMessage = `🎭${character.name} attempts a Mighty Deed with ${character.tradeGood}! Attack: ${rawAttackRoll} + ${abilityMod} = ${attackRoll} vs AC ${monsterACRevealed ? monsterAC : '?'} CRITICAL HIT for ${charDmg} damage${damageDisplay}. Deed roll: ${deedRoll} - ${resultType}! ${result} (${finalMonsterHp} HP left)`;
         setCombatLog(prev => [...prev, deedMessage]);
-      } else if (deedSucceeds && rawAttackRoll === 20) {
-        // Attack hits with natural 20 AND deed succeeds (but not critical - requires both nat 20 and deed 6)
+      } else if (deedSucceeds) {
+        // Attack hits AND deed succeeds (deed roll = 6)
         const successEffect = tradeGood.mightyDeeds.success;
         result = successEffect.text || successEffect;
-        resultType = "MIGHTY SUCCESS";
+        resultType = "DEED SUCCESS";
         playSound('slash');
         
         // Apply bonus damage if specified
@@ -854,6 +866,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           }
         }
       }
+      setIsActionInProgress(false); // Re-enable buttons after mighty deed completes
     }, 1000);
   }
 };

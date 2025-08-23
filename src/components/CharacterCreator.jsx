@@ -329,11 +329,31 @@ const CharacterCreator = ({ onCharacterCreated }) => {
     function normalizeWeaponName(name) {
       return name.toLowerCase().replace(/\s*\(as [^)]+\)/, '').trim();
     }
+    
+    // Create weapon type mappings for common aliases
+    const weaponTypeMap = {
+      'axe': 'Handaxe',
+      'club': 'Club',
+      'dagger': 'Dagger',
+      'staff': 'Staff',
+      'spear': 'Spear',
+      'short sword': 'Short sword',
+      'shortbow': 'Shortbow',
+      'sling': 'Sling',
+      'dart': 'Dart',
+      'hand axe': 'Handaxe',
+      'hammer': 'Warhammer'
+    };
+    
     // If occupation weapon has (as X), match X to weapon.weapon
     let matchName = weaponName;
     const asMatch = weaponName.match(/\(as ([^)]+)\)/);
     if (asMatch) {
       matchName = asMatch[1];
+      // Check if we have a mapping for this weapon type
+      if (weaponTypeMap[matchName.toLowerCase()]) {
+        matchName = weaponTypeMap[matchName.toLowerCase()];
+      }
     }
     let weaponData = allWeapons.find(w => normalizeWeaponName(w.weapon) === normalizeWeaponName(matchName));
     setAssignedWeapon({ name: weaponName, damage: weaponData ? weaponData.damage : '?' });

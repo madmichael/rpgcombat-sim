@@ -27,7 +27,13 @@ const Credits = ({ isOpen, onClose }) => {
       description: "inspired by the Generic Monsters of Julio's RPG Cove",
       url: "https://juliosrpgcove.com/genericmonsters/",
       icon: "📊"
-    }
+    },
+    {
+      title: "Character Name Generator",
+      description: "name data from leganz Random Name Generator",
+      url: "https://github.com/leganz/random-name-generator",
+      icon: "📊"
+    },
   ];
 
   return (

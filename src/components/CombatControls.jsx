@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, onMightyDeed, onAdjustChallenge, onReset, character, summary, buttonStyles = {} }) => {
+const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onRestartFight, onMightyDeed, onAdjustChallenge, onReset, character, summary, buttonStyles = {}, isActionInProgress = false }) => {
   const handleKeyDown = (event, action) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
@@ -79,6 +79,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               onKeyDown={(e) => handleKeyDown(e, onContinue)}
               aria-label="Continue fighting and make next attack"
               aria-describedby="continue-fight-help"
+              disabled={isActionInProgress}
             >
               <span className="btn-icon">⚡</span>
               <span className="btn-text">Continue Fighting</span>
@@ -91,6 +92,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
                 onKeyDown={(e) => handleKeyDown(e, onMightyDeed)}
                 aria-label="Attempt a Mighty Deed with your trade good"
                 title={`Use ${character.tradeGood} for a Mighty Deed`}
+                disabled={isActionInProgress}
               >
                 <span className="btn-icon">🎭</span>
                 <span className="btn-text">Mighty Deed</span>
@@ -103,6 +105,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
               onKeyDown={(e) => handleKeyDown(e, onRun)}
               aria-label="Flee from combat and end the encounter"
               aria-describedby="run-away-help"
+              disabled={isActionInProgress}
             >
               <span className="btn-icon">🏃</span>
               <span className="btn-text">Run Away!</span>

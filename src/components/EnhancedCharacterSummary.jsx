@@ -1,7 +1,8 @@
 import React from 'react';
 import AchievementBadge from './AchievementBadge';
+import CharacterUrlShare from './CharacterUrlShare';
 
-const EnhancedCharacterSummary = ({ character, charHp, achievements = [] }) => {
+const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats = {} }) => {
   if (!character) return null;
 
   const abilityList = ['Strength', 'Agility', 'Stamina', 'Personality', 'Intelligence', 'Luck'];
@@ -138,7 +139,8 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [] }) => {
         <h3 style={{ margin: '0 0 12px 0', color: '#3498db', fontSize: '18px' }}>📊 Abilities</h3>
         <div style={statGridStyle}>
           {abilityList.map(ability => {
-            const score = ability === 'Luck' ? character.Luck : character[ability];
+            // Access ability score - should be directly on character object from ...stats spread
+            const score = character[ability];
             const mod = character.modifiers ? character.modifiers[ability] : 0;
             const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
             
@@ -266,6 +268,15 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [] }) => {
           </div>
         </div>
       )}
+      
+      {/* Character URL Sharing */}
+      <div style={sectionStyle}>
+        <CharacterUrlShare 
+          character={character} 
+          achievements={achievements} 
+          stats={stats}
+        />
+      </div>
     </div>
   );
 };
