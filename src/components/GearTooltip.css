@@ -1,0 +1,187 @@
+.tooltip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.gear-tooltip {
+  background: white;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 12px;
+  min-width: 200px;
+  max-width: 300px;
+  font-size: 14px;
+  line-height: 1.4;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.tooltip-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #2c3e50;
+  flex: 1;
+}
+
+.tooltip-rarity {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tooltip-rarity.common {
+  background: #6c757d;
+  color: white;
+}
+
+.tooltip-rarity.uncommon {
+  background: #28a745;
+  color: white;
+}
+
+.tooltip-rarity.rare {
+  background: #007bff;
+  color: white;
+}
+
+.tooltip-rarity.epic {
+  background: #6f42c1;
+  color: white;
+}
+
+.tooltip-rarity.legendary {
+  background: #fd7e14;
+  color: white;
+}
+
+.tooltip-slot {
+  color: #6c757d;
+  font-size: 12px;
+  margin-bottom: 8px;
+  font-style: italic;
+}
+
+.tooltip-stats {
+  margin-bottom: 8px;
+}
+
+.tooltip-stat {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.stat-label {
+  color: #495057;
+  font-weight: 500;
+}
+
+.stat-value {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.tooltip-effects {
+  margin-bottom: 8px;
+}
+
+.tooltip-section-title {
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.tooltip-effect {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2px;
+  padding: 2px 4px;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.effect-name {
+  color: #495057;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.effect-value {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.effect-value:contains('-') {
+  color: #dc3545;
+}
+
+.tooltip-description {
+  color: #6c757d;
+  font-size: 12px;
+  line-height: 1.3;
+  padding-top: 8px;
+  border-top: 1px solid #e9ecef;
+  font-style: italic;
+}
+
+/* Rarity border colors */
+.gear-tooltip.common {
+  border-color: #6c757d;
+}
+
+.gear-tooltip.uncommon {
+  border-color: #28a745;
+  box-shadow: 0 8px 24px rgba(40, 167, 69, 0.2);
+}
+
+.gear-tooltip.rare {
+  border-color: #007bff;
+  box-shadow: 0 8px 24px rgba(0, 123, 255, 0.2);
+}
+
+.gear-tooltip.epic {
+  border-color: #6f42c1;
+  box-shadow: 0 8px 24px rgba(111, 66, 193, 0.2);
+}
+
+.gear-tooltip.legendary {
+  border-color: #fd7e14;
+  box-shadow: 0 8px 24px rgba(253, 126, 20, 0.2);
+  background: linear-gradient(135deg, #fff 0%, #fff8f0 100%);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .gear-tooltip {
+    max-width: 250px;
+    font-size: 13px;
+  }
+  
+  .tooltip-name {
+    font-size: 14px;
+  }
+}

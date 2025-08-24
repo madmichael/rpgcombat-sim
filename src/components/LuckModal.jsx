@@ -18,13 +18,13 @@ const LuckModal = ({
   return (
     <Modal onClose={onClose}>
       <div className="luck-modal" role="dialog" aria-labelledby="luck-modal-title" aria-describedby="luck-modal-description">
-        <div className="luck-modal-header">
+        <div className="modal-header luck-modal-header">
           <div className="luck-icon">🍀</div>
           <h2 id="luck-modal-title">Burn Luck to Improve Attack</h2>
           <p className="luck-subtitle">Make your guess and hope luck is with you!</p>
         </div>
 
-        <div className="luck-modal-content">
+        <div className="modal-content luck-modal-content">
           <div className="attack-summary">
             <div className="attack-info">
               <div className="info-section">
@@ -96,27 +96,27 @@ const LuckModal = ({
             </div>
           </div>
 
-          <div className="luck-actions">
-            <button 
-              onClick={() => onBurnLuck(luckToBurn)}
-              className="btn btn-large luck-burn-btn btn-primary"
-              aria-describedby="burn-luck-help"
-              disabled={luckToBurn < 1 || luckToBurn > maxLuck}
-            >
-              🔥 Burn {luckToBurn} Luck
-            </button>
-            <button 
-              onClick={onKeepRoll}
-              className="btn btn-large btn-secondary luck-keep-btn"
-              aria-describedby="keep-roll-help"
-            >
-              🎲 Keep Roll
-            </button>
-          </div>
-
           <div className="luck-warning">
             <p>⚠️ <em>Burned Luck is permanently lost until you rest!</em></p>
           </div>
+        </div>
+
+        <div className="modal-actions luck-actions">
+          <button 
+            onClick={() => onBurnLuck(luckToBurn)}
+            className="btn btn-large luck-burn-btn btn-primary"
+            aria-describedby="burn-luck-help"
+            disabled={luckToBurn < 1 || luckToBurn > maxLuck}
+          >
+            🔥 Burn {luckToBurn} Luck
+          </button>
+          <button 
+            onClick={onKeepRoll}
+            className="btn btn-large btn-secondary luck-keep-btn"
+            aria-describedby="keep-roll-help"
+          >
+            🎲 Keep Roll
+          </button>
         </div>
 
         <div className="sr-only">

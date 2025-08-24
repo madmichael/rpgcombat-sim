@@ -1,0 +1,280 @@
+{
+  "mundaneItems": [
+    {
+      "name": "Belt",
+      "baseValue": 1,
+      "category": "accessory",
+      "slot": "belt",
+      "icon": "🔗"
+    },
+    {
+      "name": "Boots",
+      "baseValue": 3,
+      "category": "footwear",
+      "slot": "feet",
+      "icon": "👢"
+    },
+    {
+      "name": "Tattered Cloak",
+      "baseValue": 2,
+      "category": "clothing",
+      "slot": "cloak",
+      "icon": "🧥"
+    },
+    {
+      "name": "Worn Gloves",
+      "baseValue": 1,
+      "category": "clothing",
+      "slot": "hands",
+      "icon": "🧤"
+    },
+    {
+      "name": "Cap",
+      "baseValue": 1,
+      "category": "clothing",
+      "slot": "head",
+      "icon": "🎩"
+    },
+    {
+      "name": "Pouch",
+      "baseValue": 1,
+      "category": "container",
+      "slot": "belt",
+      "icon": "👝"
+    },
+    {
+      "name": "Bone Ring",
+      "baseValue": 2,
+      "category": "trinket",
+      "slot": "rightFingers",
+      "icon": "💍"
+    },
+    {
+      "name": "Cord Necklace",
+      "baseValue": 1,
+      "category": "trinket",
+      "slot": "neck",
+      "icon": "📿"
+    },
+    {
+      "name": "Leather Bracelet",
+      "baseValue": 1,
+      "category": "trinket",
+      "slot": "leftFingers",
+      "icon": "📿"
+    },
+    {
+      "name": "Carved Charm",
+      "baseValue": 3,
+      "category": "trinket",
+      "slot": "neck",
+      "icon": "🪬"
+    },
+    {
+      "name": "Rag Scarf",
+      "baseValue": 1,
+      "category": "clothing",
+      "slot": "neck",
+      "icon": "🧣"
+    },
+    {
+      "name": "Patched Vest",
+      "baseValue": 2,
+      "category": "clothing",
+      "slot": "body",
+      "icon": "🦺"
+    },
+    {
+      "name": "Rope Belt",
+      "baseValue": 1,
+      "category": "accessory",
+      "slot": "belt",
+      "icon": "🪢"
+    },
+    {
+      "name": "Dirty Bandana",
+      "baseValue": 1,
+      "category": "clothing",
+      "slot": "head",
+      "icon": "🎭"
+    },
+    {
+      "name": "Coin Purse",
+      "baseValue": 2,
+      "category": "container",
+      "slot": "belt",
+      "icon": "💰"
+    },
+    {
+      "name": "Worn Satchel",
+      "baseValue": 4,
+      "category": "container",
+      "slot": "body",
+      "icon": "🎒"
+    },
+    {
+      "name": "Tallow Candle",
+      "baseValue": 1,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🕯️"
+    },
+    {
+      "name": "Frayed Rope",
+      "baseValue": 1,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🪢"
+    },
+    {
+      "name": "Dented Lantern",
+      "baseValue": 3,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🏮"
+    },
+    {
+      "name": "Cracked Mirror",
+      "baseValue": 2,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🪞"
+    },
+    {
+      "name": "Rusty Knife",
+      "baseValue": 2,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🔪"
+    },
+    {
+      "name": "Bone Needle",
+      "baseValue": 1,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🪡"
+    },
+    {
+      "name": "Clay Pot",
+      "baseValue": 1,
+      "category": "container",
+      "slot": "tradeGood",
+      "icon": "🏺"
+    },
+    {
+      "name": "Wooden Spoon",
+      "baseValue": 1,
+      "category": "tool",
+      "slot": "tradeGood",
+      "icon": "🥄"
+    }
+  ],
+  "fabrics": [
+    "rough wool",
+    "coarse linen",
+    "hemp",
+    "burlap",
+    "canvas",
+    "leather",
+    "hide",
+    "fur",
+    "felt",
+    "cotton",
+    "patched cloth",
+    "worn fabric",
+    "tattered material",
+    "crude weave",
+    "sackcloth",
+    "muslin",
+    "rough-spun",
+    "homespun",
+    "threadbare cloth",
+    "mended fabric"
+  ],
+  "colors": [
+    "brown",
+    "grey",
+    "black",
+    "dirty white",
+    "mud-stained",
+    "faded brown",
+    "dark grey",
+    "rust-colored",
+    "dull green",
+    "weathered tan",
+    "ash grey",
+    "charcoal",
+    "dingy yellow",
+    "blood-stained",
+    "mottled brown",
+    "grimy black",
+    "worn beige",
+    "stained grey",
+    "dusty brown",
+    "pale grey",
+    "soiled white",
+    "tarnished copper",
+    "dull bronze",
+    "faded red",
+    "murky green",
+    "soot-covered",
+    "dirt-caked",
+    "yellowed",
+    "darkened",
+    "discolored"
+  ],
+  "materials": [
+    "rusted iron",
+    "crude steel",
+    "tarnished bronze",
+    "dull copper",
+    "wood",
+    "oak",
+    "pine",
+    "ash wood",
+    "bone",
+    "horn",
+    "antler",
+    "stone",
+    "clay",
+    "rough leather",
+    "hide",
+    "rope",
+    "cord",
+    "twine",
+    "tin",
+    "pewter",
+    "carved wood",
+    "polished bone",
+    "worn stone",
+    "chipped flint",
+    "rough iron",
+    "bent metal",
+    "cracked wood",
+    "weathered leather",
+    "brittle bone",
+    "coarse rope"
+  ],
+  "conditions": [
+    "broken",
+    "cracked",
+    "worn",
+    "tattered",
+    "faded",
+    "damaged",
+    "patched",
+    "weathered",
+    "dull",
+    "crude",
+    "rough",
+    "chipped",
+    "bent",
+    "stained",
+    "frayed",
+    "scratched",
+    "battered",
+    "threadbare",
+    "rusted",
+    "rotting"
+  ]
+}

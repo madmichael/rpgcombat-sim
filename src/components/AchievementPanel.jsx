@@ -28,22 +28,21 @@ const AchievementPanel = ({ isOpen, onClose, achievementTracking }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container achievement-modal">
-        <button 
-          onClick={onClose}
-          className="modal-close"
-          aria-label="Close achievements panel"
-        >
-          ×
-        </button>
-        
-        <div className="achievement-header">
+        <div className="modal-header achievement-header">
           <h3>Achievements</h3>
           <div className="completion-stats">
             {unlockedCount} / {totalAchievements} ({completionPercentage}%)
           </div>
+          <button 
+            onClick={onClose}
+            className="modal-close-btn"
+            aria-label="Close achievements panel"
+          >
+            ×
+          </button>
         </div>
 
-        <div className="achievement-content">
+        <div className="modal-content achievement-content">
           {/* Progress Bar */}
           <div className="progress-bar-container">
             <div 

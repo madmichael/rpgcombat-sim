@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatGp } from '../utils/currency';
 // import birthAugers from '../data/birth_augers.json';
 
 const CharacterSummary = ({ character }) => {
@@ -85,6 +86,7 @@ const CharacterSummary = ({ character }) => {
   <div>Trained Weapon: {equipment}</div>
       <div>Trade good: {tradeGood}</div>
       <div>Starting Funds: {startingFunds}</div>
+      <div>Current Funds: {formatGp(character.funds_cp || 0)}</div>
       <div>Lucky sign: {luckySign}</div>
       <div>Languages: {languages}</div>
       <div>Racial Traits: {racialTraits}</div>

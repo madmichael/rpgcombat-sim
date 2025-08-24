@@ -1,5 +1,11 @@
-import React, { useState, useRef } from 'react';
-// import birthAugers from '../data/birth_augers.json';
+import React, { useState, useEffect, useRef } from 'react';
+import occupationsData from '../data/occupations.json';
+import birthAugersData from '../data/birth_augers.json';
+import abilityModifiersData from '../data/ability_modifiers.json';
+import weaponsData from '../data/weapons.json';
+import firstNamesData from '../data/names_first.json';
+import lastNamesData from '../data/names_last.json';
+// import { weaponToGearItem, getWeaponSlot } from '../utils/weaponUtils';
 
 const abilities = [
   'Strength',
@@ -231,8 +237,7 @@ const CharacterCreator = ({ onCharacterCreated }) => {
     const sp = Math.floor(remaining / 10); remaining %= 10;
     return { pp, ep, gp, sp, cp: remaining };
   }
-  function getStartingFunds() {
-    const rolledCp = roll5d12();
+  function getStartingFunds(rolledCp) {
     const coins = convertCoins(rolledCp);
     return [
       coins.pp ? `${coins.pp} pp` : null,
@@ -240,7 +245,7 @@ const CharacterCreator = ({ onCharacterCreated }) => {
       coins.gp ? `${coins.gp} gp` : null,
       coins.sp ? `${coins.sp} sp` : null,
       coins.cp ? `${coins.cp} cp` : null
-    ].filter(Boolean).join(', ');
+    ].filter(Boolean).join(' ');
   }
   function getLuckySign() {
     if (!birthAugers || !Array.isArray(birthAugers)) return '';
@@ -252,10 +257,17 @@ const CharacterCreator = ({ onCharacterCreated }) => {
     const extraLanguagesList = ['Centaur', 'Giant', 'Gnome', 'Goblin', 'Kobold', 'Elf', 'Dwarf', 'Halfling'];
     let languagesArr = ['Common'];
     if (intMod > 0) {
-      let shuffled = [...extraLanguagesList].sort(() => Math.random() - 0.5);
-      languagesArr = languagesArr.concat(shuffled.slice(0, intMod));
+      for (let i = 0; i < intMod; i++) {
+        const randomIdx = Math.floor(Math.random() * extraLanguagesList.length);
+        const selectedLanguage = extraLanguagesList[randomIdx];
+        if (!languagesArr.includes(selectedLanguage)) {
+          languagesArr.push(selectedLanguage);
+        }
+        extraLanguagesList.splice(randomIdx, 1);
+        if (extraLanguagesList.length === 0) break;
+      }
     }
-    return languagesArr.join(', ');
+    return languagesArr;
   }
   const [stats, setStats] = useState({});
   const [name, setName] = useState('');
@@ -356,7 +368,25 @@ const CharacterCreator = ({ onCharacterCreated }) => {
       }
     }
     let weaponData = allWeapons.find(w => normalizeWeaponName(w.weapon) === normalizeWeaponName(matchName));
-    setAssignedWeapon({ name: weaponName, damage: weaponData ? weaponData.damage : '?' });
+    
+    // Determine if weapon is ranged or melee
+    const rangedWeapons = ['shortbow', 'sling', 'dart', 'crossbow'];
+    const isRanged = rangedWeapons.some(ranged => matchName.toLowerCase().includes(ranged));
+    const weaponSlot = isRanged ? 'rangedWeapon' : 'meleeWeapon';
+    
+    setAssignedWeapon({ 
+      name: weaponName, 
+      damage: weaponData ? weaponData.damage : '?',
+      slot: weaponSlot,
+      id: `weapon_${weaponName.toLowerCase().replace(/\s+/g, '_')}`,
+      cost: 0,
+      rarity: "common",
+      effects: {
+        damage: weaponData ? weaponData.damage : '1d4'
+      },
+      description: `Starting weapon from ${occ?.Occupation || 'Unknown'} occupation`,
+      icon: isRanged ? '🏹' : '⚔️'
+    });
 
     // Generate new random name on stat roll
     if (firstNames.length && lastNames.length) {
@@ -367,23 +397,62 @@ const CharacterCreator = ({ onCharacterCreated }) => {
   const handleCreate = () => {
     if (!name || !stats['Strength']) return;
     const modifiers = Object.fromEntries(abilities.map(ab => [ab, getModifier(stats[ab])]));
-    const startingFunds = getStartingFunds();
+    const rolledCp = roll5d12();
+    const startingFunds = getStartingFunds(rolledCp);
     const luckySign = getLuckySign();
     const languages = getLanguages(modifiers['Intelligence']);
-    onCharacterCreated({
+    
+    // Initialize empty gear slots (simplified for now)
+    const gearSlots = {
+      head: null,
+      neck: null,
+      body: null,
+      cloak: null,
+      belt: null,
+      arms: null,
+      meleeWeapon: assignedWeapon && assignedWeapon.slot === 'meleeWeapon' ? assignedWeapon : null,
+      rangedWeapon: assignedWeapon && assignedWeapon.slot === 'rangedWeapon' ? assignedWeapon : null,
+      rightHand: null,
+      leftHand: null,
+      rightFingers: null,
+      leftFingers: null,
+      legs: null,
+      feet: null,
+      tradeGood: occupation ? {
+        id: `trade_${occupation.Roll}`,
+        name: occupation["Trade Goods"],
+        slot: "tradeGood",
+        cost: 0,
+        rarity: "common",
+        effects: {},
+        description: `Starting trade good from ${occupation.Occupation} occupation`,
+        icon: "📦"
+      } : null
+    };
+    
+    // Initialize empty backpack for now
+    const backpack = [];
+    
+    const character = {
       name,
       alignment,
-      ...stats,
+      abilities: stats,
       modifiers,
-      hp,
-      occupation,
-      weapon: assignedWeapon,
       tradeGood: occupation ? occupation["Trade Goods"] : null,
+      occupation,
+      hp: hp,
+      maxHp: hp,
+      weapon: assignedWeapon,
       startingFunds,
+      funds_cp: rolledCp,
       luckySign,
-      languages
-    });
-  };
+      languages,
+      gearSlots,
+      backpack: []
+    };
+    
+    onCharacterCreated(character);
+};
 
   const handleReset = () => {
     setStats({});

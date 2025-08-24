@@ -1,0 +1,80 @@
+[
+    {
+      "name": "Agate",
+      "rarity": "common",
+      "value_gp_range": "1-10",
+      "special_properties": "Striped or mossy patterns; often used as simple adornment."
+    },
+    {
+      "name": "Jasper",
+      "rarity": "common",
+      "value_gp_range": "1-10",
+      "special_properties": "Comes in red, green, or yellow hues; sturdy gemstone."
+    },
+    {
+      "name": "Quartz",
+      "rarity": "common",
+      "value_gp_range": "1-10",
+      "special_properties": "Clear, smoky, or rose varieties; popular among peasants."
+    },
+    {
+      "name": "Carnelian",
+      "rarity": "common",
+      "value_gp_range": "5-15",
+      "special_properties": "Deep red-orange; thought to ward against evil."
+    },
+    {
+      "name": "Onyx",
+      "rarity": "common",
+      "value_gp_range": "5-20",
+      "special_properties": "Black stone with white bands; favored for rings and amulets."
+    },
+    {
+      "name": "Amethyst",
+      "rarity": "uncommon",
+      "value_gp_range": "20-100",
+      "special_properties": "Purple crystal; sacred to priests, said to resist drunkenness."
+    },
+    {
+      "name": "Lapis Lazuli",
+      "rarity": "uncommon",
+      "value_gp_range": "30-120",
+      "special_properties": "Deep blue with golden flecks; prized by scholars and nobles."
+    },
+    {
+      "name": "Peridot",
+      "rarity": "uncommon",
+      "value_gp_range": "50-150",
+      "special_properties": "Bright green stone; said to protect from nightmares."
+    },
+    {
+      "name": "Moonstone",
+      "rarity": "uncommon",
+      "value_gp_range": "50-200",
+      "special_properties": "Milky stone with shifting sheen; associated with the moon."
+    },
+    {
+      "name": "Ruby",
+      "rarity": "rare",
+      "value_gp_range": "200-1000",
+      "special_properties": "Blood-red gem; symbol of passion and war."
+    },
+    {
+      "name": "Emerald",
+      "rarity": "rare",
+      "value_gp_range": "200-1000",
+      "special_properties": "Vivid green; flaws often resemble mossy threads."
+    },
+    {
+      "name": "Sapphire",
+      "rarity": "rare",
+      "value_gp_range": "300-1200",
+      "special_properties": "Blue gem of royalty; other colors include pink and yellow."
+    },
+    {
+      "name": "Opal",
+      "rarity": "rare",
+      "value_gp_range": "300-1500",
+      "special_properties": "Shifts with rainbow colors; fire and black opals are most prized."
+    }
+]

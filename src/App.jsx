@@ -16,13 +16,16 @@ import ChallengeSelector from './components/ChallengeSelector';
 import VictoryStats from './components/VictoryStats';
 import AchievementPanel from './components/AchievementPanel';
 import AchievementNotification from './components/AchievementNotification';
+import LootModal from './components/LootModal';
 import Credits from './components/Credits';
+import Tutorial from './components/Tutorial';
 import { useGameState } from './hooks/useGameState';
 import { useAudio } from './hooks/useAudio';
 import { useCombat } from './hooks/useCombat.jsx';
 import { useMonsterSelection } from './hooks/useMonsterSelection';
 import { useVictoryTracking } from './hooks/useVictoryTracking';
 import { useAchievements } from './hooks/useAchievements';
+import { useLoot } from './hooks/useLoot';
 import { getCharacterFromUrl, updateUrlWithCharacter, clearCharacterFromUrl } from './utils/characterUrl';
 import './App.css';
 
@@ -52,11 +55,14 @@ function App() {
 
   // Initialize achievement tracking with character name
   const achievementTracking = useAchievements(character?.name);
-  const combat = useCombat(gameState, playSound, victoryTracking, achievementTracking);
+  const lootSystem = useLoot();
+  const combat = useCombat(gameState, playSound, victoryTracking, achievementTracking, setCharacter, lootSystem);
   const monsterSelection = useMonsterSelection(gameState);
   const [showVictoryStats, setShowVictoryStats] = useState(false);
   const [showAchievements, setShowAchievements] = useState(false);
   const [showCredits, setShowCredits] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialInitialStep, setTutorialInitialStep] = useState(0);
 
   const {
     showLuckConfirmModal,
@@ -81,8 +87,19 @@ function App() {
   const { selectRandomMonster, getChallengeLabel, adjustChallenge } = monsterSelection;
 
   const handleCreateCharacter = (char) => {
-    setCharacter(char);
-    updateUrlWithCharacter(char, achievementTracking.achievements, achievementTracking.stats);
+    // Flatten abilities object to top-level properties for compatibility
+    const flattenedChar = {
+      ...char,
+      Strength: char.abilities?.Strength || char.Strength || 10,
+      Agility: char.abilities?.Agility || char.Agility || 10,
+      Stamina: char.abilities?.Stamina || char.Stamina || 10,
+      Personality: char.abilities?.Personality || char.Personality || 10,
+      Intelligence: char.abilities?.Intelligence || char.Intelligence || 10,
+      Luck: char.abilities?.Luck || char.Luck || 10
+    };
+    
+    setCharacter(flattenedChar);
+    updateUrlWithCharacter(flattenedChar, achievementTracking.achievements, achievementTracking.stats);
     playSound('success');
     resetCombat();
     playSound('door');
@@ -107,6 +124,12 @@ function App() {
 
   // Load character from URL on initial page load
   useEffect(() => {
+    // Auto-show tutorial if not seen
+    try {
+      const seen = localStorage.getItem('rpg_tutorial_seen');
+      if (!seen) setShowTutorial(true);
+    } catch {}
+
     const urlCharacter = getCharacterFromUrl();
     if (urlCharacter && !character) {
       console.log('Loading character from URL:', urlCharacter);
@@ -241,6 +264,7 @@ function App() {
         onShowVictoryStats={() => setShowVictoryStats(true)}
         onShowAchievements={() => setShowAchievements(true)}
         onShowCredits={() => setShowCredits(true)}
+        onShowTutorial={() => setShowTutorial(true)}
       />
       
       {character && !monster && (
@@ -271,6 +295,7 @@ function App() {
             getChallengeLabel={getChallengeLabel}
             achievements={achievementTracking.achievements}
             stats={achievementTracking.stats}
+            onCharacterChange={setCharacter}
           />
           
           {/* Combat Controls */}
@@ -294,6 +319,7 @@ function App() {
               }}
               onReset={gameState.resetGame}
               summary={summary}
+              onShowTutorialAtStep={(step) => { setTutorialInitialStep(step); setShowTutorial(true); }}
               buttonStyles={{
                 start: { backgroundColor: 'red', color: 'white' },
                 continue: { backgroundColor: 'green', color: 'white' },
@@ -350,6 +376,24 @@ function App() {
       <Credits 
         isOpen={showCredits} 
         onClose={() => setShowCredits(false)}
+      />
+      
+      {/* Tutorial Modal */}
+      <Tutorial 
+        isOpen={showTutorial}
+        onClose={() => setShowTutorial(false)}
+        initialStep={tutorialInitialStep}
+      />
+      
+      {/* Loot Modal */}
+      <LootModal 
+        isOpen={lootSystem.pendingLoot.length > 0} 
+        loot={lootSystem.pendingLoot}
+        onClaimAll={() => {
+          lootSystem.claimLoot(character, setCharacter);
+          playSound('success');
+        }}
+        onClose={() => lootSystem.clearPendingLoot()}
       />
       
       {/* Achievement Notifications */}

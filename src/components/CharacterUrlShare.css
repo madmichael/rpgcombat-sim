@@ -3,19 +3,30 @@
 }
 
 .share-btn {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   border: none;
-  padding: 8px 12px;
+  padding: 12px 20px;
   border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+  gap: 8px;
+  font-size: 14px;
+  min-width: 0; /* allow shrink to avoid overflow */
+  justify-content: center;
+  flex: 1 1 200px; /* grow and wrap nicely */
+  box-sizing: border-box;
+}
+
+.share-btn.social {
+  background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+}
+
+.share-btn.advanced {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
 }
 
 .share-btn:hover {
@@ -37,6 +48,14 @@
   margin: 0 0 10px 0;
   font-weight: bold;
   color: #495057;
+}
+
+.share-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap; /* prevent overflow */
 }
 
 .url-container {
@@ -114,5 +133,21 @@
   
   .url-input {
     font-size: 11px;
+  }
+  .share-controls {
+    gap: 10px;
+  }
+  .share-btn {
+    flex: 1 1 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-controls {
+    gap: 8px;
+  }
+  .share-btn {
+    width: 100%;
+    flex: 1 1 100%;
   }
 }

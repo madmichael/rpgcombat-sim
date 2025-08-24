@@ -20,7 +20,7 @@ const LuckConfirmModal = ({
           <p className="luck-subtitle">But luck might be on your side...</p>
         </div>
 
-        <div className="luck-confirm-content">
+        <div className="modal-content luck-confirm-content">
           <div className="attack-summary">
             <div className="attack-info">
               <div className="detail-item">
@@ -50,28 +50,28 @@ const LuckConfirmModal = ({
             </div>
           </div>
 
-          <div className="luck-actions">
-            <button 
-              onClick={onNo}
-              className="btn btn-large btn-secondary luck-no-btn"
-              aria-describedby="no-help"
-            >
-              <span className="btn-icon">😔</span>
-              <span className="btn-text">Let the dice fall as they may.</span>
-            </button>
-            <button 
-              onClick={onYes}
-              className="btn btn-large btn-primary luck-yes-btn"
-              aria-describedby="yes-help"
-            >
-              <span className="btn-icon">🍀</span>
-              <span className="btn-text">No, I want to burn some Luck!</span>
-            </button>
-          </div>
-
           <div className="luck-warning">
             <p>💡 <em>If you choose to try your luck, you'll need to guess how much Luck to burn!</em></p>
           </div>
+        </div>
+
+        <div className="modal-actions luck-actions">
+          <button 
+            onClick={onNo}
+            className="btn btn-large btn-secondary luck-no-btn"
+            aria-describedby="no-help"
+          >
+            <span className="btn-icon">😔</span>
+            <span className="btn-text">Let the dice fall as they may.</span>
+          </button>
+          <button 
+            onClick={onYes}
+            className="btn btn-large btn-primary luck-yes-btn"
+            aria-describedby="yes-help"
+          >
+            <span className="btn-icon">🍀</span>
+            <span className="btn-text">No, I want to burn some Luck!</span>
+          </button>
         </div>
 
         <div className="sr-only">

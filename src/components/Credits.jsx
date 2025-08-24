@@ -39,20 +39,19 @@ const Credits = ({ isOpen, onClose }) => {
   return (
     <div className="modal-overlay">
       <div className="modal-container credits-modal">
-        <button 
-          onClick={onClose}
-          className="modal-close"
-          aria-label="Close credits"
-        >
-          ×
-        </button>
-        
-        <div className="credits-header">
+        <div className="modal-header credits-header">
           <h3>Credits & Resources</h3>
           <p>This RPG Combat Simulator was built using resources from the amazing RPG community</p>
+          <button 
+            onClick={onClose}
+            className="modal-close-btn"
+            aria-label="Close credits"
+          >
+            ×
+          </button>
         </div>
 
-        <div className="credits-content">
+        <div className="modal-content credits-content">
           <div className="credits-grid">
             {credits.map((credit, index) => (
               <div key={index} className="credit-item">
@@ -73,7 +72,7 @@ const Credits = ({ isOpen, onClose }) => {
             ))}
           </div>
           
-          <div className="credits-footer">
+          <div className="modal-footer credits-footer">
             <div className="developer-credit">
               <h4>Developed with ❤️</h4>
               <p>Built as a tribute to the tabletop RPG community and the creators who make these amazing games possible.</p>

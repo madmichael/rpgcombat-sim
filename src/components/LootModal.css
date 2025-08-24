@@ -1,0 +1,219 @@
+.loot-modal-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  max-height: 80vh;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.loot-modal-header {
+  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.loot-modal-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.loot-modal-header p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.loot-modal-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.loot-summary {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.loot-summary h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 18px;
+}
+
+.rarity-breakdown {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rarity-badge {
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Backgrounds for rarity badges (replaces inline styles) */
+.rarity-badge.rarity-common { background-color: #9e9e9e; }
+.rarity-badge.rarity-uncommon { background-color: #4caf50; }
+.rarity-badge.rarity-rare { background-color: #2196f3; }
+.rarity-badge.rarity-epic { background-color: #9c27b0; }
+.rarity-badge.rarity-legendary { background-color: #ff9800; }
+
+.loot-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.loot-item-card {
+  background: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.loot-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.loot-item-card.rarity-common {
+  border-color: #9e9e9e;
+  background: linear-gradient(135deg, #f5f5f5 0%, #eeeeee 100%);
+}
+
+.loot-item-card.rarity-uncommon {
+  border-color: #4caf50;
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+}
+
+.loot-item-card.rarity-rare {
+  border-color: #2196f3;
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.loot-item-card.rarity-epic {
+  border-color: #9c27b0;
+  background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%);
+}
+
+.loot-item-card.rarity-legendary {
+  border-color: #ff9800;
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.3);
+}
+
+.item-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-name {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.item-value {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.item-rarity {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.item-rarity.rarity-common { color: #9e9e9e; }
+.item-rarity.rarity-uncommon { color: #4caf50; }
+.item-rarity.rarity-rare { color: #2196f3; }
+.item-rarity.rarity-epic { color: #9c27b0; }
+.item-rarity.rarity-legendary { color: #ff9800; }
+
+.loot-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding-top: 16px;
+  border-top: 1px solid #e9ecef;
+}
+
+.claim-all-btn {
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.claim-all-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+.close-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.close-btn:hover {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .loot-modal-container {
+    width: 95vw;
+    max-height: 85vh;
+  }
+  
+  .loot-items-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .loot-actions {
+    flex-direction: column;
+  }
+  
+  .claim-all-btn,
+  .close-btn {
+    width: 100%;
+  }
+}

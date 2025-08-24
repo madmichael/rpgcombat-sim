@@ -2,7 +2,7 @@ import React from 'react';
 import EnhancedCharacterSummary from './EnhancedCharacterSummary';
 import EnhancedMonsterSummary from './EnhancedMonsterSummary';
 
-function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {} }) {
+function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {}, onCharacterChange }) {
   const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
   const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
   const getHealthPercentage = (current, max) => {
@@ -87,6 +87,7 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
                 charHp={charHp}
                 achievements={achievements}
                 stats={stats}
+                onCharacterChange={onCharacterChange}
               />
             </div>
           )}

@@ -1,0 +1,36 @@
+{
+  "vegetables": [
+    { "name": "Cabbage" },
+    { "name": "Leeks" },
+    { "name": "Turnips" },
+    { "name": "Onions" },
+    { "name": "Garlic" },
+    { "name": "Parsnips" },
+    { "name": "Carrots" },
+    { "name": "Beets" },
+    { "name": "Fennel" },
+    { "name": "Celery" },
+    { "name": "Chard" },
+    { "name": "Broad Beans" },
+    { "name": "Peas" },
+    { "name": "Spinach" },
+    { "name": "Kale" },
+    { "name": "Radishes" },
+    { "name": "Mustard Greens" },
+    { "name": "Horseradish" },
+    { "name": "Dandelion Greens" },
+    { "name": "Cress" }
+  ],
+  "qualities": [
+    { "quality": "Worm Infested", "value": 0 },
+    { "quality": "Rotten", "value": 1 },
+    { "quality": "Bruised", "value": 2 },
+    { "quality": "Wilted", "value": 3 },
+    { "quality": "Edible", "value": 4 },
+    { "quality": "Fresh", "value": 5 },
+    { "quality": "Crisp", "value": 6 },
+    { "quality": "Choice", "value": 7 },
+    { "quality": "Excellent", "value": 8 },
+    { "quality": "Perfect", "value": 9 }
+  ]
+}

@@ -1,0 +1,301 @@
+.social-share-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.social-share-modal {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.social-share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0;
+}
+
+.social-share-header h3 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+/* Adapt to centralized close button while preserving white-on-gradient look */
+.social-share-header .modal-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.social-share-header .modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.social-share-content {
+  padding: 20px;
+}
+
+.share-options {
+  margin-bottom: 20px;
+}
+
+.share-type-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.share-type-selector label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.share-type-selector label:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.share-type-selector input[type="radio"] {
+  margin-right: 12px;
+  transform: scale(1.2);
+}
+
+.share-type-selector input[type="radio"]:checked + .share-option {
+  color: #667eea;
+  font-weight: bold;
+}
+
+.share-type-selector label:has(input:checked) {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.share-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.share-option strong {
+  font-size: 1em;
+}
+
+.share-option small {
+  color: #6c757d;
+  font-size: 0.85em;
+}
+
+.url-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.url-description {
+  margin: 0 0 8px 0;
+  color: #495057;
+  font-size: 0.9em;
+}
+
+.compression-info {
+  margin-bottom: 12px;
+}
+
+.compression-info small {
+  color: #28a745;
+  font-weight: 500;
+}
+
+.url-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.url-input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.85em;
+  background: white;
+}
+
+.url-input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.25);
+}
+
+.copy-btn {
+  padding: 10px 16px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background: #5a67d8;
+  transform: translateY(-1px);
+}
+
+.copy-btn.copied {
+  background: #28a745;
+}
+
+.copy-success {
+  color: #28a745;
+  font-weight: 500;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.social-platforms h4 {
+  margin: 0 0 16px 0;
+  color: #495057;
+}
+
+.platform-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.platform-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: white;
+}
+
+.platform-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.platform-btn.twitter {
+  background: #1da1f2;
+}
+
+.platform-btn.twitter:hover {
+  background: #0d8bd9;
+}
+
+.platform-btn.facebook {
+  background: #4267b2;
+}
+
+.platform-btn.facebook:hover {
+  background: #365899;
+}
+
+.platform-btn.reddit {
+  background: #ff4500;
+}
+
+.platform-btn.reddit:hover {
+  background: #e03d00;
+}
+
+.platform-btn.generic {
+  background: #6c757d;
+}
+
+.platform-btn.generic:hover {
+  background: #5a6268;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .social-share-overlay {
+    padding: 10px;
+  }
+  
+  .social-share-modal {
+    max-height: 95vh;
+  }
+  
+  .social-share-header,
+  .social-share-content {
+    padding: 16px;
+  }
+  
+  .share-type-selector {
+    gap: 8px;
+  }
+  
+  .share-type-selector label {
+    padding: 10px;
+  }
+  
+  .url-container {
+    flex-direction: column;
+  }
+  
+  .copy-btn {
+    width: 100%;
+  }
+  
+  .platform-buttons {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .platform-btn {
+    padding: 10px 12px;
+    font-size: 0.85em;
+  }
+}
+
+@media (max-width: 480px) {
+  .platform-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .url-input {
+    font-size: 12px;
+  }
+}

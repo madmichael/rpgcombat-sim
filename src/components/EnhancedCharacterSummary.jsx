@@ -1,12 +1,19 @@
 import React from 'react';
 import AchievementBadge from './AchievementBadge';
 import CharacterUrlShare from './CharacterUrlShare';
+import GearSlots from './GearSlots';
+import { useGearEffects, getModifiedAbilities, getModifiedWeaponDamage } from '../hooks/useGearEffects';
 
-const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats = {} }) => {
+const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats = {}, onCharacterChange }) => {
   if (!character) return null;
 
+  // Calculate gear effects
+  const gearEffects = useGearEffects(character);
+  const modifiedStats = getModifiedAbilities(character, gearEffects);
+  const modifiedWeaponDamage = getModifiedWeaponDamage(character, gearEffects);
+
   const abilityList = ['Strength', 'Agility', 'Stamina', 'Personality', 'Intelligence', 'Luck'];
-  const AC = 10 + (character.modifiers ? character.modifiers['Agility'] : 0);
+  const AC = gearEffects.totalArmorClass;
   const maxHp = character.maxHp || character.hp;
   const currentHp = charHp !== null ? charHp : character.hp;
   const hpPercent = Math.max(0, Math.min(100, Math.round((currentHp / maxHp) * 100)));
@@ -19,6 +26,13 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
     fontFamily: 'system-ui, -apple-system, sans-serif'
   };
+
+  // Determine currently equipped weapon from gear slots (fallback to legacy character.weapon)
+  const meleeWeapon = character.gearSlots?.meleeWeapon;
+  const rangedWeapon = character.gearSlots?.rangedWeapon;
+  const rightHand = character.gearSlots?.rightHand;
+  const equippedWeapon = meleeWeapon || rangedWeapon || rightHand || null;
+  const equippedWeaponName = equippedWeapon?.name || character.weapon?.name || 'Unarmed';
 
   const sectionStyle = {
     background: 'rgba(255, 255, 255, 0.8)',
@@ -50,8 +64,15 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
     fontWeight: 'bold'
   };
 
+  const abilityStyle = {
+    ...statItemStyle,
+    background: 'rgba(52, 152, 219, 0.1)',
+    border: '1px solid rgba(52, 152, 219, 0.3)',
+    textAlign: 'center'
+  };
+
   return (
-    <div style={cardStyle}>
+    <div className="character-summary-card" style={cardStyle}>
       {/* Header Section */}
       <div style={{ textAlign: 'center', marginBottom: '16px' }}>
         <h2 style={{ margin: '0 0 8px 0', color: '#2c3e50', fontSize: '24px' }}>
@@ -125,10 +146,10 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
           </div>
           <div style={combatStatStyle}>
             <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
-              {character.weapon?.name || 'Unarmed'}
+              {equippedWeaponName}
             </div>
             <div style={{ fontSize: '12px', color: '#7f8c8d' }}>
-              {character.weapon?.damage || '1d3'} damage
+              {modifiedWeaponDamage} damage
             </div>
           </div>
         </div>
@@ -139,29 +160,25 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
         <h3 style={{ margin: '0 0 12px 0', color: '#3498db', fontSize: '18px' }}>📊 Abilities</h3>
         <div style={statGridStyle}>
           {abilityList.map(ability => {
-            // Access ability score - should be directly on character object from ...stats spread
-            const score = character[ability];
-            const mod = character.modifiers ? character.modifiers[ability] : 0;
-            const modStr = mod >= 0 ? `+${mod}` : `${mod}`;
-            
-            // Highlight Luck if it's changed
-            const isLuckChanged = ability === 'Luck' && character.originalLuck && character.Luck !== character.originalLuck;
-            const itemStyle = isLuckChanged ? 
-              { ...statItemStyle, background: 'rgba(243, 156, 18, 0.2)', border: '1px solid rgba(243, 156, 18, 0.5)' } : 
-              statItemStyle;
+            const baseScore = character.abilities ? character.abilities[ability] : character[ability];
+            const modifiedScore = modifiedStats?.abilities ? modifiedStats.abilities[ability] : baseScore;
+            const modifier = modifiedStats?.modifiers ? modifiedStats.modifiers[ability] : Math.floor((baseScore - 10) / 2);
+            const modifierStr = modifier >= 0 ? `+${modifier}` : `${modifier}`;
+            const gearBonus = gearEffects?.abilityModifiers ? gearEffects.abilityModifiers[ability] : 0;
+            const hasGearEffect = gearBonus !== 0;
             
             return (
-              <div key={ability} style={itemStyle}>
-                <div style={{ fontSize: '16px', fontWeight: 'bold' }}>{score}</div>
-                <div style={{ fontSize: '12px', color: '#7f8c8d' }}>{ability}</div>
-                <div style={{ fontSize: '12px', color: mod >= 0 ? '#27ae60' : '#e74c3c' }}>
-                  {modStr}
+              <div key={ability} style={abilityStyle}>
+                <div style={{ fontWeight: 'bold', fontSize: '14px', color: '#2c3e50' }}>{ability}</div>
+                <div style={{ fontSize: '18px', fontWeight: 'bold', color: hasGearEffect ? '#27ae60' : '#34495e' }}>
+                  {modifiedScore}
+                  {hasGearEffect && (
+                    <span style={{ fontSize: '12px', color: '#7f8c8d', marginLeft: '4px' }}>
+                      ({baseScore}{gearBonus > 0 ? '+' : ''}{gearBonus})
+                    </span>
+                  )}
                 </div>
-                {isLuckChanged && (
-                  <div style={{ fontSize: '10px', color: '#f39c12', fontWeight: 'bold' }}>
-                    (was {character.originalLuck})
-                  </div>
-                )}
+                <div style={{ fontSize: '12px', color: '#7f8c8d' }}>({modifierStr})</div>
               </div>
             );
           })}
@@ -171,9 +188,14 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
       {/* Equipment & Background */}
       <div style={sectionStyle}>
         <h3 style={{ margin: '0 0 12px 0', color: '#9b59b6', fontSize: '18px' }}>🎒 Equipment & Background</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', fontSize: '14px' }}>
+        <div className="equipment-background-grid" style={{ fontSize: '14px' }}>
           <div>
-            <strong>Weapon:</strong> {character.occupation?.['Trained Weapon'] || 'None'}
+            <strong>Weapon:</strong> {equippedWeaponName}
+            {modifiedWeaponDamage && (
+              <span style={{ color: '#27ae60', marginLeft: '8px' }}>
+                ({modifiedWeaponDamage})
+              </span>
+            )}
           </div>
           <div>
             <strong>Trade Good:</strong> {character.occupation?.['Trade Goods'] || 'None'}
@@ -269,6 +291,11 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
         </div>
       )}
       
+      {/* Gear Slots */}
+      <GearSlots 
+        character={character} 
+        onCharacterChange={onCharacterChange}
+      />  
       {/* Character URL Sharing */}
       <div style={sectionStyle}>
         <CharacterUrlShare 

@@ -1,0 +1,172 @@
+{
+  "gearSlots": [
+    "head",
+    "neck", 
+    "body",
+    "cloak",
+    "belt",
+    "arms",
+    "meleeWeapon",
+    "rangedWeapon",
+    "rightHand",
+    "leftHand",
+    "rightFingers",
+    "leftFingers",
+    "legs",
+    "feet",
+    "tradeGood"
+  ],
+  "gearTypes": {
+    "head": {
+      "name": "Head",
+      "icon": "🎩",
+      "description": "Helmets, hats, and headgear"
+    },
+    "neck": {
+      "name": "Neck",
+      "icon": "📿",
+      "description": "Amulets, necklaces, and torcs"
+    },
+    "body": {
+      "name": "Body",
+      "icon": "🛡️",
+      "description": "Robes, tunics, and other body coverings"
+    },
+    "cloak": {
+      "name": "Cloak",
+      "icon": "🧥",
+      "description": "Cloaks, capes, and mantles"
+    },
+    "belt": {
+      "name": "Belt",
+      "icon": "🔗",
+      "description": "Belts, sashes, and girdles"
+    },
+    "arms": {
+      "name": "Arms",
+      "icon": "🛡️",
+      "description": "Arm guards and bracers"
+    },
+    "meleeWeapon": {
+      "name": "Melee Weapon",
+      "icon": "⚔️",
+      "description": "Swords, axes, maces, and other close combat weapons"
+    },
+    "rangedWeapon": {
+      "name": "Ranged Weapon", 
+      "icon": "🏹",
+      "description": "Bows, crossbows, and other ranged weapons"
+    },
+    "rightHand": {
+      "name": "Right Hand",
+      "icon": "⚔️",
+      "description": "Gloves and other non-weapon hand coverings"
+    },
+    "leftHand": {
+      "name": "Left Hand", 
+      "icon": "🛡️",
+      "description": "Gloves and other non-weapon hand coverings"
+    },
+    "rightFingers": {
+      "name": "Right Fingers",
+      "icon": "💍",
+      "description": "Rings and finger accessories"
+    },
+    "leftFingers": {
+      "name": "Left Fingers",
+      "icon": "💍", 
+      "description": "Rings and finger accessories"
+    },
+    "legs": {
+      "name": "Legs",
+      "icon": "👖",
+      "description": "Pants and other non-armored leg coverings"
+    },
+    "feet": {
+      "name": "Feet",
+      "icon": "👢",
+      "description": "Boots, shoes, and foot coverings"
+    },
+    "tradeGood": {
+      "name": "Trade Good",
+      "icon": "📦",
+      "description": "Starting trade goods from your occupation"
+    }
+  },
+  "sampleGear": [
+    {
+      "id": "leather_helm",
+      "name": "Leather Helm",
+      "slot": "head",
+      "cost": 10,
+      "rarity": "common",
+      "effects": {
+        "armorClass": 1
+      },
+      "description": "A simple leather helmet providing basic head protection.",
+      "icon": "⛑️"
+    },
+    {
+      "id": "iron_sword",
+      "name": "Iron Sword", 
+      "slot": "rightHand",
+      "cost": 25,
+      "rarity": "common",
+      "effects": {
+        "damage": "1d8",
+        "attackBonus": 1
+      },
+      "description": "A well-crafted iron sword with a sharp edge.",
+      "icon": "⚔️"
+    },
+    {
+      "id": "wooden_shield",
+      "name": "Wooden Shield",
+      "slot": "leftHand", 
+      "cost": 15,
+      "rarity": "common",
+      "effects": {
+        "armorClass": 2
+      },
+      "description": "A sturdy wooden shield reinforced with iron bands.",
+      "icon": "🛡️"
+    },
+    {
+      "id": "chain_mail",
+      "name": "Chain Mail",
+      "slot": "body",
+      "cost": 75,
+      "rarity": "uncommon",
+      "effects": {
+        "armorClass": 4,
+        "agilityPenalty": -1
+      },
+      "description": "Interlocking metal rings providing excellent protection.",
+      "icon": "🛡️"
+    },
+    {
+      "id": "lucky_ring",
+      "name": "Lucky Ring",
+      "slot": "rightFingers",
+      "cost": 50,
+      "rarity": "uncommon", 
+      "effects": {
+        "luckBonus": 1
+      },
+      "description": "A simple ring that seems to bring good fortune.",
+      "icon": "💍"
+    },
+    {
+      "id": "sturdy_boots",
+      "name": "Sturdy Boots",
+      "slot": "feet",
+      "cost": 20,
+      "rarity": "common",
+      "effects": {
+        "movementBonus": 5
+      },
+      "description": "Well-made leather boots that provide sure footing.",
+      "icon": "👢"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 // Character URL encoding/decoding utilities
 // Allows users to share and bookmark characters via URL
+import { compressCharacterData, decompressCharacterData } from './urlCompression';
 
 /**
  * Encode character data into a URL-safe string
@@ -24,7 +25,10 @@ export const encodeCharacterToUrl = (character, achievements = null, stats = nul
       Intelligence: character.Intelligence,
       Luck: character.Luck,
       modifiers: character.modifiers,
+      // Currency: include both legacy and new fields
       funds: character.funds,
+      funds_cp: character.funds_cp,
+      startingFunds: character.startingFunds,
       tradeGood: character.tradeGood,
       birthAugur: character.birthAugur,
       occupation: character.occupation,
@@ -33,15 +37,22 @@ export const encodeCharacterToUrl = (character, achievements = null, stats = nul
       luck: character.luck,
       maxLuck: character.maxLuck,
       weapon: character.weapon,
+      gearSlots: character.gearSlots || {},
+      backpack: character.backpack || [],
       // Include achievements and stats if provided
       achievements: achievements || [],
       combatStats: stats || {}
     };
     
-    // Convert to JSON and encode
+    // Use compression for shorter URLs
+    const compressed = compressCharacterData(characterData);
+    if (compressed) {
+      return compressed;
+    }
+    
+    // Fallback to old method if compression fails
     const jsonString = JSON.stringify(characterData);
     const encoded = btoa(encodeURIComponent(jsonString));
-    
     return encoded;
   } catch (error) {
     console.error('Error encoding character:', error);
@@ -58,7 +69,15 @@ export const decodeCharacterFromUrl = (encodedData) => {
   if (!encodedData) return null;
   
   try {
-    // Decode from base64
+    // Try compressed formats first
+    if (encodedData.startsWith('v3_') || encodedData.startsWith('v2_')) {
+      const characterData = decompressCharacterData(encodedData);
+      if (characterData && characterData.name) {
+        return characterData;
+      }
+    }
+    
+    // Fallback to legacy format
     const jsonString = decodeURIComponent(atob(encodedData));
     console.log('Decoded JSON string:', jsonString);
     const characterData = JSON.parse(jsonString);

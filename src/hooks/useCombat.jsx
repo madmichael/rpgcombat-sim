@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react';
-import { roll1d20, roll1d6, parseDamageString, isRangedWeapon, isFumble, getFumbleResult, calculateAC } from '../utils/diceUtils';
+import { roll1d20, roll1d6, parseDamageString, isRangedWeapon, calculateAC } from '../utils/diceUtils';
+import { isFumble as isFumbleFU, getFumbleResult as getFumbleFU, applyFumbleEffect as applyFumbleEffectFU } from '../utils/fumbleUtils';
 import { useAudio } from './useAudio';
 import { useVictoryTracking } from './useVictoryTracking';
+import { useGearEffects, getModifiedAbilities, getModifiedWeaponDamage } from './useGearEffects';
+import { useLoot } from './useLoot';
 // import tradeGoodsData from '../data/tradeGoods.json';
 
-export const useCombat = (gameState, playSound, victoryTracking, achievementTracking) => {
+export const useCombat = (gameState, playSound, victoryTracking, achievementTracking, onCharacterChange, lootSystem) => {
   const { recordVictory, recordDefeat } = victoryTracking || useVictoryTracking();
+  const { generateMonsterLoot, generateCurrencyLoot } = lootSystem || useLoot();
   const [tradeGoodsData, setTradeGoodsData] = useState(null);
+  
+  // Calculate gear effects for the character
+  const gearEffects = useGearEffects(gameState.character);
+  const modifiedStats = gameState.character && gearEffects ? getModifiedAbilities(gameState.character, gearEffects) : null;
+  const modifiedWeaponDamage = gameState.character && gearEffects ? getModifiedWeaponDamage(gameState.character, gearEffects) : null;
 
   // Load trade goods data on mount
   useEffect(() => {
@@ -84,40 +93,44 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   };
 
   const applyFumbleEffect = (fumbleResult, character, weapon) => {
+    // Prefer detailed structured effects from fumbleUtils; fallback parsing keeps compatibility
+    const structured = applyFumbleEffectFU(fumbleResult, character, weapon);
+    if (structured && structured.length) return structured;
+
     const effects = [];
-    
-    // Parse fumble result to determine effects
-    const result = fumbleResult.result.toLowerCase();
-    
+    const result = (fumbleResult?.result || '').toLowerCase();
     if (result.includes('strikes themselves') || result.includes('accidentally strikes themselves')) {
-      // Self-damage effect
-      const damageResult = parseDamageString(weapon.dmg || weapon.damage || '1d4');
-      effects.push({
-        type: 'self_damage',
-        value: damageResult.damage
-      });
+      const damageResult = parseDamageString(modifiedWeaponDamage || weapon.dmg || weapon.damage || '1d4');
+      effects.push({ type: 'self_damage', value: damageResult.damage });
     } else if (result.includes('drops') && result.includes('weapon')) {
-      // Skip next attack (weapon dropped)
-      effects.push({
-        type: 'skip_next_attack',
-        value: 1
-      });
+      effects.push({ type: 'skip_next_attack', value: 1 });
     } else if (result.includes('falls prone') || result.includes('trips')) {
-      // Skip next attack (fallen prone)
-      effects.push({
-        type: 'skip_next_attack',
-        value: 1
-      });
+      effects.push({ type: 'skip_next_attack', value: 1 });
     }
-    
     return effects;
+  };
+
+  // Map equipped armor to DCC fumble armor type
+  const getArmorTypeForFumble = () => {
+    const armorItem = gameState?.character?.gearSlots?.armor;
+    const die = armorItem?.fumble_die || armorItem?.fumbleDie || armorItem?.effects?.fumble_die || armorItem?.effects?.fumbleDie;
+    const normalized = typeof die === 'string' ? die.replace(/\s+/g, '').toLowerCase() : '';
+    if (normalized.startsWith('1d')) {
+      const sides = parseInt(normalized.slice(2), 10);
+      if (sides >= 16) return 'heavy_armor';
+      if (sides >= 12) return 'medium_armor';
+      if (sides >= 8) return 'light_armor';
+      return 'no_armor';
+    }
+    return 'no_armor';
   };
 
   const performCharacterAttack = () => {
     const rawAttackRoll = roll1d20();
     const abilityType = isRangedWeapon(weapon.name) ? 'Agility' : 'Strength';
-    const abilityMod = character.modifiers ? character.modifiers[abilityType] : 0;
-    const charAttackRoll = rawAttackRoll + abilityMod + characterEffects.opponentAttackBonus;
+    const abilityMod = modifiedStats?.modifiers ? modifiedStats.modifiers[abilityType] : (character.modifiers ? character.modifiers[abilityType] : 0);
+    const gearAttackBonus = gearEffects?.attackBonus || 0;
+    const charAttackRoll = rawAttackRoll + abilityMod + gearAttackBonus + characterEffects.opponentAttackBonus;
     const monsterAC = Number(monster["Armor Class"]) + monsterEffects.attackPenalty;
     const charHit = charAttackRoll >= monsterAC;
     const charCritical = rawAttackRoll === 20;
@@ -132,19 +145,21 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     }
 
     let fumbleResult = null;
-    if (isFumble(rawAttackRoll, weapon)) {
-      fumbleResult = getFumbleResult();
+    if (isFumbleFU(rawAttackRoll)) {
+      const armorType = getArmorTypeForFumble();
+      const luckMod = modifiedStats?.modifiers ? (modifiedStats.modifiers.Luck || 0) : (character.modifiers ? (character.modifiers.Luck || 0) : 0);
+      fumbleResult = getFumbleFU(armorType, luckMod);
     }
 
     let charDmg = 0;
     let damageBreakdown = "";
     if (charHit && !fumbleResult) {
-      const damageResult = parseDamageString(weapon.dmg || weapon.damage);
+      const damageResult = parseDamageString(modifiedWeaponDamage || weapon.dmg || weapon.damage);
       charDmg = damageResult.damage;
       damageBreakdown = damageResult.breakdown;
       
       if (charCritical) {
-        const critDamageResult = parseDamageString(weapon.dmg || weapon.damage);
+        const critDamageResult = parseDamageString(modifiedWeaponDamage || weapon.dmg || weapon.damage);
         charDmg += critDamageResult.damage;
         damageBreakdown += ` + ${critDamageResult.breakdown} (crit)`;
       }
@@ -190,7 +205,8 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     
     const rawAttackRoll = roll1d20();
     const monsterAttackRoll = rawAttackRoll + attackBonus + monsterEffects.opponentAttackBonus;
-    const charAC = calculateAC(character) + characterEffects.attackPenalty;
+    const charACBase = gearEffects?.totalArmorClass ?? calculateAC(character);
+    const charAC = charACBase + characterEffects.attackPenalty;
     const monsterHit = monsterAttackRoll >= charAC;
     const monsterCritical = rawAttackRoll === 20;
 
@@ -304,6 +320,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     if (!charHit && diff > 0 && diff <= character.Luck && rawAttackRoll !== 1) {
       setShowLuckConfirmModal(true);
       setPendingAttack({ rawAttackRoll, charAttackRoll, diff, charDmg, abilityType });
+      setIsActionInProgress(false);
       return;
     }
 
@@ -366,11 +383,42 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     if (newMonsterHp <= 0) {
       const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
       const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} in glorious combat.`;
+      
+      // Generate treasure rewards
+      const currencyReward = generateCurrencyLoot(monster);
+      const itemRewards = generateMonsterLoot(monster);
+      
+      // Add currency to character (use canonical funds_cp in copper, fallback from legacy funds if needed)
+      if (currencyReward > 0 && onCharacterChange) {
+        const baseCp = Number(
+          character?.funds_cp ?? (typeof character?.funds === 'number' ? character.funds : 0)
+        ) || 0;
+        const newCp = baseCp + Number(currencyReward || 0);
+        const updatedCharacter = {
+          ...character,
+          funds_cp: newCp,
+          // keep legacy in sync for backward compatibility
+          funds: newCp
+        };
+        onCharacterChange(updatedCharacter);
+      }
+      
       setCombatLog(prev => [...prev, { 
         type: 'summary', 
         message: summaryMessage,
         timestamp: new Date().toLocaleTimeString()
       }]);
+      
+      // Add treasure notification to combat log
+      if (currencyReward > 0 || itemRewards.length > 0) {
+        const treasureMessage = `Found ${currencyReward} copper pieces${itemRewards.length > 0 ? ` and ${itemRewards.length} item${itemRewards.length > 1 ? 's' : ''}` : ''}!`;
+        setCombatLog(prev => [...prev, { 
+          type: 'treasure', 
+          message: treasureMessage,
+          timestamp: new Date().toLocaleTimeString()
+        }]);
+      }
+      
       setFightStatus('finished');
       setSummary(summaryMessage);
       recordVictory(character, monster);
@@ -415,7 +463,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     setShowLuckConfirmModal(false);
     if (!pendingAttack) return;
     
-    const abilityMod = character.modifiers ? (pendingAttack.abilityType ? character.modifiers[pendingAttack.abilityType] : 0) : 0;
+    const abilityMod = modifiedStats?.modifiers ? (pendingAttack.abilityType ? modifiedStats.modifiers[pendingAttack.abilityType] : 0) : (character.modifiers ? (pendingAttack.abilityType ? character.modifiers[pendingAttack.abilityType] : 0) : 0);
     const modSign = abilityMod >= 0 ? '+' : '';
     const charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} (${pendingAttack.abilityType}) = ${pendingAttack.charAttackRoll} vs. AC ${monsterACRevealed ? monster["Armor Class"] : '?'} and misses!`;
     
@@ -450,7 +498,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     if (!pendingAttack || !character) return;
     
     let newLuck = character.Luck - amount;
-    const abilityMod = character.modifiers ? (pendingAttack.abilityType ? character.modifiers[pendingAttack.abilityType] : 0) : 0;
+    const abilityMod = modifiedStats?.modifiers ? (pendingAttack.abilityType ? modifiedStats.modifiers[pendingAttack.abilityType] : 0) : (character.modifiers ? (pendingAttack.abilityType ? character.modifiers[pendingAttack.abilityType] : 0) : 0);
     const modSign = abilityMod >= 0 ? '+' : '';
     const newAttackRoll = pendingAttack.rawAttackRoll + abilityMod + amount;
     const monsterAC = Number(monster["Armor Class"]);
@@ -462,7 +510,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     let charDmg = 0;
     let charDamageBreakdown = "";
     if (charHit) {
-      const damageResult = parseDamageString(weapon.dmg || weapon.damage);
+      const damageResult = parseDamageString(modifiedWeaponDamage || weapon.dmg || weapon.damage);
       charDmg = damageResult.damage;
       charDamageBreakdown = damageResult.breakdown;
     }
@@ -474,7 +522,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     }
     
     if (charCritical && charHit) {
-      const critDamageResult = parseDamageString(weapon.dmg || weapon.damage);
+      const critDamageResult = parseDamageString(modifiedWeaponDamage || weapon.dmg || weapon.damage);
       charDmg += critDamageResult.damage;
       charDamageBreakdown += ` + ${critDamageResult.breakdown} (crit)`;
       newMonsterHp = Number(newMonsterHp) - charDmg;
@@ -509,11 +557,42 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     if (newMonsterHp <= 0) {
       const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
       const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} in glorious combat.`;
+      
+      // Generate treasure rewards
+      const currencyReward = generateCurrencyLoot(monster);
+      const itemRewards = generateMonsterLoot(monster);
+      
+      // Add currency to character (use canonical funds_cp in copper, fallback from legacy funds if needed)
+      if (currencyReward > 0 && onCharacterChange) {
+        const baseCp = Number(
+          character?.funds_cp ?? (typeof character?.funds === 'number' ? character.funds : 0)
+        ) || 0;
+        const newCp = baseCp + Number(currencyReward || 0);
+        const updatedCharacter = {
+          ...character,
+          funds_cp: newCp,
+          // keep legacy in sync for backward compatibility
+          funds: newCp
+        };
+        onCharacterChange(updatedCharacter);
+      }
+      
       setCombatLog(prev => [...prev, { 
         type: 'summary', 
         message: summaryMessage,
         timestamp: new Date().toLocaleTimeString()
       }]);
+      
+      // Add treasure notification to combat log
+      if (currencyReward > 0 || itemRewards.length > 0) {
+        const treasureMessage = `Found ${currencyReward} copper pieces${itemRewards.length > 0 ? ` and ${itemRewards.length} item${itemRewards.length > 1 ? 's' : ''}` : ''}!`;
+        setCombatLog(prev => [...prev, { 
+          type: 'treasure', 
+          message: treasureMessage,
+          timestamp: new Date().toLocaleTimeString()
+        }]);
+      }
+      
       setFightStatus('finished');
       setSummary(summaryMessage);
       recordVictory(character, monster);
@@ -708,8 +787,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     // Roll attack like a normal attack
     const rawAttackRoll = roll1d20();
     const abilityType = isRangedWeapon(weapon?.name) ? 'Agility' : 'Strength';
-    const abilityMod = character.modifiers ? character.modifiers[abilityType] : 0;
-    const attackRoll = rawAttackRoll + abilityMod + characterEffects.opponentAttackBonus;
+    const abilityMod = modifiedStats?.modifiers ? modifiedStats.modifiers[abilityType] : (character.modifiers ? character.modifiers[abilityType] : 0);
+    const gearAttackBonus = gearEffects?.attackBonus || 0;
+    const attackRoll = rawAttackRoll + abilityMod + gearAttackBonus + characterEffects.opponentAttackBonus;
     const monsterAC = Number(monster["Armor Class"]) + monsterEffects.attackPenalty;
     const attackHits = attackRoll >= monsterAC;
     
@@ -750,7 +830,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       setCombatLog(prev => [...prev, deedMessage]);
     } else if (attackHits) {
       // Calculate damage
-      const damageResult = parseDamageString(weapon?.dmg || weapon?.damage || "1d4");
+      const damageResult = parseDamageString(modifiedWeaponDamage || weapon?.dmg || weapon?.damage || "1d4");
       charDmg = damageResult.damage;
       damageBreakdown = damageResult.breakdown;
       
@@ -831,6 +911,29 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           message: summaryMessage,
           timestamp: new Date().toLocaleTimeString()
         }]);
+        // Generate treasure rewards
+        const currencyReward = generateCurrencyLoot(monster);
+        const itemRewards = generateMonsterLoot(monster);
+        
+        // Add currency to character
+        if (currencyReward > 0 && onCharacterChange) {
+          const updatedCharacter = {
+            ...character,
+            funds: character.funds + currencyReward
+          };
+          onCharacterChange(updatedCharacter);
+        }
+        
+        // Add treasure notification to combat log
+        if (currencyReward > 0 || itemRewards.length > 0) {
+          const treasureMessage = `Found ${currencyReward} copper pieces${itemRewards.length > 0 ? ` and ${itemRewards.length} item${itemRewards.length > 1 ? 's' : ''}` : ''}!`;
+          setCombatLog(prev => [...prev, { 
+            type: 'treasure', 
+            message: treasureMessage,
+            timestamp: new Date().toLocaleTimeString()
+          }]);
+        }
+        
         setFightStatus('finished');
         setSummary(summaryMessage);
         recordVictory(character, monster, rawAttackRoll === 20 && deedRoll === 6 ? 'mighty_critical' : deedSucceeds ? 'mighty_deed' : 'normal');
