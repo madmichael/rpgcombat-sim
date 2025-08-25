@@ -75,6 +75,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     setCharacter
   } = gameState;
 
+  // Display name that tags quest bosses in logs and UI strings
+  const monsterDisplayName = monster?.__questBoss ? `${monster.name} [Quest Boss]` : monster?.name;
+
   const rollInitiative = () => {
     const charInitRoll = roll1d20() + (character.modifiers ? character.modifiers['Agility'] : 0);
     const monsterInitRoll = roll1d20();
@@ -92,14 +95,14 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       return {
         charInitiative: rerollChar > rerollMonster,
         monsterInitiative: rerollMonster > rerollChar,
-        initiativeMessage: `Initiative tie! ${character.name} rerolls ${rerollChar}, ${monster.name} rerolls ${rerollMonster}. ${rerollChar > rerollMonster ? character.name : monster.name} goes first!`
+        initiativeMessage: `Initiative tie! ${character.name} rerolls ${rerollChar}, ${monsterDisplayName} rerolls ${rerollMonster}. ${rerollChar > rerollMonster ? character.name : monsterDisplayName} goes first!`
       };
     }
     
     return {
       charInitiative: charInitRoll > monsterInitRoll,
       monsterInitiative: monsterInitRoll > charInitRoll,
-      initiativeMessage: `Initiative: ${character.name} rolls ${charInitRoll}, ${monster.name} rolls ${monsterInitRoll}. ${charInitRoll > monsterInitRoll ? character.name : monster.name} goes first!`
+      initiativeMessage: `Initiative: ${character.name} rolls ${charInitRoll}, ${monsterDisplayName} rolls ${monsterInitRoll}. ${charInitRoll > monsterInitRoll ? character.name : monsterDisplayName} goes first!`
     };
   };
 
@@ -214,7 +217,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       setMonsterHp(newHp);
       const breakdown = dmg.breakdown;
       const breakdownDisplay = breakdown.includes('=') || breakdown.includes('+') ? ` [${breakdown}]` : '';
-      setCombatLog(prev => [...prev, `🔥 ${monster.name} takes ${dmg.damage} ongoing damage${breakdownDisplay} at the start of its turn (${newHp} HP left).`]);
+      setCombatLog(prev => [...prev, ` ${monsterDisplayName} takes ${dmg.damage} ongoing damage${breakdownDisplay} at the start of its turn (${newHp} HP left).`]);
 
       // decrement ongoing duration
       setMonsterEffects(prev => {
@@ -228,7 +231,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       // If the monster dies from ongoing damage, end turn and fight appropriately
       if (newHp <= 0) {
         const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
-        const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} as it succumbs to ongoing damage!`;
+        const summaryMessage = `${character.name} has defeated ${monsterDisplayName}${challengeText} as it succumbs to ongoing damage!`;
         setCombatLog(prev => [...prev, { type: 'summary', message: summaryMessage, timestamp: new Date().toLocaleTimeString() }]);
         setSummary(summaryMessage);
         setFightStatus('finished');
@@ -244,7 +247,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     // Check if monster should skip this action (explicit skip flag)
     if (monsterEffects.skipNextAction) {
       setMonsterEffects(prev => ({ ...prev, skipNextAction: false }));
-      setCombatLog(prev => [...prev, `💤 ${monster.name} loses their action and cannot attack this round!`]);
+      setCombatLog(prev => [...prev, `💤 ${monsterDisplayName} loses their action and cannot attack this round!`]);
       return null;
     }
 
@@ -256,7 +259,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
         next.proneDuration = d;
         return next;
       });
-      setCombatLog(prev => [...prev, `🤸 ${monster.name} is prone and spends the round recovering!`]);
+      setCombatLog(prev => [...prev, `🤸 ${monsterDisplayName} is prone and spends the round recovering!`]);
       return null;
     }
 
@@ -304,8 +307,8 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     const penaltyDisplay = effectiveMonsterPenalty ? ` - ${effectiveMonsterPenalty}` : '';
     const bonusDisplay = effectiveMonsterBonus ? ` + ${effectiveMonsterBonus}` : '';
     const attackMessage = monsterHit
-      ? `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and hits for ${monsterDmg} damage${monsterDamageDisplay}${monsterCritical ? ' - CRITICAL HIT!' : ''} (${newCharHp} HP left)`
-      : `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and misses!`;
+      ? `${monsterDisplayName} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and hits for ${monsterDmg} damage${monsterDamageDisplay}${monsterCritical ? ' - CRITICAL HIT!' : ''} (${newCharHp} HP left)`
+      : `${monsterDisplayName} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and misses!`;
 
     // Decrement monster effect durations at the end of its action
     setMonsterEffects(prev => {
@@ -363,7 +366,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
             setCombatLog(prev => [...prev, monsterAttackResult.attack]);
             
             if (monsterAttackResult.newCharHp <= 0) {
-              const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+              const summaryMessage = `${character.name} has been defeated by ${monsterDisplayName}.`;
               setCombatLog(prev => [...prev, { 
                 type: 'summary', 
                 message: summaryMessage,
@@ -430,7 +433,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           if (monsterAttackResult) {
             setCombatLog(prev => [...prev, monsterAttackResult.attack]);
             if (monsterAttackResult.newCharHp <= 0) {
-              const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+              const summaryMessage = `${character.name} has been vanquished by ${monsterDisplayName}.`;
               setCombatLog(prev => [...prev, { type: 'summary', message: summaryMessage, timestamp: new Date().toLocaleTimeString() }]);
               setSummary(summaryMessage);
               setFightStatus('finished');
@@ -506,8 +509,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     let displayHp;
     
     if (fumbleResult) {
-      displayHp = currentMonsterHp > 0 ? currentMonsterHp : (monster["Hit Points"] || monster.hp || 1);
-      charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and FUMBLES! Rolled ${fumbleResult.rawRoll} on ${fumbleResult.fumbleDie} (adjusted ${fumbleResult.adjustedRoll}): ${fumbleResult.result}`;
+      const fallbackMax = Number(monster.maxHp ?? monster.hp ?? 1);
+      displayHp = currentMonsterHp > 0 ? currentMonsterHp : fallbackMax;
+      charAttack = `${character.name} attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and FUMBLES! Rolled ${fumbleResult.rawRoll} on ${fumbleResult.fumbleDie} (adjusted ${fumbleResult.adjustedRoll}): ${fumbleResult.result}`;
       
       const fumbleEffects = applyFumbleEffect(fumbleResult, character, weapon);
       
@@ -534,13 +538,14 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       displayHp = updatedMonsterHp;
       const damageDisplay = damageBreakdown.includes('=') || damageBreakdown.includes('+') || damageBreakdown.includes('(crit)') ? ` [${damageBreakdown}]` : '';
       charAttack = charCritical
-        ? `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${damageDisplay} (${displayHp} HP left) - CRITICAL HIT!`
-        : `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${damageDisplay} (${displayHp} HP left)`;
+        ? `${character.name} attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${damageDisplay} (${displayHp} HP left) - CRITICAL HIT!`
+        : `${character.name} attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${damageDisplay} (${displayHp} HP left)`;
       setMonsterHp(updatedMonsterHp);
       playSound('slash');
     } else {
-      displayHp = currentMonsterHp > 0 ? currentMonsterHp : (monster["Hit Points"] || monster.hp || 1);
-      charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and misses! (${displayHp} HP left)`;
+      const fallbackMax = Number(monster.maxHp ?? monster.hp ?? 1);
+      displayHp = currentMonsterHp > 0 ? currentMonsterHp : fallbackMax;
+      charAttack = `${character.name} attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and misses! (${displayHp} HP left)`;
       if (currentMonsterHp > 0) setMonsterHp(displayHp);
       playSound('block');
     }
@@ -549,7 +554,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       
     if (newMonsterHp <= 0) {
       const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
-      const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} in glorious combat.`;
+      const summaryMessage = `${character.name} has defeated ${monsterDisplayName}${challengeText} in glorious combat.`;
       
       // Generate treasure rewards
       const currencyReward = generateCurrencyLoot(monster);
@@ -607,7 +612,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           setCombatLog(prev => [...prev, monsterAttackResult.attack]);
           
           if (monsterAttackResult.newCharHp <= 0) {
-            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            const summaryMessage = `${character.name} has been vanguished by ${monsterDisplayName}.`;
             setCombatLog(prev => [...prev, { 
               type: 'summary', 
               message: summaryMessage,
@@ -635,7 +640,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     
     const abilityMod = modifiedStats?.modifiers ? (pendingAttack.abilityType ? modifiedStats.modifiers[pendingAttack.abilityType] : 0) : (character.modifiers ? (pendingAttack.abilityType ? character.modifiers[pendingAttack.abilityType] : 0) : 0);
     const modSign = abilityMod >= 0 ? '+' : '';
-    const charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} (${pendingAttack.abilityType}) = ${pendingAttack.charAttackRoll} vs. AC ${monsterACRevealed ? monster["Armor Class"] : '?'} and misses!`;
+    const charAttack = `${character.name} attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} (${pendingAttack.abilityType}) = ${pendingAttack.charAttackRoll} vs. AC ${monsterACRevealed ? monster["Armor Class"] : '?'} and misses!`;
     
     setCombatLog(prev => [...prev, charAttack]);
     setPendingAttack(null);
@@ -649,7 +654,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           setCombatLog(prev => [...prev, monsterAttackResult.attack]);
           
           if (monsterAttackResult.newCharHp <= 0) {
-            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            const summaryMessage = `${character.name} has been vanguished by ${monsterDisplayName}.`;
             setCombatLog(prev => [...prev, { 
               type: 'summary', 
               message: summaryMessage,
@@ -698,14 +703,14 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       newMonsterHp = Number(newMonsterHp) - charDmg;
       const displayHp = newMonsterHp < 0 ? 0 : newMonsterHp;
       const luckDamageDisplay = charDamageBreakdown.includes('=') || charDamageBreakdown.includes('+') || charDamageBreakdown.includes('(crit)') ? ` [${charDamageBreakdown}]` : '';
-      charAttack = `${character.name} burns ${amount} Luck and attacks ${monster.name} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${luckDamageDisplay} (${displayHp} HP left) - CRITICAL HIT!`;
+      charAttack = `${character.name} burns ${amount} Luck and attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${luckDamageDisplay} (${displayHp} HP left) - CRITICAL HIT!`;
     } else if (charHit) {
       newMonsterHp = Number(newMonsterHp) - charDmg;
       const displayHp = newMonsterHp < 0 ? 0 : newMonsterHp;
       const luckDamageDisplay = charDamageBreakdown.includes('=') || charDamageBreakdown.includes('+') || charDamageBreakdown.includes('(crit)') ? ` [${charDamageBreakdown}]` : '';
-      charAttack = `${character.name} burns ${amount} Luck and attacks ${monster.name} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${luckDamageDisplay} (${displayHp} HP left)`;
+      charAttack = `${character.name} burns ${amount} Luck and attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and hits for ${charDmg} damage${luckDamageDisplay} (${displayHp} HP left)`;
     } else {
-      charAttack = `${character.name} burns ${amount} Luck and attacks ${monster.name} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and misses!`;
+      charAttack = `${character.name} burns ${amount} Luck and attacks ${monsterDisplayName} with ${weapon.name} and rolls a ${pendingAttack.rawAttackRoll} ${modSign}${abilityMod} +${amount} (${pendingAttack.abilityType}) = ${newAttackRoll} vs. AC ${monsterACRevealed ? monsterAC : '?'} and misses!`;
     }
     
     if (newLuck < 0) newLuck = 0;
@@ -726,7 +731,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     
     if (newMonsterHp <= 0) {
       const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
-      const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} in glorious combat.`;
+      const summaryMessage = `${character.name} has defeated ${monsterDisplayName}${challengeText} in glorious combat.`;
       
       // Generate treasure rewards
       const currencyReward = generateCurrencyLoot(monster);
@@ -782,7 +787,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
           setCombatLog(prev => [...prev, monsterAttackResult.attack]);
           
           if (monsterAttackResult.newCharHp <= 0) {
-            const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+            const summaryMessage = `${character.name} has been vanquished by ${monsterDisplayName}.`;
             setCombatLog(prev => [...prev, { 
               type: 'summary', 
               message: summaryMessage,
@@ -936,7 +941,7 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     // Cosmetic forced movement: log only
     if (effects.monsterForcedMovement) {
       const squares = effects.monsterForcedMovement;
-      setCombatLog(prev => [...prev, `${monster.name} is forced back ${squares} squares!`]);
+      setCombatLog(prev => [...prev, `${monsterDisplayName} is forced back ${squares} squares!`]);
     }
     
     // Handle self-damage effects
@@ -1115,9 +1120,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       if (finalMonsterHp <= 0) {
         const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
         const summaryMessage = (rawAttackRoll === 20 && deedRoll === 6) ? 
-          `${character.name} has defeated ${monster.name}${challengeText} in glorious combat with a Mighty Critical!` :
-          (deedSucceeds ? `${character.name} has defeated ${monster.name}${challengeText} in glorious combat with a Mighty Deed!` :
-          `${character.name} has defeated ${monster.name}${challengeText} in combat.`);
+          `${character.name} has defeated ${monsterDisplayName}${challengeText} in glorious combat with a Mighty Critical!` :
+          (deedSucceeds ? `${character.name} has defeated ${monsterDisplayName}${challengeText} in glorious combat with a Mighty Deed!` :
+          `${character.name} has defeated ${monsterDisplayName}${challengeText} in combat.`);
         setCombatLog(prev => [...prev, { 
           type: 'summary', 
           message: summaryMessage,

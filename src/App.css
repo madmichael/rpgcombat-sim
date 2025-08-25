@@ -651,11 +651,6 @@ body {
 }
 
 /* Monster Encounter Styles */
-.monster-encounter {
-  margin: 2rem 0;
-  animation: encounterAppear 0.8s ease-out;
-}
-
 .encounter-card {
   background: linear-gradient(135deg, #8b0000 0%, #a52a2a 100%);
   color: white;
@@ -679,48 +674,6 @@ body {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.encounter-challenge {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: inline-block;
-}
-
-.encounter-content {
-  padding: 2rem;
-}
-
-.monster-info {
-  margin-bottom: 1.5rem;
-}
-
-.monster-name {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.monster-icon {
-  font-size: 3rem;
-}
-
-.name-text {
-  font-size: 2rem;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.monster-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
 .stat-item {
   background: rgba(255, 255, 255, 0.1);
   padding: 1rem;
@@ -740,33 +693,6 @@ body {
   display: block;
   font-size: 1.5rem;
   font-weight: bold;
-}
-
-.encounter-flavor {
-  background: rgba(0, 0, 0, 0.2);
-  padding: 1rem;
-  border-radius: 8px;
-  border-left: 4px solid #ff6b6b;
-}
-
-.encounter-flavor p {
-  margin: 0.5rem 0;
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
-@keyframes encounterAppear {
-  0% {
-    opacity: 0;
-    transform: scale(0.8) translateY(30px);
-  }
-  50% {
-    transform: scale(1.05) translateY(-10px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
 }
 
 /* New Combat Layout */
@@ -2040,8 +1966,7 @@ body {
 }
 
 /* Expandable Details Styles */
-.character-details-expanded,
-.monster-details-expanded {
+.character-details-expanded {
   margin-top: 1rem;
   padding-top: 1rem;
   border-top: 2px solid #e9ecef;

@@ -1,0 +1,164 @@
+{
+  "quests": [
+    {
+      "id": "barnfire",
+      "title": "Fire in the Barn",
+      "summary": "Save the livestock, then face the arsonist.",
+      "publisher": "Magical Mishap Games",
+      "publisherLogo": "/images/publishers/magical-mishap-games-logo.png",
+      "product": {
+        "name": "Funnel Farm Adventure",
+        "coverImage": "/images/quests/funnel-farm.jpg",
+        "externalUrl": "https://www.magicalmishap.com/"
+      },
+      "difficulty": "standard",
+      "longDescription": "A sudden blaze engulfs the old barn at the edge of town. Form a bucket brigade, brave the choking smoke, and root out the arsonist cultist behind the chaos.",
+      "challenges": [
+        {
+          "id": "bucket-brigade",
+          "title": "Bucket Brigade",
+          "ability": "Strength",
+          "difficulty": "standard",
+          "description": "Carry water through smoke.",
+          "successText": "You and the townsfolk douse the worst of the flames, buying time for the livestock to be led to safety.",
+          "failureText": "The line falters and flames surge. The smoke thickens, making every breath burn.",
+          "onSuccessBossMods": { "bossACDelta": -1 },
+          "onFailureBossMods": { "bossAttackBonusDelta": 1 }
+        },
+        {
+          "id": "smoke-crawl",
+          "title": "Smoke Crawl",
+          "ability": "Agility",
+          "difficulty": "easy",
+          "description": "Crawl low to avoid choking smoke.",
+          "successText": "You keep low and move fast, clearing a path and rescuing a trapped calf.",
+          "failureText": "You cough and stumble in the dark haze, losing precious moments.",
+          "onSuccessBossMods": { "bossAttackBonusDelta": -1 },
+          "onFailureBossMods": { "bossDamageDice": "+1d3" }
+        }
+      ],
+      "bossRef": { "bossId": "cultist-pyromancer" },
+      "reward": {
+        "staticUrl": "https://store.tld/funnel-farm?code=FUNNEL10"
+      },
+      "completionText": "With the barn saved and the pyromancer defeated, the town breathes a smoky sigh of relief.",
+      "failureText": "The flames win the night. Ash and regret coat the town come morning.",
+      "failureLootUrl": "https://store.tld/consolation?code=TRYAGAIN10",
+      "tags": ["Magical Mishap Games"]
+    },
+    {
+      "id": "gnollwhere-attacks",
+      "title": "From Out of Gnollwhere",
+      "summary": "Investigate the gnoll attacks spreading from Turley Hollow into the Auld.",
+      "publisher": "Wayward Studios",
+      "publisherLogo": "/quest_images/wayward-studios-logo.png",
+      "product": {
+        "name": "From Out of Gnollwhere",
+        "coverImage": "quest_images/wayward-studios_out-of-gnollwhere.webp",
+        "externalUrl": "/quest_images/wayward-studios-logo.png"
+      },
+      "difficulty": "hard",
+      "longDescription": "While celebrating the harvest festival at the Haystack Inn in Rurayne’s Crossing, the revelry is shattered by a bloodied young couple fleeing a gnoll massacre. Once merely disorganized raiders, the gnolls have become frighteningly militaristic and precise. The heroes are urged to investigate: from the desecrated streets of Turley Hollow to the shadowed boughs of the Auld, where ancient ruins conceal the tomb of a long-forgotten Chaos Lord. Something drives the gnolls beyond their nature, and its source must be confronted before the wilds consume the land.",
+      "challenges": [
+        {
+          "id": "harvest-festival-defense",
+          "title": "Protect the Festival",
+          "ability": "Agility",
+          "difficulty": "standard",
+          "description": "As panic spreads in the Haystack Inn, you must keep villagers calm and secure against sudden gnoll scouts.",
+          "successText": "The villagers are ushered to safety, and you gain their trust and supplies.",
+          "failureText": "Panic breaks out; several innocents are lost before order is restored.",
+          "onSuccessBossMods": { "bossHPDelta": -3 },
+          "onFailureBossMods": { "bossAttackBonusDelta": 1 }
+        },
+        {
+          "id": "turley-hollow",
+          "title": "Investigate Turley Hollow",
+          "ability": "Intelligence",
+          "difficulty": "hard",
+          "description": "Examine the ravaged outpost for signs of the gnolls’ new strategy and dark masters.",
+          "successText": "You piece together the gnolls’ disciplined tactics, and spot sigils linking them to a forgotten Chaos cult.",
+          "failureText": "The trail grows cold; worse, you walk into an ambush and escape barely alive.",
+          "onSuccessBossMods": { "bossACDelta": -1 },
+          "onFailureBossMods": { "bossDamageDice": "+1d4" }
+        },
+        {
+          "id": "auld-veil",
+          "title": "Into the Auld",
+          "ability": "Willpower",
+          "difficulty": "hard",
+          "description": "Resist the oppressive atmosphere and fell whispers within the Auld’s shadowy trees as you approach the Chaos Lord’s tomb.",
+          "successText": "Your resolve steadies your companions, and you reach the tomb in fighting form.",
+          "failureText": "The whispers gnaw at your mind; fear and fatigue weigh heavily as you descend into the tomb.",
+          "onSuccessBossMods": { "bossAttackBonusDelta": -2 },
+          "onFailureBossMods": { "bossHPDelta": "+5" }
+        }
+      ],
+      "bossRef": { "bossId": "chaos-lord-warlord" },
+      "reward": {
+        "staticUrl": "https://waywardstudiosrpg.com/"
+      },
+      "completionText": "The gnoll horde scatters with their leader’s fall. The dark tomb lies silent once more, though foul whispers still cling to the stones.",
+      "failureText": "The gnolls, united under their dark master, surge forth unchecked. The Auld becomes a cradle of chaos, devouring Rurayne’s Crossing in blood and ash.",
+      "failureLootUrl": "https://waywardstudiosrpg.com/?code=TRYAGAIN10",
+      "tags": ["Wayward Studios", "Gnolls", "Chaos Lord", "DCC Compatible"]
+    },
+    {
+      "id": "precipice-corruption",
+      "title": "The Precipice of Corruption",
+      "summary": "Answer Stennard’s desperate call and uncover what devours hunters in the forbidden west.",
+      "publisher": "Breaker Press Games",
+      "publisherLogo": "quest_images/BreakerPress_Logo.webp",
+      "product": {
+        "name": "The Precipice of Corruption",
+        "coverImage": "quest_images/breaker-press_precipice-of-corruption.jpg",
+        "externalUrl": "https://breakerpressgames.com"
+      },
+      "difficulty": "deadly",
+      "longDescription": "The people of Stennard starve. Crops rot in the field, and famine gnaws at every door. The constable sends hunters into the forbidden lands to the west in a last, desperate bid to stave off ruin. None return. Now a ragged mob of opportunists and sinners—your party—answers the call, whether for coin, mercy, or hunger itself. As the trail winds into the blighted wilds and broken stones of a forgotten ruin, the truth becomes clear: corruption has seeped into flesh and soil alike, and its source waits below, ravenous and patient.",
+      "challenges": [
+        {
+          "id": "blighted-harvest",
+          "title": "Scavenge in the Fields",
+          "ability": "Stamina",
+          "difficulty": "standard",
+          "description": "Search the diseased fields for edible scraps before the journey west.",
+          "successText": "You find a pitiful cache of tubers and dried meat, enough to stave off hunger for the first day.",
+          "failureText": "Your search turns up only rotted husks. You begin the trek weakened by hunger.",
+          "onSuccessBossMods": { "bossHPDelta": -3 },
+          "onFailureBossMods": { "bossAttackBonusDelta": 1 }
+        },
+        {
+          "id": "forbidden-woods",
+          "title": "Forbidden Woods",
+          "ability": "Agility",
+          "difficulty": "hard",
+          "description": "Navigate the treacherous, twisted terrain where hunters vanished.",
+          "successText": "You evade lurking horrors and reach the ruin by dusk, unscathed.",
+          "failureText": "You stumble into a predator’s ambush and barely escape, scarred and shaken.",
+          "onSuccessBossMods": { "bossACDelta": -1 },
+          "onFailureBossMods": { "bossDamageDice": "+1d4" }
+        },
+        {
+          "id": "corruption-altar",
+          "title": "Profane Altar",
+          "ability": "Willpower",
+          "difficulty": "hard",
+          "description": "Confront the malign whispers emanating from a ruinous altar deep underground.",
+          "successText": "You resist the voice and weaken the corruption’s grip on its champion.",
+          "failureText": "The voice festers in your mind; the champion is emboldened with unholy vigor.",
+          "onSuccessBossMods": { "bossAttackBonusDelta": -2 },
+          "onFailureBossMods": { "bossHPDelta": "+6" }
+        }
+      ],
+      "bossRef": { "bossId": "corruption-champion" },
+      "reward": {
+        "staticUrl": "https://breakerpressgames.com/precipice"
+      },
+      "completionText": "With the corruption’s champion slain, the blight recoils for now. Yet Stennard remains on the brink, and the famine claws ever closer.",
+      "failureText": "The corruption spreads unchecked. Stennard rots from within, its people consumed by hunger, despair, and worse.",
+      "failureLootUrl": "https://breakerpressgames.com/precipice",
+      "tags": ["Breaker Press Games", "Stennard", "Grimdark", "DCC Compatible"]
+    }
+  ]
+}

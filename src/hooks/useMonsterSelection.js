@@ -53,13 +53,13 @@ export const useMonsterSelection = (gameState) => {
       monsterData = null;
     }
 
-    // Roll HP using Hit Die from template and add base Hit Points value
-    const rolledHp = rollDice(template["Hit Die"]) + template["Hit Points"];
+    // Roll HP using only the Hit Die from the template (DCC rules)
+    const rolledHp = rollDice(template["Hit Die"]);
     
     // Use monsterData fields, fallback to template if missing
     const mon = {
       name: monsterData && monsterData.name ? monsterData.name : (entry.name || entry),
-      hp: rolledHp, // Use rolled HP (dice + base) instead of static value
+      hp: rolledHp, // Use rolled HP instead of any static value
       maxHp: rolledHp, // Store max HP for reference
       armor: monsterData && monsterData["Armor Class"] ? monsterData["Armor Class"] : template["Armor Class"],
       attack: monsterData && monsterData["Attack"] ? monsterData["Attack"] : template["Attack"],

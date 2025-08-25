@@ -3,9 +3,9 @@ import React from 'react';
 const EnhancedMonsterDisplay = ({ monster, challengeLabel, monsterHp, maxHp }) => {
   if (!monster) return null;
 
-  const hpPercent = maxHp ? Math.max(0, Math.min(100, Math.round((monsterHp / maxHp) * 100))) : 100;
-  const currentHp = monsterHp !== null ? monsterHp : monster.hp;
-  const totalHp = maxHp || monster.hp || monster["Hit Points"];
+  const totalHp = Number(maxHp ?? monster.maxHp ?? monster.hp ?? 0);
+  const currentHp = Number(monsterHp ?? monster.hp ?? 0);
+  const hpPercent = totalHp > 0 ? Math.max(0, Math.min(100, Math.round((currentHp / totalHp) * 100))) : 0;
 
   const cardStyle = {
     background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%)',
@@ -68,6 +68,19 @@ const EnhancedMonsterDisplay = ({ monster, challengeLabel, monsterHp, maxHp }) =
           fontWeight: 'bold'
         }}>
           💀 {monster.name}
+          {monster.__questBoss && (
+            <span style={{
+              marginLeft: 10,
+              padding: '2px 10px',
+              borderRadius: 14,
+              background: 'rgba(255,255,255,0.2)',
+              border: '1px solid rgba(255,255,255,0.4)',
+              fontSize: 12,
+              verticalAlign: 'middle'
+            }}>
+              Quest Boss
+            </span>
+          )}
         </h2>
       </div>
 
@@ -148,9 +161,9 @@ const EnhancedMonsterDisplay = ({ monster, challengeLabel, monsterHp, maxHp }) =
       }}>
         {currentHp <= 0 ? (
           <span style={{ color: '#95a5a6' }}>💀 Defeated</span>
-        ) : currentHp < totalHp * 0.25 ? (
+        ) : (totalHp > 0 && currentHp < totalHp * 0.25) ? (
           <span style={{ color: '#f39c12' }}>⚠️ Badly Wounded</span>
-        ) : currentHp < totalHp * 0.75 ? (
+        ) : (totalHp > 0 && currentHp < totalHp * 0.75) ? (
           <span style={{ color: '#e67e22' }}>🩸 Injured</span>
         ) : (
           <span style={{ color: '#27ae60' }}>💪 Healthy</span>

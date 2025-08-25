@@ -1,0 +1,54 @@
+{
+  "bosses": [
+    {
+      "id": "cultist-pyromancer",
+      "name": "Cultist Pyromancer",
+      "source": { "publisher": "Goodman Games", "adventure": "Funnel Farm" },
+      "monsterTemplateId": "Cultist",
+      "overrides": {
+        "name": "Cultist Pyromancer",
+        "Armor Class": 13,
+        "hp": "d8",
+        "Attack": "+2",
+        "Damage": "1d6+1",
+        "Abilities": ["Fire Bolt", "Smoke Veil"]
+      }
+    },
+    {
+      "id": "corruption-champion",
+      "name": "Champion of Corruption",
+      "source": { "publisher": "Breaker Press Games", "adventure": "The Precipice of Corruption" },
+      "monsterTemplateId": "Corrupted-Humanoid",
+      "overrides": {
+        "name": "Champion of Corruption",
+        "Armor Class": 14,
+        "hp": "6d8+12",
+        "Attack": "+4",
+        "Damage": "1d8+2 (rusted cleaver) or 1d6+corruption (grasping hand)",
+        "Abilities": [
+          "Blight Aura (creatures within 10’ must save vs Fort DC 12 or suffer -1 to all rolls for 1 turn)",
+          "Consume Flesh (once per combat, heals 1d6 HP after slaying a foe)",
+          "Voice of the Ruin (once per combat, force all within 30’ to save Will DC 13 or be shaken, -2 to actions for 1 round)"
+        ]
+      }
+    },
+    {
+      "id": "chaos-lord-warlord",
+      "name": "Gnoll Warlord of the Tomb",
+      "source": { "publisher": "Wayward Studios", "adventure": "From Out of Gnollwhere" },
+      "monsterTemplateId": "Gnoll",
+      "overrides": {
+        "name": "Gnoll Warlord of the Tomb",
+        "Armor Class": 16,
+        "hp": "5d8+10",
+        "Attack": "+5",
+        "Damage": "1d12+2 (runed greataxe) or 1d6+corruption (chaos claw)",
+        "Abilities": [
+          "Tactical Howl (allied gnolls gain +1 to attack for 1 round)",
+          "Chaos Surge (once per battle, release a wave of chaotic energy: 2d6 damage in 15’, Will DC 13 half)",
+          "Unnatural Discipline (all gnoll allies fight with eerie precision and morale, unlike their kin)"
+        ]
+      }
+    }
+  ]
+}

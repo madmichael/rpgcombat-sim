@@ -6,13 +6,16 @@ import InfoIcon from './InfoIcon';
 
 function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {}, onCharacterChange, onFindAnother, focusTrigger }) {
   const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
-  const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
+  // Monster details are now shown inline; no toggle needed
   const [isHeaderStuck, setIsHeaderStuck] = React.useState(false);
   const headerRef = React.useRef(null);
+  // Focus target for new encounters (wrapper around the monster details card)
   const monsterNameRef = React.useRef(null);
   const gearEffects = useGearEffects(character || {});
   const getHealthPercentage = (current, max) => {
-    return Math.max(0, (current / max) * 100);
+    const c = Number(current ?? 0);
+    const m = Number(max ?? 0);
+    return m > 0 ? Math.max(0, (c / m) * 100) : 0;
   };
 
   const getHealthColor = (percentage) => {
@@ -21,10 +24,8 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
     return '#dc3545';
   };
 
-  const charMaxHp = character?.hp || 0;
-  const monsterMaxHp = monster?.["Hit Points"] || 0;
+  const charMaxHp = Number(character?.hp ?? 0);
   const charHealthPercent = getHealthPercentage(charHp, charMaxHp);
-  const monsterHealthPercent = getHealthPercentage(monsterHp, monsterMaxHp);
 
   // Build AC breakdown text for tooltip
   const acText = gearEffects?.acBreakdown
@@ -157,82 +158,32 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
           <div className="combat-status">{fightStatus}</div>
         </div>
 
-        {/* Monster Status */}
+        {/* Monster Status - replaced summary with full detailed view */}
         <div className="combatant-status monster-status">
-          <div className="combatant-header">
-            <div className="combatant-info">
-              <span className="combatant-icon">👹</span>
-              <div className="combatant-details">
-                <div className="monster-name-row" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                  <h3
-                    className="combatant-name"
-                    style={{ margin: 0 }}
-                    ref={monsterNameRef}
-                    tabIndex="-1"
-                  >
-                    {monster?.name || 'Monster'}
-                  </h3>
-                  {onFindAnother && (
-                    <button
-                      type="button"
-                      className="btn-small"
-                      onClick={onFindAnother}
-                      aria-label="Find a new monster"
-                      title="Find another monster"
-                      style={{ padding: '4px 8px', fontSize: 12 }}
-                    >
-                      Find Another
-                    </button>
-                  )}
-                </div>
-                <div className="combatant-class">Challenge Level {getChallengeLabel && selectedChallenge ? getChallengeLabel(selectedChallenge) : selectedChallenge}</div>
-              </div>
-            </div>
-            <div className="essential-stats">
-              <div className="stat-item">
-                <span className="stat-label">AC</span>
-                <span className="stat-value">{monsterACRevealed ? (monster?.["Armor Class"] || 10) : '?'}</span>
-              </div>
-              <div className="stat-item">
-                <span className="stat-label">HD</span>
-                <span className="stat-value">{monster?.["Hit Die"] || 'N/A'}</span>
-              </div>
-              <div className="stat-item">
-                <button 
-                  className="details-toggle-btn"
-                  onClick={() => setShowMonsterDetails(!showMonsterDetails)}
-                  aria-label="Toggle monster details"
-                >
-                  {showMonsterDetails ? '▼' : '▶'} Details
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div className="health-display">
-            <div className="health-bar-container">
-              <div className="health-label">
-                <span>Hit Points</span>
-                <span className="health-numbers">{monsterHp} / {monsterMaxHp}</span>
-              </div>
-              <div className="health-bar">
-                <div 
-                  className="health-fill monster-health"
-                  style={{ 
-                    width: `${monsterHealthPercent}%`,
-                    backgroundColor: getHealthColor(monsterHealthPercent)
-                  }}
-                ></div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Expandable Monster Details */}
-          {showMonsterDetails && (
-            <div className="monster-details-expanded">
-              <EnhancedMonsterSummary monster={monster} monsterHp={monsterHp} monsterACRevealed={monsterACRevealed} />
+          {/* Top-right utility: Find Another button, if available */}
+          {onFindAnother && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button
+                type="button"
+                className="btn-small"
+                onClick={onFindAnother}
+                aria-label="Find a new monster"
+                title="Find another monster"
+                style={{ padding: '4px 8px', fontSize: 12 }}
+              >
+                Find Another
+              </button>
             </div>
           )}
+
+          {/* Focusable wrapper to keep keyboard focus behavior on encounter change */}
+          <div ref={monsterNameRef} tabIndex="-1">
+            <EnhancedMonsterSummary
+              monster={monster}
+              monsterHp={monsterHp}
+              monsterACRevealed={monsterACRevealed}
+            />
+          </div>
         </div>
       </div>
     </div>

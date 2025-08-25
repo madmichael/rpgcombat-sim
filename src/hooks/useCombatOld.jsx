@@ -273,7 +273,7 @@ export const useCombat = (gameState, playSound) => {
     
     // Handle fumble first
     if (fumbleResult) {
-      displayHp = currentMonsterHp > 0 ? currentMonsterHp : (monster["Hit Points"] || monster.hp || 1);
+      displayHp = currentMonsterHp > 0 ? currentMonsterHp : Number(monster.maxHp ?? monster.hp ?? 1);
       charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterAC} and FUMBLES! Rolled ${fumbleResult.rawRoll} on ${fumbleResult.fumbleDie} (adjusted ${fumbleResult.adjustedRoll}): ${fumbleResult.result}`;
       
       // Apply fumble effects
@@ -303,7 +303,7 @@ export const useCombat = (gameState, playSound) => {
       setMonsterHp(updatedMonsterHp);
       playSound('slash');
     } else {
-      displayHp = currentMonsterHp > 0 ? currentMonsterHp : (monster["Hit Points"] || monster.hp || 1);
+      displayHp = currentMonsterHp > 0 ? currentMonsterHp : Number(monster.maxHp ?? monster.hp ?? 1);
       charAttack = `${character.name} attacks ${monster.name} with ${weapon.name} and rolls a ${rawAttackRoll} ${modSign}${abilityMod} (${abilityType}) = ${charAttackRoll} vs. AC ${monsterAC} and misses! (${displayHp} HP left)`;
       if (currentMonsterHp > 0) setMonsterHp(displayHp);
       playSound('block');

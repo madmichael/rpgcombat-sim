@@ -6,16 +6,13 @@ function EnhancedMonsterSummary({ monster, monsterHp, monsterACRevealed }) {
   const [imageError, setImageError] = useState(false);
 
   const getHealthPercentage = () => {
-    const hitPointsStr = monster['Hit Points'];
-    const maxHp = hitPointsStr && typeof hitPointsStr === 'string' 
-      ? parseInt(hitPointsStr.match(/\d+/)?.[0] || '0')
-      : parseInt(monster.maxHp || monster.hp || '0');
-    const currentHp = monsterHp !== null ? monsterHp : monster.hp;
+    const maxHp = Number(monster.maxHp ?? monster.hp ?? 0);
+    const currentHp = Number(monsterHp ?? monster.hp ?? 0);
     return maxHp > 0 ? (currentHp / maxHp) * 100 : 0;
   };
 
-  const maxHp = monster.maxHp || monster["Hit Points"] || monster.hp;
-  const currentHp = monsterHp !== null ? monsterHp : monster.hp;
+  const maxHp = Number(monster.maxHp ?? monster.hp ?? 0);
+  const currentHp = Number(monsterHp ?? monster.hp ?? 0);
   const hpPercent = getHealthPercentage();
   const AC = monsterACRevealed ? (monster["Armor Class"] || monster.armor || 'N/A') : '?';
   const attackType = monster.AttackType ? monster.AttackType : (monster.attack ? 'Weapon' : '');
@@ -94,13 +91,26 @@ function EnhancedMonsterSummary({ monster, monsterHp, monsterACRevealed }) {
             color: '#e74c3c'
           }}>
             👹 {monster.name}
+            {monster.__questBoss && (
+              <span style={{
+                marginLeft: 8,
+                padding: '2px 8px',
+                borderRadius: 12,
+                background: 'rgba(255,255,255,0.15)',
+                border: '1px solid rgba(255,255,255,0.35)',
+                fontSize: 12,
+                verticalAlign: 'middle'
+              }}>
+                Quest Boss
+              </span>
+            )}
           </h3>
           <div style={{ 
             fontSize: '14px', 
             opacity: 0.8,
             marginTop: '4px'
           }}>
-            Enemy Combatant
+            {monster.__questBoss ? 'Quest Boss' : 'Enemy Combatant'}
           </div>
         </div>
       </div>

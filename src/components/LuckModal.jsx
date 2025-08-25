@@ -13,9 +13,9 @@ const LuckModal = ({
   onBurnLuck, 
   onKeepRoll 
 }) => {
-  if (!show || !pendingAttack) return null;
-
   const gearEffects = useGearEffects(character);
+  
+  if (!show || !pendingAttack) return null;
   const abilityType = pendingAttack.abilityType || 'Strength';
   const abilityMod = (character?.modifiers && character.modifiers[abilityType]) || 0;
   const gearAtkBonus = gearEffects?.attackBonus || 0;

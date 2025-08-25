@@ -1,0 +1,12 @@
+.btn { cursor: pointer; border-radius: 6px; padding: 6px 10px; font: inherit; line-height: 1.2; transition: transform 80ms ease, opacity 120ms ease; }
+.btn:active { transform: translateY(1px); }
+
+/* Success theme */
+.btn-success { background: #2b6e3f; color: #fff; border: none; }
+.btn-outline-success { background: #1f2c21; color: #aee5b3; border: 1px solid #2b6e3f; }
+.btn-ghost-success { background: transparent; color: #cfe9cf; border: 1px solid #2b6e3f; }
+
+/* Danger theme */
+.btn-danger { background: #7a343a; color: #fff; border: none; }
+.btn-outline-danger { background: #24181a; color: #f2c0c0; border: 1px solid #7a343a; }
+.btn-ghost-danger { background: transparent; color: #f2c0c0; border: 1px solid #7a343a; }

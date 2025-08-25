@@ -19,6 +19,12 @@ import AchievementNotification from './components/AchievementNotification';
 import LootModal from './components/LootModal';
 import Credits from './components/Credits';
 import Tutorial from './components/Tutorial';
+import QuestBoard from './components/quests/QuestBoard';
+import QuestDetail from './components/quests/QuestDetail';
+import SkillChallenge from './components/quests/SkillChallenge';
+import BossFightWrapper from './components/quests/BossFightWrapper';
+import QuestCompletionModal from './components/quests/QuestCompletionModal';
+import QuestFailureModal from './components/quests/QuestFailureModal';
 import { useGameState } from './hooks/useGameState';
 import { useAudio } from './hooks/useAudio';
 import { useCombat } from './hooks/useCombat.jsx';
@@ -26,6 +32,7 @@ import { useMonsterSelection } from './hooks/useMonsterSelection';
 import { useVictoryTracking } from './hooks/useVictoryTracking';
 import { useAchievements } from './hooks/useAchievements';
 import { useLoot } from './hooks/useLoot';
+import { useQuests } from './hooks/useQuests';
 import { getCharacterFromUrl, updateUrlWithCharacter, clearCharacterFromUrl } from './utils/characterUrl';
 import './App.css';
 
@@ -34,6 +41,7 @@ function App() {
   const gameState = useGameState();
   const { playSound, AudioElements } = useAudio();
   const victoryTracking = useVictoryTracking();
+  const questsApi = useQuests();
   
   const {
     character,
@@ -64,6 +72,17 @@ function App() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialInitialStep, setTutorialInitialStep] = useState(0);
   const dashboardRef = useRef(null);
+
+  // Quest UI state
+  const [questMode, setQuestMode] = useState(false);
+  const [activeQuestId, setActiveQuestId] = useState(null);
+  const [questUiStep, setQuestUiStep] = useState('board'); // 'board' | 'detail' | 'challenges' | 'boss'
+  const [challengeIndex, setChallengeIndex] = useState(0);
+  const [showQuestComplete, setShowQuestComplete] = useState(false);
+  const [questRewardUrl, setQuestRewardUrl] = useState(null);
+  const [lastCompletedQuestId, setLastCompletedQuestId] = useState(null);
+  const [pendingQuestId, setPendingQuestId] = useState(null);
+  const [showQuestFailed, setShowQuestFailed] = useState(false);
 
   const {
     showLuckConfirmModal,
@@ -182,6 +201,39 @@ function App() {
     }
   }, [character, monster, fightStatus]);
 
+  // When a quest boss fight finishes with monster HP <= 0, show reward modal
+  useEffect(() => {
+    if (pendingQuestId && fightStatus === 'finished' && monsterHp !== null && Number(monsterHp) <= 0) {
+      const quest = questsApi.getQuestById(pendingQuestId);
+      const url = quest?.reward?.staticUrl;
+      if (url) {
+        questsApi.markCompleted(pendingQuestId, url);
+        setLastCompletedQuestId(pendingQuestId);
+        setQuestRewardUrl(url);
+        setShowQuestComplete(true);
+      }
+      setPendingQuestId(null);
+    }
+  }, [fightStatus, monsterHp, pendingQuestId]);
+
+  // When a quest boss fight finishes and the character is dead, show failure modal
+  useEffect(() => {
+    if (pendingQuestId && fightStatus === 'finished' && charHp !== null && Number(charHp) <= 0) {
+      setShowQuestFailed(true);
+      setLastCompletedQuestId(pendingQuestId); // reuse to reference quest info
+      setPendingQuestId(null);
+    }
+  }, [fightStatus, charHp, pendingQuestId]);
+
+  // If the player runs away, clear any pending quest boss ID to prevent accidental completion later
+  useEffect(() => {
+    if (fightStatus === 'ran away' && pendingQuestId) {
+      setShowQuestFailed(true);
+      setLastCompletedQuestId(pendingQuestId);
+      setPendingQuestId(null);
+    }
+  }, [fightStatus, pendingQuestId]);
+
   // When a new monster is selected, scroll the dashboard into view
   useEffect(() => {
     if (monster && dashboardRef.current) {
@@ -189,7 +241,19 @@ function App() {
         dashboardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } catch {}
     }
-  }, [monster?.name]);
+  }, [monster]);
+
+  // Play sounds when quest modals open
+  useEffect(() => {
+    if (showQuestComplete) {
+      try { playSound('victory'); } catch {}
+    }
+  }, [showQuestComplete]);
+  useEffect(() => {
+    if (showQuestFailed) {
+      try { playSound('danger'); } catch {}
+    }
+  }, [showQuestFailed]);
 
   const handleFindAnotherMonster = () => {
     resetCombat();
@@ -244,9 +308,84 @@ function App() {
       
       <header>
         <h1 id="main-title">RPG Combat Simulator</h1>
+        <div style={{ marginTop: 8 }}>
+          <button onClick={() => { setQuestMode(true); setQuestUiStep('board'); }}>
+            Quests
+          </button>
+        </div>
       </header>
       
       <main role="main" aria-labelledby="main-title">
+
+      {questMode && (
+        <div className="modal-overlay" style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 1200, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="modal-container" style={{ background: '#111', color: '#eee', border: '1px solid #444', borderRadius: 8, padding: 16, width: 'min(900px, 96vw)', maxHeight: '90vh', overflow: 'auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ margin: 0 }}>Quest Board</h2>
+              <button onClick={() => { setQuestMode(false); setQuestUiStep('board'); setActiveQuestId(null); setChallengeIndex(0); }}>Close</button>
+            </div>
+
+            {questUiStep === 'board' && (
+              <QuestBoard
+                onViewQuest={(id) => { setActiveQuestId(id); setQuestUiStep('detail'); }}
+                onStartQuest={(id) => { setActiveQuestId(id); questsApi.startQuest(id); setChallengeIndex(0); setQuestUiStep('challenges'); }}
+              />
+            )}
+
+            {questUiStep === 'detail' && activeQuestId && (
+              <QuestDetail
+                questId={activeQuestId}
+                onStart={() => { questsApi.startQuest(activeQuestId); setChallengeIndex(0); setQuestUiStep('challenges'); }}
+              />
+            )}
+
+            {questUiStep === 'challenges' && activeQuestId && (() => {
+              const quest = questsApi.getQuestById(activeQuestId);
+              const challenges = quest?.challenges || [];
+              const current = challenges[challengeIndex];
+              if (!current) return null;
+              return (
+                <div style={{ display: 'grid', gap: 12 }}>
+                  <div>Step {challengeIndex + 1} of {challenges.length}</div>
+                  <SkillChallenge
+                    gameState={gameState}
+                    questId={activeQuestId}
+                    challenge={current}
+                    onResolved={(mods, success) => {
+                      questsApi.recordChallengeOutcome(activeQuestId, current.id, success, mods);
+                      const next = challengeIndex + 1;
+                      if (next < challenges.length) setChallengeIndex(next);
+                      else setQuestUiStep('boss');
+                    }}
+                  />
+                </div>
+              );
+            })()}
+
+            {questUiStep === 'boss' && activeQuestId && (
+              <BossFightWrapper
+                questId={activeQuestId}
+                selectedChallenge={selectedChallenge}
+                onPrepared={(adaptedMonster) => {
+                  // Reset and start a new fight with the adapted boss
+                  gameState.resetCombat();
+                  gameState.setMonster(adaptedMonster);
+                  setPendingQuestId(activeQuestId);
+                  // Explicitly start the fight now
+                  try { startFight(); } catch {}
+                  // Return to main combat UI and reset quest UI state so it doesn't stay on 'boss' next open
+                  setQuestMode(false);
+                  setQuestUiStep('board');
+                  setActiveQuestId(null);
+                  setChallengeIndex(0);
+                }}
+                onCancel={() => { setQuestMode(false); setQuestUiStep('board'); setActiveQuestId(null); setChallengeIndex(0); }}
+              />
+            )}
+
+          </div>
+        </div>
+      )}
       
       {!character && (
         <>
@@ -403,6 +542,24 @@ function App() {
         isOpen={showTutorial}
         onClose={() => setShowTutorial(false)}
         initialStep={tutorialInitialStep}
+      />
+
+      {/* Quest Completion Modal */}
+      <QuestCompletionModal
+        isOpen={showQuestComplete}
+        onClose={() => { setShowQuestComplete(false); setQuestRewardUrl(null); setLastCompletedQuestId(null); }}
+        questTitle={lastCompletedQuestId ? (questsApi.getQuestById(lastCompletedQuestId)?.title || 'Quest') : 'Quest'}
+        completionText={lastCompletedQuestId ? questsApi.getQuestById(lastCompletedQuestId)?.completionText : ''}
+        rewardUrl={questRewardUrl}
+      />
+
+      {/* Quest Failure Modal */}
+      <QuestFailureModal
+        isOpen={showQuestFailed}
+        onClose={() => { setShowQuestFailed(false); setLastCompletedQuestId(null); }}
+        questTitle={lastCompletedQuestId ? (questsApi.getQuestById(lastCompletedQuestId)?.title || 'Quest') : 'Quest'}
+        failureText={lastCompletedQuestId ? questsApi.getQuestById(lastCompletedQuestId)?.failureText : ''}
+        failureLootUrl={lastCompletedQuestId ? questsApi.getQuestById(lastCompletedQuestId)?.failureLootUrl : ''}
       />
       
       {/* Loot Modal */}

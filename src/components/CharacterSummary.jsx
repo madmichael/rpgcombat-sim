@@ -102,7 +102,7 @@ const CharacterSummary = ({ character }) => {
       {monster && (
         <div className="monster-summary" style={{marginTop: '1em', borderTop: '1px solid #aaa', paddingTop: '1em'}}>
           <h3>Monster Summary</h3>
-          <div><strong>HP:</strong> {monster["Hit Points"] || monster.hp}</div>
+          <div><strong>HP:</strong> {`${Number(monster.hp ?? 0)} / ${Number(monster.maxHp ?? monster.hp ?? 0)}`}</div>
           <div><strong>AC:</strong> {monster["Armor Class"] || monster.armor}</div>
           <div><strong>Attack Type:</strong> {monster.AttackType ? monster.AttackType : (monster.attack ? 'Weapon' : '')}</div>
           <div><strong>Attack Bonus:</strong> {typeof monster.Attack === 'string' ? monster.Attack : (monster.attack || '')}</div>

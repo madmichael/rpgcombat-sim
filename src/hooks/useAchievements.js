@@ -143,7 +143,7 @@ export const useAchievements = (characterId) => {
       victories: stats.victories + 1,
       monster_kill: {
         type: monsterType,
-        hp: monster.hp || monster["Hit Points"] || 0
+        hp: Number(monster.maxHp ?? monster.hp ?? 0)
       }
     });
   };

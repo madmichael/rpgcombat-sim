@@ -3,9 +3,9 @@ import React from 'react';
 const MonsterSummary = ({ monster }) => {
   if (!monster) return null;
   // Use correct fields for custom and SRD monsters
-  const maxHp = monster["Hit Points"] || monster.hp;
-  const currentHp = monster.hp;
-  const hpPercent = maxHp ? Math.max(0, Math.min(100, Math.round((currentHp / maxHp) * 100))) : 100;
+  const maxHp = Number(monster.maxHp ?? monster.hp ?? 0);
+  const currentHp = Number(monster.hp ?? 0);
+  const hpPercent = maxHp > 0 ? Math.max(0, Math.min(100, Math.round((currentHp / maxHp) * 100))) : 0;
   const AC = monster["Armor Class"] || monster.armor || 'N/A';
   const attackType = monster.AttackType ? monster.AttackType : (monster.attack ? 'Weapon' : '');
   const attackBonus = typeof monster.Attack === 'string' ? monster.Attack : (monster.attack || '');
