@@ -205,40 +205,52 @@ const expandMinimalCharacterData = (minimalData) => {
   let weapon = null;
   let tradeGood = null;
   
-  // For now, create placeholder weapon and trade good based on occupation roll
-  // This will be enhanced when occupation data is available
+  // Prefer real gear from minimalData.g if present; only fall back to placeholders if missing
   if (occupationRoll) {
-    // Create a basic weapon placeholder
-    weapon = {
-      id: `weapon_occupation_${occupationRoll}`,
-      name: "Starting Weapon",
-      damage: "1d4",
-      slot: "meleeWeapon",
-      cost: 0,
-      rarity: "common",
-      effects: { damage: "1d4" },
-      description: `Starting weapon from occupation`,
-      icon: "⚔️"
-    };
-    
-    // Create a basic trade good placeholder
-    tradeGood = {
-      id: `trade_${occupationRoll}`,
-      name: "Trade Goods",
-      slot: "tradeGood",
-      cost: 0,
-      rarity: "common",
-      effects: {},
-      description: `Starting trade good from occupation`,
-      icon: "📦"
-    };
-    
+    const incomingGear = minimalData.g || {};
+    const meleeWeapon = incomingGear.meleeWeapon && incomingGear.meleeWeapon.name ? incomingGear.meleeWeapon : null;
+    const rangedWeapon = incomingGear.rangedWeapon && incomingGear.rangedWeapon.name ? incomingGear.rangedWeapon : null;
+    const incomingTradeGood = incomingGear.tradeGood && incomingGear.tradeGood.name ? incomingGear.tradeGood : null;
+
+    // Choose an existing weapon from incoming gear if available
+    weapon = meleeWeapon || rangedWeapon || null;
+    // Choose existing trade good if available
+    tradeGood = incomingTradeGood || null;
+
+    // If still missing, create minimal placeholders
+    if (!weapon) {
+      weapon = {
+        id: `weapon_occupation_${occupationRoll}`,
+        name: "Starting Weapon",
+        damage: "1d4",
+        slot: "meleeWeapon",
+        cost: 0,
+        rarity: "common",
+        effects: { damage: "1d4" },
+        description: `Starting weapon from occupation`,
+        icon: "⚔️"
+      };
+    }
+
+    if (!tradeGood) {
+      tradeGood = {
+        id: `trade_${occupationRoll}`,
+        name: "Trade Goods",
+        slot: "tradeGood",
+        cost: 0,
+        rarity: "common",
+        effects: {},
+        description: `Starting trade good from occupation`,
+        icon: "📦"
+      };
+    }
+
     // Create basic occupation object
     occupation = {
       Roll: occupationRoll,
       Occupation: "Adventurer",
-      "Trained Weapon": "Starting Weapon",
-      "Trade Goods": "Trade Goods"
+      "Trained Weapon": weapon?.name || "Starting Weapon",
+      "Trade Goods": tradeGood?.name || "Trade Goods"
     };
   }
   
@@ -250,15 +262,16 @@ const expandMinimalCharacterData = (minimalData) => {
     cloak: null,
     belt: null,
     arms: null,
-    meleeWeapon: weapon && weapon.slot === 'meleeWeapon' ? weapon : null,
-    rangedWeapon: weapon && weapon.slot === 'rangedWeapon' ? weapon : null,
+    // Preserve any incoming gear first; then ensure our chosen weapon/tradeGood are present
+    meleeWeapon: (minimalData.g && minimalData.g.meleeWeapon) ? minimalData.g.meleeWeapon : (weapon && weapon.slot === 'meleeWeapon' ? weapon : null),
+    rangedWeapon: (minimalData.g && minimalData.g.rangedWeapon) ? minimalData.g.rangedWeapon : (weapon && weapon.slot === 'rangedWeapon' ? weapon : null),
     rightHand: null,
     leftHand: null,
     rightFingers: null,
     leftFingers: null,
     legs: null,
     feet: null,
-    tradeGood: tradeGood,
+    tradeGood: (minimalData.g && minimalData.g.tradeGood) ? minimalData.g.tradeGood : tradeGood,
     ...minimalData.g
   };
   
@@ -289,8 +302,9 @@ const expandMinimalCharacterData = (minimalData) => {
     maxLuck: luck,
     gearSlots: gearSlots,
     backpack: minimalData.b || [],
-    weapon: weapon,
-    tradeGood: tradeGood ? tradeGood.name : null,
+    // Prefer weapon/tradeGood names from reconstructed gear slots
+    weapon: gearSlots.meleeWeapon?.name ? gearSlots.meleeWeapon : (gearSlots.rangedWeapon?.name ? gearSlots.rangedWeapon : weapon),
+    tradeGood: gearSlots.tradeGood && gearSlots.tradeGood.name ? gearSlots.tradeGood.name : (tradeGood ? tradeGood.name : null),
     birthAugur: null,
     achievements: [],
     combatStats: {}

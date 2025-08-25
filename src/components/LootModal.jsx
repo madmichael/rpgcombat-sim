@@ -25,6 +25,11 @@ const LootModal = ({ loot, isOpen, onClose, onClaimAll }) => {
         <div className="modal-header loot-modal-header">
           <h2>🎁 Victory Spoils</h2>
           <p>Defeated: {lootDrop.monsterName}</p>
+          {lootDrop.difficulty && (
+            <div className="loot-difficulty" style={{ fontSize: '12px', opacity: 0.8 }}>
+              Loot difficulty: {lootDrop.difficulty.charAt(0).toUpperCase() + lootDrop.difficulty.slice(1)}
+            </div>
+          )}
           <button className="modal-close-btn" onClick={onClose}>×</button>
         </div>
         

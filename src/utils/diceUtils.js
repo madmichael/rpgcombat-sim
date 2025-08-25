@@ -41,8 +41,20 @@ export function parseDamageString(damageStr) {
   // Ensure damageStr is a string
   const damageString = String(damageStr);
   
-  // Handle damage strings like "1d4", "d6" (convert to "1d6"), "1d8+2"
-  let normalizedStr = damageString.replace(/^d(\d+)/, '1d$1');
+  // Trim whitespace for safer matching
+  const trimmed = damageString.trim();
+
+  // First, handle flat integer strings like "2" or "-1"
+  const flatIntMatch = trimmed.match(/^[+\-]?\d+$/);
+  if (flatIntMatch) {
+    const val = parseInt(trimmed, 10);
+    // Keep consistent behavior with previous implementation: minimum 1 damage
+    const clamped = Math.max(1, val);
+    return { damage: clamped, breakdown: `${val}` };
+  }
+
+  // Handle NdS(+/-M) strings like "1d4", "d6" (convert to "1d6"), "1d8+2"
+  let normalizedStr = trimmed.replace(/^d(\d+)/, '1d$1');
   const diceMatch = normalizedStr.match(/(\d+)d(\d+)([+\-]\d+)?/);
   
   if (!diceMatch) {

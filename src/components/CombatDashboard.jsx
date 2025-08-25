@@ -4,9 +4,12 @@ import EnhancedMonsterSummary from './EnhancedMonsterSummary';
 import { useGearEffects } from '../hooks/useGearEffects';
 import InfoIcon from './InfoIcon';
 
-function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {}, onCharacterChange }) {
+function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {}, onCharacterChange, onFindAnother, focusTrigger }) {
   const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
   const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
+  const [isHeaderStuck, setIsHeaderStuck] = React.useState(false);
+  const headerRef = React.useRef(null);
+  const monsterNameRef = React.useRef(null);
   const gearEffects = useGearEffects(character || {});
   const getHealthPercentage = (current, max) => {
     return Math.max(0, (current / max) * 100);
@@ -41,9 +44,37 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
     (gearStrBonus ? ` + Gear STR ${gearStrBonus >= 0 ? '+' : ''}${gearStrBonus}` : '') +
     ` = ${totalAtk >= 0 ? '+' : ''}${totalAtk}`;
 
+  // Observe header stickiness to toggle shadow only when stuck
+  React.useEffect(() => {
+    const header = headerRef.current;
+    if (!header) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When the header's top crosses the viewport top, it becomes sticky
+        setIsHeaderStuck(entry.intersectionRatio < 1 && entry.boundingClientRect.top <= (parseInt(getComputedStyle(header).top) || 0));
+      },
+      { threshold: [1] }
+    );
+    observer.observe(header);
+    return () => observer.disconnect();
+  }, []);
+
+  // Move keyboard focus to the monster name when focusTrigger changes (i.e., new encounter)
+  React.useEffect(() => {
+    if (monsterNameRef.current && focusTrigger) {
+      // slight delay to ensure element is in DOM and layout settled
+      const id = setTimeout(() => {
+        try {
+          monsterNameRef.current.focus({ preventScroll: true });
+        } catch {}
+      }, 0);
+      return () => clearTimeout(id);
+    }
+  }, [focusTrigger]);
+
   return (
     <div className="combat-dashboard">
-      <div className="dashboard-header">
+      <div ref={headerRef} className={`dashboard-header${isHeaderStuck ? ' stuck' : ''}`}>
         <h2 className="dashboard-title">⚔️ Combat Dashboard</h2>
         <div className="challenge-badge">
           {getChallengeLabel && selectedChallenge ? getChallengeLabel(selectedChallenge) : 'Unknown'} Threat Level
@@ -132,8 +163,29 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
             <div className="combatant-info">
               <span className="combatant-icon">👹</span>
               <div className="combatant-details">
-                <h3 className="combatant-name">{monster?.name || 'Monster'}</h3>
-                <div className="combatant-class">Challenge Level {getChallengeLabel ? getChallengeLabel() : selectedChallenge}</div>
+                <div className="monster-name-row" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                  <h3
+                    className="combatant-name"
+                    style={{ margin: 0 }}
+                    ref={monsterNameRef}
+                    tabIndex="-1"
+                  >
+                    {monster?.name || 'Monster'}
+                  </h3>
+                  {onFindAnother && (
+                    <button
+                      type="button"
+                      className="btn-small"
+                      onClick={onFindAnother}
+                      aria-label="Find a new monster"
+                      title="Find another monster"
+                      style={{ padding: '4px 8px', fontSize: 12 }}
+                    >
+                      Find Another
+                    </button>
+                  )}
+                </div>
+                <div className="combatant-class">Challenge Level {getChallengeLabel && selectedChallenge ? getChallengeLabel(selectedChallenge) : selectedChallenge}</div>
               </div>
             </div>
             <div className="essential-stats">

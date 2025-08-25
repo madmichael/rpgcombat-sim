@@ -38,14 +38,25 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
   const [isActionInProgress, setIsActionInProgress] = useState(false);
   const [characterEffects, setCharacterEffects] = useState({
     attackPenalty: 0,
+    attackPenaltyDuration: 0,
     opponentAttackBonus: 0,
-    halfDamage: false
+    opponentAttackBonusDuration: 0,
+    defenseBonus: 0,
+    defenseBonusDuration: 0,
+    halfDamage: false,
+    skipNextAttack: false,
+    extraAttack: false
   });
   const [monsterEffects, setMonsterEffects] = useState({
     attackPenalty: 0,
     opponentAttackBonus: 0,
     halfDamage: false,
-    skipNextAction: false
+    skipNextAction: false,
+    // New status/effect fields
+    ongoingDamageAmount: null, // string like "1d3" or "2"
+    ongoingDamageDuration: 0,
+    blindedDuration: 0,
+    proneDuration: 0
   });
 
   const {
@@ -130,8 +141,11 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     const abilityType = isRangedWeapon(weapon.name) ? 'Agility' : 'Strength';
     const abilityMod = modifiedStats?.modifiers ? modifiedStats.modifiers[abilityType] : (character.modifiers ? character.modifiers[abilityType] : 0);
     const gearAttackBonus = gearEffects?.attackBonus || 0;
-    const charAttackRoll = rawAttackRoll + abilityMod + gearAttackBonus + characterEffects.opponentAttackBonus;
-    const monsterAC = Number(monster["Armor Class"]) + monsterEffects.attackPenalty;
+    const oppAtkBonus = characterEffects?.opponentAttackBonus || 0;
+    const charAtkPenalty = characterEffects?.attackPenalty || 0;
+    const charAttackRoll = rawAttackRoll + abilityMod + gearAttackBonus + oppAtkBonus - charAtkPenalty;
+    // Monster AC should not be modified by its attack penalties; use base AC
+    const monsterAC = Number(monster["Armor Class"]);
     const charHit = charAttackRoll >= monsterAC;
     const charCritical = rawAttackRoll === 20;
     
@@ -192,10 +206,57 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       return null; // Monster is dead, cannot attack
     }
 
-    // Check if monster should skip this action
+    // Start-of-turn ongoing damage tick
+    if ((monsterEffects.ongoingDamageDuration || 0) > 0 && monsterEffects.ongoingDamageAmount) {
+      const dmg = parseDamageString(monsterEffects.ongoingDamageAmount);
+      const curHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+      const newHp = Math.max(0, curHp - dmg.damage);
+      setMonsterHp(newHp);
+      const breakdown = dmg.breakdown;
+      const breakdownDisplay = breakdown.includes('=') || breakdown.includes('+') ? ` [${breakdown}]` : '';
+      setCombatLog(prev => [...prev, `🔥 ${monster.name} takes ${dmg.damage} ongoing damage${breakdownDisplay} at the start of its turn (${newHp} HP left).`]);
+
+      // decrement ongoing duration
+      setMonsterEffects(prev => {
+        const next = { ...prev };
+        const d = Math.max(0, (next.ongoingDamageDuration || 0) - 1);
+        next.ongoingDamageDuration = d;
+        if (d === 0) next.ongoingDamageAmount = null;
+        return next;
+      });
+
+      // If the monster dies from ongoing damage, end turn and fight appropriately
+      if (newHp <= 0) {
+        const challengeText = monster.challengeLabel ? ` (${monster.challengeLabel})` : '';
+        const summaryMessage = `${character.name} has defeated ${monster.name}${challengeText} as it succumbs to ongoing damage!`;
+        setCombatLog(prev => [...prev, { type: 'summary', message: summaryMessage, timestamp: new Date().toLocaleTimeString() }]);
+        setSummary(summaryMessage);
+        setFightStatus('finished');
+        recordVictory(character, monster);
+        if (achievementTracking) {
+          achievementTracking.recordVictory(monster);
+        }
+        playSound('victory');
+        return null;
+      }
+    }
+
+    // Check if monster should skip this action (explicit skip flag)
     if (monsterEffects.skipNextAction) {
       setMonsterEffects(prev => ({ ...prev, skipNextAction: false }));
       setCombatLog(prev => [...prev, `💤 ${monster.name} loses their action and cannot attack this round!`]);
+      return null;
+    }
+
+    // Check if monster is prone: skip action and decrement prone duration
+    if ((monsterEffects.proneDuration || 0) > 0) {
+      setMonsterEffects(prev => {
+        const next = { ...prev };
+        const d = Math.max(0, (next.proneDuration || 0) - 1);
+        next.proneDuration = d;
+        return next;
+      });
+      setCombatLog(prev => [...prev, `🤸 ${monster.name} is prone and spends the round recovering!`]);
       return null;
     }
 
@@ -204,10 +265,13 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     const attackBonus = parseInt(attackStr.match(/[+-]\d+/)?.[0] || '0');
     
     const rawAttackRoll = roll1d20();
-    const monsterAttackRoll = rawAttackRoll + attackBonus + monsterEffects.opponentAttackBonus;
-    // Always use gearEffects.totalArmorClass for character AC in combat
-    const charACBase = gearEffects?.totalArmorClass;
-    const charAC = charACBase + characterEffects.attackPenalty;
+    const effectiveMonsterPenalty = Number(monsterEffects?.attackPenalty || 0) + ((monsterEffects?.blindedDuration || 0) > 0 ? 2 : 0);
+    const effectiveMonsterBonus = Number(monsterEffects?.attackBonus || 0);
+    const monsterAttackRoll = rawAttackRoll + attackBonus - effectiveMonsterPenalty + effectiveMonsterBonus;
+    // Always use gearEffects.totalArmorClass for character AC in combat, plus character defense bonus
+    const charACBase = Number(gearEffects?.totalArmorClass || 0);
+    const charDefenseBonus = Number(characterEffects?.defenseBonus || 0);
+    const charAC = charACBase + charDefenseBonus;
     const monsterHit = monsterAttackRoll >= charAC;
     const monsterCritical = rawAttackRoll === 20;
 
@@ -237,9 +301,33 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     }
 
     const monsterDamageDisplay = monsterDamageBreakdown.includes('=') || monsterDamageBreakdown.includes('+') || monsterDamageBreakdown.includes('(crit)') ? ` [${monsterDamageBreakdown}]` : '';
+    const penaltyDisplay = effectiveMonsterPenalty ? ` - ${effectiveMonsterPenalty}` : '';
+    const bonusDisplay = effectiveMonsterBonus ? ` + ${effectiveMonsterBonus}` : '';
     const attackMessage = monsterHit
-      ? `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus} = ${monsterAttackRoll} vs. AC ${charAC} and hits for ${monsterDmg} damage${monsterDamageDisplay}${monsterCritical ? ' - CRITICAL HIT!' : ''} (${newCharHp} HP left)`
-      : `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus} = ${monsterAttackRoll} vs. AC ${charAC} and misses!`;
+      ? `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and hits for ${monsterDmg} damage${monsterDamageDisplay}${monsterCritical ? ' - CRITICAL HIT!' : ''} (${newCharHp} HP left)`
+      : `${monster.name} attacks ${character.name} and rolls ${rawAttackRoll} + ${attackBonus}${bonusDisplay}${penaltyDisplay} = ${monsterAttackRoll} vs. AC ${charAC} and misses!`;
+
+    // Decrement monster effect durations at the end of its action
+    setMonsterEffects(prev => {
+      const next = { ...prev };
+      if (next.attackPenaltyDuration !== undefined) {
+        const d = Math.max(0, (next.attackPenaltyDuration || 0) - 1);
+        next.attackPenaltyDuration = d;
+        if (d === 0) next.attackPenalty = 0;
+      }
+      if (next.attackBonusDuration !== undefined) {
+        const d = Math.max(0, (next.attackBonusDuration || 0) - 1);
+        next.attackBonusDuration = d;
+        if (d === 0) next.attackBonus = 0;
+      }
+      if (next.blindedDuration !== undefined) {
+        const d = Math.max(0, (next.blindedDuration || 0) - 1);
+        next.blindedDuration = d;
+      }
+      // proneDuration decremented on skip branch at start; no change here
+      // ongoingDamageDuration decremented at start of turn when ticking
+      return next;
+    });
 
     return {
       attack: attackMessage,
@@ -309,6 +397,52 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       return;
     }
 
+    // If character must skip this action, consume it and proceed to monster turn
+    if (characterEffects?.skipNextAttack) {
+      setCharacterEffects(prev => ({ ...prev, skipNextAttack: false }));
+      setCombatLog(prev => [...prev, `💤 ${character.name} loses their action and cannot attack this round!`] );
+
+      // Decrement character effect durations at end of skipped turn
+      setCharacterEffects(prev => {
+        const next = { ...prev };
+        if (next.attackPenaltyDuration !== undefined) {
+          const d = Math.max(0, (next.attackPenaltyDuration || 0) - 1);
+          next.attackPenaltyDuration = d;
+          if (d === 0) next.attackPenalty = 0;
+        }
+        if (next.opponentAttackBonusDuration !== undefined) {
+          const d = Math.max(0, (next.opponentAttackBonusDuration || 0) - 1);
+          next.opponentAttackBonusDuration = d;
+          if (d === 0) next.opponentAttackBonus = 0;
+        }
+        if (next.defenseBonusDuration !== undefined) {
+          const d = Math.max(0, (next.defenseBonusDuration || 0) - 1);
+          next.defenseBonusDuration = d;
+          if (d === 0) next.defenseBonus = 0;
+        }
+        return next;
+      });
+
+      setTimeout(() => {
+        const currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
+        if (currentMonsterHp > 0) {
+          const monsterAttackResult = performMonsterAttack();
+          if (monsterAttackResult) {
+            setCombatLog(prev => [...prev, monsterAttackResult.attack]);
+            if (monsterAttackResult.newCharHp <= 0) {
+              const summaryMessage = `${character.name} has been vanguished by ${monster.name}.`;
+              setCombatLog(prev => [...prev, { type: 'summary', message: summaryMessage, timestamp: new Date().toLocaleTimeString() }]);
+              setSummary(summaryMessage);
+              setFightStatus('finished');
+              recordDefeat(character, monster);
+            }
+          }
+        }
+        setIsActionInProgress(false);
+      }, 1000);
+      return;
+    }
+
     const attackResult = performCharacterAttack();
     const { rawAttackRoll, charAttackRoll, charDmg, charCritical, charHit, abilityType, abilityMod, monsterAC, fumbleResult, damageBreakdown } = attackResult;
     
@@ -325,11 +459,43 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       return;
     }
 
-    // Process normal attack (hit or miss without luck)
-    processAttackResult(attackResult);
+    // If an extra attack is available, execute two attacks this turn and only then allow monster retaliation
+    if (characterEffects?.extraAttack) {
+      // First attack without retaliation
+      processAttackResult(attackResult, true);
+      // Consume extra attack flag
+      setCharacterEffects(prev => ({ ...prev, extraAttack: false }));
+      // Perform second attack
+      const secondResult = performCharacterAttack();
+      processAttackResult(secondResult, false);
+    } else {
+      // Normal single attack flow
+      processAttackResult(attackResult, false);
+    }
+
+    // Decrement character effect durations at end of character's turn (after all attacks)
+    setCharacterEffects(prev => {
+      const next = { ...prev };
+      if (next.attackPenaltyDuration !== undefined) {
+        const d = Math.max(0, (next.attackPenaltyDuration || 0) - 1);
+        next.attackPenaltyDuration = d;
+        if (d === 0) next.attackPenalty = 0;
+      }
+      if (next.opponentAttackBonusDuration !== undefined) {
+        const d = Math.max(0, (next.opponentAttackBonusDuration || 0) - 1);
+        next.opponentAttackBonusDuration = d;
+        if (d === 0) next.opponentAttackBonus = 0;
+      }
+      if (next.defenseBonusDuration !== undefined) {
+        const d = Math.max(0, (next.defenseBonusDuration || 0) - 1);
+        next.defenseBonusDuration = d;
+        if (d === 0) next.defenseBonus = 0;
+      }
+      return next;
+    });
   };
 
-  const processAttackResult = (attackResult) => {
+  const processAttackResult = (attackResult, suppressMonsterRetaliation = false) => {
     const { rawAttackRoll, charAttackRoll, charDmg, charCritical, charHit, abilityType, abilityMod, monsterAC, fumbleResult, damageBreakdown } = attackResult;
     
     let currentMonsterHp = monsterHp !== null && !isNaN(Number(monsterHp)) ? Number(monsterHp) : (monster.hp !== undefined && !isNaN(Number(monster.hp)) ? Number(monster.hp) : 0);
@@ -430,6 +596,9 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       return;
     }
 
+    if (suppressMonsterRetaliation) {
+      return; // Do not schedule monster retaliation yet
+    }
     setTimeout(() => {
       // Only allow monster attack if monster HP > 0
       if (newMonsterHp > 0) {
@@ -707,6 +876,14 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
       }));
     }
     
+    if (effects.characterDefenseBonus) {
+      setCharacterEffects(prev => ({
+        ...prev,
+        defenseBonus: Math.max(prev.defenseBonus || 0, effects.characterDefenseBonus),
+        defenseBonusDuration: effects.characterDefenseBonusDuration || 1
+      }));
+    }
+    
     if (effects.monsterSkipNextAttack) {
       setMonsterEffects(prev => ({
         ...prev,
@@ -726,6 +903,40 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
         ...prev,
         extraAttack: true
       }));
+    }
+
+    // Monster ongoing damage (e.g., burning)
+    if (effects.ongoingDamage) {
+      setMonsterEffects(prev => ({
+        ...prev,
+        ongoingDamageAmount: effects.ongoingDamage,
+        ongoingDamageDuration: effects.ongoingDamageDuration || 1
+      }));
+    }
+
+    // Monster blinded status
+    if (effects.monsterBlindedDuration) {
+      setMonsterEffects(prev => ({
+        ...prev,
+        blindedDuration: Math.max(prev.blindedDuration || 0, effects.monsterBlindedDuration)
+      }));
+    }
+
+    // Monster knocked prone (skip actions for N rounds). If boolean present, treat as 1 round.
+    if (effects.monsterKnockedProne || effects.monsterKnockedProneDuration) {
+      const duration = effects.monsterKnockedProneDuration || (effects.monsterKnockedProne ? 1 : 0);
+      if (duration > 0) {
+        setMonsterEffects(prev => ({
+          ...prev,
+          proneDuration: Math.max(prev.proneDuration || 0, duration)
+        }));
+      }
+    }
+
+    // Cosmetic forced movement: log only
+    if (effects.monsterForcedMovement) {
+      const squares = effects.monsterForcedMovement;
+      setCombatLog(prev => [...prev, `${monster.name} is forced back ${squares} squares!`]);
     }
     
     // Handle self-damage effects
@@ -790,8 +1001,8 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     const abilityType = isRangedWeapon(weapon?.name) ? 'Agility' : 'Strength';
     const abilityMod = modifiedStats?.modifiers ? modifiedStats.modifiers[abilityType] : (character.modifiers ? character.modifiers[abilityType] : 0);
     const gearAttackBonus = gearEffects?.attackBonus || 0;
-    const attackRoll = rawAttackRoll + abilityMod + gearAttackBonus + characterEffects.opponentAttackBonus;
-    const monsterAC = Number(monster["Armor Class"]) + monsterEffects.attackPenalty;
+    const attackRoll = rawAttackRoll + abilityMod + gearAttackBonus + (characterEffects?.opponentAttackBonus || 0) - (characterEffects?.attackPenalty || 0);
+    const monsterAC = Number(monster["Armor Class"]);
     const attackHits = attackRoll >= monsterAC;
     
     // Roll 1d6 for Mighty Deed success

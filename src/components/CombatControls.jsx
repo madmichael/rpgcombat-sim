@@ -178,7 +178,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
         )}
         
         {status === 'finished' && didLose && (
-          <div className="action-buttons-grid" role="group" aria-labelledby="combat-actions-defeat">
+          <div className="action-buttons-grid single" role="group" aria-labelledby="combat-actions-defeat">
             <h4 id="combat-actions-defeat" className="sr-only">Actions after defeat</h4>
             <button 
               className="combat-btn combat-btn-primary combat-btn-large"
@@ -243,7 +243,7 @@ const CombatControls = ({ status, onStart, onContinue, onRun, onFindAnother, onR
 
         {/* Fallback: finished but result not parsed, show Retry to avoid empty UI */}
         {status === 'finished' && !didWin && !didLose && (
-          <div className="action-buttons-grid" role="group" aria-labelledby="combat-actions-finished-fallback">
+          <div className="action-buttons-grid single" role="group" aria-labelledby="combat-actions-finished-fallback">
             <h4 id="combat-actions-finished-fallback" className="sr-only">Actions after fight finished</h4>
             <button 
               className="combat-btn combat-btn-primary combat-btn-large"

@@ -42,6 +42,7 @@ export const useLoot = () => {
       monsterId: monster.id || monster.name,
       monsterName: monster.name,
       items: lootItems,
+      difficulty,
       timestamp: new Date(),
       claimed: false
     };
@@ -89,27 +90,32 @@ export const useLoot = () => {
    * @returns {Object} Currency amounts
    */
   const generateCurrencyLoot = (monster) => {
-    const monsterLevel = monster.level || 1;
-    
-    // Grimdark economy - very low currency rewards
-    let copper = Math.floor(Math.random() * 3) + 1; // 1-3 copper base
-    
-    // Scale with monster level but keep it low
-    copper += Math.floor(monsterLevel / 2);
-    
-    // Very rare chance for silver (only for higher level monsters)
-    let silver = 0;
-    if (monsterLevel >= 4 && Math.random() < 0.1) {
-      silver = 1;
+    // Map challenge level to difficulty tiers used for item loot
+    const cl = monster.challengeLevel || '';
+    let difficulty = 'normal';
+    if (/pathetic|veryWeak|weak/i.test(cl)) difficulty = 'easy';
+    else if (/standard/i.test(cl)) difficulty = 'normal';
+    else if (/strong|veryStrong/i.test(cl)) difficulty = 'hard';
+    else if (/extreme/i.test(cl)) difficulty = 'boss';
+
+    let copper = 0, silver = 0, gold = 0;
+
+    if (difficulty === 'easy') {
+      copper = (Math.floor(Math.random() * 3) + 1); // 1-3
+      // No silver/gold on easy
+    } else if (difficulty === 'normal') {
+      copper = (Math.floor(Math.random() * 4) + 2); // 2-5
+      if (Math.random() < 0.05) silver = 1; // tiny chance
+    } else if (difficulty === 'hard') {
+      copper = (Math.floor(Math.random() * 5) + 3); // 3-7
+      if (Math.random() < 0.15) silver = Math.floor(Math.random() * 2) + 1; // 1-2
+      if (Math.random() < 0.03) gold = 1; // rare
+    } else if (difficulty === 'boss') {
+      copper = (Math.floor(Math.random() * 6) + 5); // 5-10
+      if (Math.random() < 0.30) silver = Math.floor(Math.random() * 3) + 1; // 1-3
+      if (Math.random() < 0.10) gold = Math.floor(Math.random() * 2); // 0-1 (10% chance to be 1)
     }
-    
-    // Extremely rare gold (only for very high level monsters)
-    let gold = 0;
-    if (monsterLevel >= 7 && Math.random() < 0.05) {
-      gold = 1;
-    }
-    
-    // Return total copper value for simplicity
+
     return copper + (silver * 10) + (gold * 100);
   };
 

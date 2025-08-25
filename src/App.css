@@ -783,7 +783,8 @@ body {
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   border: 2px solid #dee2e6;
-  overflow: hidden;
+  /* Allow sticky header to escape; overflow hidden would break position: sticky */
+  overflow: visible;
 }
 
 .dashboard-header {
@@ -793,6 +794,15 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* Make header sticky so the monster info remains visible */
+  position: sticky;
+  top: max(0px, env(safe-area-inset-top));
+  z-index: 5;
+}
+
+/* Add subtle separation only when header is actually stuck */
+.dashboard-header.stuck {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
 
 .dashboard-title {
@@ -1005,6 +1015,13 @@ body {
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: 1px solid #e9ecef;
+  /* Sticky controls footer for quick access */
+  position: sticky;
+  bottom: calc(env(safe-area-inset-bottom, 0) + 0px);
+  z-index: 4;
+  /* Add slight backdrop when overlapping content while stuck */
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  backdrop-filter: saturate(140%) blur(6px);
 }
 
 /* Combat Controls Card */
@@ -1084,6 +1101,31 @@ body {
 .action-buttons-grid.in-progress {
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
+}
+
+.action-buttons-grid.single {
+  grid-template-columns: 1fr;
+  justify-items: center;
+  margin-bottom: 2rem;
+}
+
+.action-buttons-grid.single .combat-btn {
+  width: 100%;
+  max-width: 360px;
+}
+
+.combat-controls-content > .action-buttons-grid + .action-buttons-grid {
+  margin-top: 2rem;
+}
+
+/* Keep spacing tighter on small screens */
+@media (max-width: 768px) {
+  .action-buttons-grid.single {
+    margin-bottom: 1.25rem;
+  }
+  .combat-controls-content > .action-buttons-grid + .action-buttons-grid {
+    margin-top: 1.25rem;
+  }
 }
 
 .combat-btn {
@@ -1361,6 +1403,10 @@ body {
     margin: 1rem 0;
     gap: 1rem;
   }
+  /* Slightly larger offset for sticky header on small screens to avoid browser chrome */
+  .dashboard-header {
+    top: calc(max(0px, env(safe-area-inset-top)) + 4px);
+  }
   
   .dashboard-header {
     flex-direction: column;
@@ -1410,6 +1456,10 @@ body {
   
   .combat-log-section {
     max-height: 400px;
+  }
+  /* Ensure sticky controls aren't obscured by small screens */
+  .combat-controls-section {
+    bottom: calc(env(safe-area-inset-bottom, 0) + 6px);
   }
   
   /* Fix input field overflow on mobile */

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CharacterCreator from './components/CharacterCreator';
 import MonsterSelector from './components/MonsterSelector';
 import WeaponSelector from './components/WeaponSelector';
@@ -63,6 +63,7 @@ function App() {
   const [showCredits, setShowCredits] = useState(false);
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialInitialStep, setTutorialInitialStep] = useState(0);
+  const dashboardRef = useRef(null);
 
   const {
     showLuckConfirmModal,
@@ -181,6 +182,15 @@ function App() {
     }
   }, [character, monster, fightStatus]);
 
+  // When a new monster is selected, scroll the dashboard into view
+  useEffect(() => {
+    if (monster && dashboardRef.current) {
+      try {
+        dashboardRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch {}
+    }
+  }, [monster?.name]);
+
   const handleFindAnotherMonster = () => {
     resetCombat();
     // Increment battles won
@@ -282,6 +292,13 @@ function App() {
       {character && monster && (
         <div className="new-combat-layout">
           {/* Dashboard Header */}
+          <div ref={dashboardRef}>
+          {/* SR-only live region announcing new encounters for screen readers */}
+          {monster && (
+            <div className="sr-only" aria-live="polite" aria-atomic="true">
+              New encounter: {monster.name}. Threat level {getChallengeLabel ? getChallengeLabel(selectedChallenge) : selectedChallenge}.
+            </div>
+          )}
           <CombatDashboard 
             character={character}
             monster={monster}
@@ -296,7 +313,10 @@ function App() {
             achievements={achievementTracking.achievements}
             stats={achievementTracking.stats}
             onCharacterChange={setCharacter}
+            onFindAnother={() => { playSound('swoosh'); selectRandomMonster(); }}
+            focusTrigger={monster?.name}
           />
+          </div>
           
           {/* Combat Controls */}
           <div className="combat-controls-section">
