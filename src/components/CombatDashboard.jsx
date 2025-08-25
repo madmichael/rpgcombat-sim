@@ -1,10 +1,13 @@
 import React from 'react';
 import EnhancedCharacterSummary from './EnhancedCharacterSummary';
 import EnhancedMonsterSummary from './EnhancedMonsterSummary';
+import { useGearEffects } from '../hooks/useGearEffects';
+import InfoIcon from './InfoIcon';
 
 function CombatDashboard({ character, monster, weapon, fightStatus, charHp, monsterHp, combatLog, monsterACRevealed, selectedChallenge, getChallengeLabel, achievements = [], stats = {}, onCharacterChange }) {
   const [showCharacterDetails, setShowCharacterDetails] = React.useState(false);
   const [showMonsterDetails, setShowMonsterDetails] = React.useState(false);
+  const gearEffects = useGearEffects(character || {});
   const getHealthPercentage = (current, max) => {
     return Math.max(0, (current / max) * 100);
   };
@@ -19,6 +22,24 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
   const monsterMaxHp = monster?.["Hit Points"] || 0;
   const charHealthPercent = getHealthPercentage(charHp, charMaxHp);
   const monsterHealthPercent = getHealthPercentage(monsterHp, monsterMaxHp);
+
+  // Build AC breakdown text for tooltip
+  const acText = gearEffects?.acBreakdown
+    ? `10 + Agi ${gearEffects.acBreakdown.agilityMod >= 0 ? '+' : ''}${gearEffects.acBreakdown.agilityMod}` +
+      ` + Armor ${gearEffects.acBreakdown.armorBonus}` +
+      (gearEffects.acBreakdown.gearACBonus ? ` + Gear ${gearEffects.acBreakdown.gearACBonus}` : '') +
+      ` = ${gearEffects.acBreakdown.total}`
+    : '';
+
+  // Build ATK breakdown text and value
+  const baseStrMod = character?.modifiers?.Strength || 0;
+  const gearAtkBonus = gearEffects?.attackBonus || 0;
+  const gearStrBonus = gearEffects?.abilityModifiers?.Strength || 0;
+  const totalAtk = gearEffects?.totalAttackBonus || (baseStrMod + gearAtkBonus + gearStrBonus);
+  const atkText = `STR ${baseStrMod >= 0 ? '+' : ''}${baseStrMod}` +
+    (gearAtkBonus ? ` + Gear ATK ${gearAtkBonus >= 0 ? '+' : ''}${gearAtkBonus}` : '') +
+    (gearStrBonus ? ` + Gear STR ${gearStrBonus >= 0 ? '+' : ''}${gearStrBonus}` : '') +
+    ` = ${totalAtk >= 0 ? '+' : ''}${totalAtk}`;
 
   return (
     <div className="combat-dashboard">
@@ -43,11 +64,17 @@ function CombatDashboard({ character, monster, weapon, fightStatus, charHp, mons
             <div className="essential-stats">
               <div className="stat-item">
                 <span className="stat-label">AC</span>
-                <span className="stat-value">{character?.ac || 10}</span>
+                <span className="stat-value" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  {gearEffects?.totalArmorClass || 10}
+                  {gearEffects?.acBreakdown && <InfoIcon text={acText} />}
+                </span>
               </div>
               <div className="stat-item">
                 <span className="stat-label">ATK</span>
-                <span className="stat-value">+{character?.modifiers?.Strength || 0}</span>
+                <span className="stat-value" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  {totalAtk >= 0 ? `+${totalAtk}` : totalAtk}
+                  <InfoIcon text={atkText} />
+                </span>
               </div>
               <div className="stat-item">
                 <button 

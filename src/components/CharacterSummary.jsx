@@ -1,5 +1,7 @@
 import React from 'react';
 import { formatGp } from '../utils/currency';
+import { useGearEffects } from '../hooks/useGearEffects';
+import InfoIcon from './InfoIcon';
 // import birthAugers from '../data/birth_augers.json';
 
 const CharacterSummary = ({ character }) => {
@@ -14,8 +16,9 @@ const CharacterSummary = ({ character }) => {
     'Intelligence',
     'Luck'
   ];
-  // AC is 10 + Agility modifier
-  const AC = 10 + (character.modifiers ? character.modifiers['Agility'] : 0);
+  // Use gear-aware AC calculation
+  const gearEffects = useGearEffects(character);
+  const AC = gearEffects.totalArmorClass;
   const speed = 20;
   const init = character.modifiers ? character.modifiers['Agility'] : 0;
   const ref = character.modifiers ? character.modifiers['Agility'] : 0;
@@ -33,6 +36,13 @@ const CharacterSummary = ({ character }) => {
   const maxHp = character.maxHp || character.hp;
   const currentHp = character.hp;
   const hpPercent = Math.max(0, Math.min(100, Math.round((currentHp / maxHp) * 100)));
+  const acText = gearEffects?.acBreakdown
+    ? `10 + Agi ${gearEffects.acBreakdown.agilityMod >= 0 ? '+' : ''}${gearEffects.acBreakdown.agilityMod}` +
+      ` + Armor ${gearEffects.acBreakdown.armorBonus}` +
+      (gearEffects.acBreakdown.gearACBonus ? ` + Gear ${gearEffects.acBreakdown.gearACBonus}` : '') +
+      ` = ${gearEffects.acBreakdown.total}`
+    : '';
+
   return (
     <div style={{border: '1px solid #ccc', padding: '1em', margin: '1em 0'}}>
       <h3>Character Summary</h3>
@@ -62,7 +72,24 @@ const CharacterSummary = ({ character }) => {
         return <div key={ab}>{ab}: {character[ab]} ({modStr})</div>;
       })}
       <br />
-      <div>AC: {AC}</div>
+      <div>
+        AC: {AC}
+        {gearEffects?.acBreakdown && <span style={{ marginLeft: 6 }}><InfoIcon text={acText} /></span>}
+      </div>
+      {gearEffects?.acBreakdown && (
+        <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
+          {`10 + Agi ${gearEffects.acBreakdown.agilityMod >= 0 ? '+' : ''}${gearEffects.acBreakdown.agilityMod}`}
+          {` + Armor ${gearEffects.acBreakdown.armorBonus}`}
+          {gearEffects.acBreakdown.gearACBonus ? ` + Gear ${gearEffects.acBreakdown.gearACBonus}` : ''}
+          {` = ${gearEffects.acBreakdown.total}`}
+        </div>
+      )}
+      {(gearEffects?.checkPenaltyTotal || gearEffects?.armorFumbleDie) && (
+        <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>
+          {typeof gearEffects.checkPenaltyTotal === 'number' ? `Check Penalty: ${gearEffects.checkPenaltyTotal}` : ''}
+          {gearEffects.armorFumbleDie ? `${typeof gearEffects.checkPenaltyTotal === 'number' ? ' • ' : ''}Fumble: ${gearEffects.armorFumbleDie}` : ''}
+        </div>
+      )}
       <div style={{ margin: '0.5em 0' }}>
         <strong>HP:</strong> {currentHp} / {maxHp}
         <div style={{ background: '#eee', borderRadius: '6px', height: '18px', width: '100%', marginTop: '4px', boxShadow: 'inset 0 1px 2px #aaa' }}>

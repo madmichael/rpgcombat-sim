@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { roll1d20, roll1d6, parseDamageString, isRangedWeapon, calculateAC } from '../utils/diceUtils';
+import { roll1d20, roll1d6, parseDamageString, isRangedWeapon } from '../utils/diceUtils';
 import { isFumble as isFumbleFU, getFumbleResult as getFumbleFU, applyFumbleEffect as applyFumbleEffectFU } from '../utils/fumbleUtils';
 import { useAudio } from './useAudio';
 import { useVictoryTracking } from './useVictoryTracking';
@@ -205,7 +205,8 @@ export const useCombat = (gameState, playSound, victoryTracking, achievementTrac
     
     const rawAttackRoll = roll1d20();
     const monsterAttackRoll = rawAttackRoll + attackBonus + monsterEffects.opponentAttackBonus;
-    const charACBase = gearEffects?.totalArmorClass ?? calculateAC(character);
+    // Always use gearEffects.totalArmorClass for character AC in combat
+    const charACBase = gearEffects?.totalArmorClass;
     const charAC = charACBase + characterEffects.attackPenalty;
     const monsterHit = monsterAttackRoll >= charAC;
     const monsterCritical = rawAttackRoll === 20;

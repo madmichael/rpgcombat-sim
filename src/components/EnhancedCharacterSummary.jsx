@@ -3,6 +3,7 @@ import AchievementBadge from './AchievementBadge';
 import CharacterUrlShare from './CharacterUrlShare';
 import GearSlots from './GearSlots';
 import { useGearEffects, getModifiedAbilities, getModifiedWeaponDamage } from '../hooks/useGearEffects';
+import InfoIcon from './InfoIcon';
 
 const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats = {}, onCharacterChange }) => {
   if (!character) return null;
@@ -33,6 +34,9 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
   const rightHand = character.gearSlots?.rightHand;
   const equippedWeapon = meleeWeapon || rangedWeapon || rightHand || null;
   const equippedWeaponName = equippedWeapon?.name || character.weapon?.name || 'Unarmed';
+  const baseWeaponDamage = (equippedWeapon && equippedWeapon.effects && equippedWeapon.effects.damage)
+    ? equippedWeapon.effects.damage
+    : (character.weapon && character.weapon.damage) ? character.weapon.damage : '1d4';
 
   const sectionStyle = {
     background: 'rgba(255, 255, 255, 0.8)',
@@ -61,7 +65,8 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
     ...statItemStyle,
     background: 'rgba(76, 175, 80, 0.1)',
     border: '1px solid rgba(76, 175, 80, 0.3)',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    position: 'relative'
   };
 
   const abilityStyle = {
@@ -70,6 +75,14 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
     border: '1px solid rgba(52, 152, 219, 0.3)',
     textAlign: 'center'
   };
+
+  // Helper to build AC breakdown text
+  const acText = gearEffects?.acBreakdown
+    ? `10 + Agi ${gearEffects.acBreakdown.agilityMod >= 0 ? '+' : ''}${gearEffects.acBreakdown.agilityMod}` +
+      ` + Armor ${gearEffects.acBreakdown.armorBonus}` +
+      (gearEffects.acBreakdown.gearACBonus ? ` + Gear ${gearEffects.acBreakdown.gearACBonus}` : '') +
+      ` = ${gearEffects.acBreakdown.total}`
+    : '';
 
   return (
     <div className="character-summary-card" style={cardStyle}>
@@ -100,9 +113,30 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
       <div style={sectionStyle}>
         <h3 style={{ margin: '0 0 12px 0', color: '#e74c3c', fontSize: '18px' }}>⚔️ Combat Stats</h3>
         <div style={statGridStyle}>
-          <div style={combatStatStyle}>
+          <div 
+            style={combatStatStyle}
+          >
             <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#e74c3c' }}>{AC}</div>
-            <div style={{ fontSize: '12px', color: '#7f8c8d' }}>Armor Class</div>
+            <div style={{ fontSize: '12px', color: '#7f8c8d', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <span>Armor Class</span>
+              {gearEffects?.acBreakdown && (
+                <InfoIcon text={acText} />
+              )}
+            </div>
+            {gearEffects?.acBreakdown && (
+              <div style={{ fontSize: '10px', color: '#7f8c8d', marginTop: '4px' }}>
+                {`10 + Agi ${gearEffects.acBreakdown.agilityMod >= 0 ? '+' : ''}${gearEffects.acBreakdown.agilityMod}`}
+                {` + Armor ${gearEffects.acBreakdown.armorBonus}`}
+                {gearEffects.acBreakdown.gearACBonus ? ` + Gear ${gearEffects.acBreakdown.gearACBonus}` : ''}
+                {` = ${gearEffects.acBreakdown.total}`}
+              </div>
+            )}
+            {(gearEffects?.checkPenaltyTotal || gearEffects?.armorFumbleDie) && (
+              <div style={{ fontSize: '10px', color: '#7f8c8d', marginTop: '2px' }}>
+                {typeof gearEffects.checkPenaltyTotal === 'number' ? `Check Penalty: ${gearEffects.checkPenaltyTotal}` : ''}
+                {gearEffects.armorFumbleDie ? `${typeof gearEffects.checkPenaltyTotal === 'number' ? ' • ' : ''}Fumble: ${gearEffects.armorFumbleDie}` : ''}
+              </div>
+            )}
           </div>
           <div style={combatStatStyle}>
             <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#e74c3c' }}>
@@ -148,8 +182,21 @@ const EnhancedCharacterSummary = ({ character, charHp, achievements = [], stats 
             <div style={{ fontSize: '16px', fontWeight: 'bold' }}>
               {equippedWeaponName}
             </div>
-            <div style={{ fontSize: '12px', color: '#7f8c8d' }}>
-              {modifiedWeaponDamage} damage
+            <div style={{ fontSize: '12px', color: '#7f8c8d', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+              <span>{modifiedWeaponDamage} damage</span>
+              {/* Damage breakdown tooltip */}
+              {(() => {
+                const baseStrMod = character?.modifiers?.Strength || 0;
+                const gearDmgBonus = gearEffects?.damageBonus || 0;
+                const gearStrBonus = gearEffects?.abilityModifiers?.Strength || 0;
+                const totalDmgBonus = gearEffects?.totalDamageBonus || (baseStrMod + gearDmgBonus + gearStrBonus);
+                const dmgText = `${baseWeaponDamage}` +
+                  ` + STR ${baseStrMod >= 0 ? '+' : ''}${baseStrMod}` +
+                  (gearDmgBonus ? ` + Gear DMG ${gearDmgBonus >= 0 ? '+' : ''}${gearDmgBonus}` : '') +
+                  (gearStrBonus ? ` + Gear STR ${gearStrBonus >= 0 ? '+' : ''}${gearStrBonus}` : '') +
+                  ` = ${baseWeaponDamage}${totalDmgBonus !== 0 ? (totalDmgBonus > 0 ? `+${totalDmgBonus}` : `${totalDmgBonus}`) : ''}`;
+                return <InfoIcon text={dmgText} />;
+              })()}
             </div>
           </div>
         </div>

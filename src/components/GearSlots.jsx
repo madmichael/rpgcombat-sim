@@ -15,15 +15,37 @@ const GearSlots = ({ character, onCharacterChange }) => {
     setIsModalOpen(true);
   };
 
+  // Normalize potential slot aliases
+  const normalizeSlotName = (slot) => {
+    if (!slot) return slot;
+    const s = String(slot).toLowerCase();
+    const map = {
+      armor: 'body',
+      chest: 'body',
+      torso: 'body',
+      helm: 'head',
+      helmet: 'head',
+      ring: 'rightFingers',
+      finger: 'rightFingers',
+      hand_right: 'rightHand',
+      hand_left: 'leftHand'
+    };
+    return map[s] || slot;
+  };
+
   const handleEquipItem = (item, slotName) => {
     console.log('handleEquipItem called:', { item, slotName });
-    if (!item || !slotName || !onCharacterChange) {
+    const normalizedSlot = normalizeSlotName(slotName);
+    // Validate slot against known slots
+    const validSlots = gearData.gearSlots || [];
+    const finalSlot = validSlots.includes(normalizedSlot) ? normalizedSlot : slotName;
+    if (!item || !finalSlot || !onCharacterChange) {
       console.log('Missing required parameters:', { item: !!item, slotName: !!slotName, onCharacterChange: !!onCharacterChange });
       return;
     }
     
     const updatedCharacter = { ...character };
-    const currentlyEquipped = updatedCharacter.gearSlots[slotName];
+    const currentlyEquipped = updatedCharacter.gearSlots[finalSlot];
     console.log('Current equipped item in slot:', currentlyEquipped);
     
     // If there's already an item in the slot, move it to backpack
@@ -31,18 +53,49 @@ const GearSlots = ({ character, onCharacterChange }) => {
       updatedCharacter.backpack = [...(updatedCharacter.backpack || []), currentlyEquipped];
     }
     
-    // Equip the new item
-    updatedCharacter.gearSlots = {
-      ...updatedCharacter.gearSlots,
-      [slotName]: item
-    };
+    // If item occupies both hands, equip to both with a shared pairId
+    if (finalSlot === 'hands') {
+      // Move any existing hand items to backpack
+      const rightEquipped = updatedCharacter.gearSlots.rightHand;
+      const leftEquipped = updatedCharacter.gearSlots.leftHand;
+      if (rightEquipped) updatedCharacter.backpack = [...(updatedCharacter.backpack || []), rightEquipped];
+      if (leftEquipped) updatedCharacter.backpack = [...(updatedCharacter.backpack || []), leftEquipped];
+
+      const pairId = `hands_${item.id || item.name || 'gloves'}_${Date.now()}`;
+      const rightCopy = { ...item, slot: 'rightHand', pairId };
+      const leftCopy = { ...item, slot: 'leftHand', pairId };
+      updatedCharacter.gearSlots = {
+        ...updatedCharacter.gearSlots,
+        rightHand: rightCopy,
+        leftHand: leftCopy
+      };
+    } else {
+      // Create an equipped copy with normalized slot for persistence/UX
+      const equippedCopy = { ...item, slot: finalSlot };
+      // Equip the new item
+      updatedCharacter.gearSlots = {
+        ...updatedCharacter.gearSlots,
+        [finalSlot]: equippedCopy
+      };
+    }
     
-    // Remove item from backpack if it was there
+    // Remove item from backpack safely (works even if item.id is missing)
     const originalBackpackLength = (updatedCharacter.backpack || []).length;
-    updatedCharacter.backpack = (updatedCharacter.backpack || []).filter(backpackItem => 
-      backpackItem.id !== item.id
-    );
-    console.log('Backpack length before/after removal:', originalBackpackLength, updatedCharacter.backpack.length);
+    if (Array.isArray(updatedCharacter.backpack) && updatedCharacter.backpack.length > 0) {
+      const idx = updatedCharacter.backpack.findIndex(bi => {
+        if (item && bi === item) return true; // same reference
+        if (item?.id != null && bi?.id != null) return bi.id === item.id; // fallback to id if available
+        // As a last resort, match by name+slot to remove only one instance
+        return bi?.name === item?.name && bi?.slot === item?.slot;
+      });
+      if (idx >= 0) {
+        updatedCharacter.backpack = [
+          ...updatedCharacter.backpack.slice(0, idx),
+          ...updatedCharacter.backpack.slice(idx + 1)
+        ];
+      }
+    }
+    console.log('Backpack length before/after removal:', originalBackpackLength, updatedCharacter.backpack?.length);
     
     console.log('Updated character:', updatedCharacter);
     onCharacterChange(updatedCharacter);
@@ -56,14 +109,34 @@ const GearSlots = ({ character, onCharacterChange }) => {
     
     if (!itemToUnequip) return; // Nothing to unequip
     
-    // Move item to backpack
-    updatedCharacter.backpack = [...(updatedCharacter.backpack || []), itemToUnequip];
-    
-    // Clear the slot
-    updatedCharacter.gearSlots = {
-      ...updatedCharacter.gearSlots,
-      [slotName]: null
-    };
+    // If this item is part of a gloves pair, remove both hands together
+    if (itemToUnequip.pairId && (slotName === 'rightHand' || slotName === 'leftHand')) {
+      const otherSlot = slotName === 'rightHand' ? 'leftHand' : 'rightHand';
+      const otherItem = updatedCharacter.gearSlots[otherSlot];
+      // Move both to backpack (avoid duplicating if references are same)
+      const newBackpack = [...(updatedCharacter.backpack || []), itemToUnequip];
+      if (otherItem && otherItem.pairId === itemToUnequip.pairId) {
+        newBackpack.push(otherItem);
+      }
+      updatedCharacter.backpack = newBackpack;
+      // Clear both hands
+      updatedCharacter.gearSlots = {
+        ...updatedCharacter.gearSlots,
+        rightHand: otherItem && otherItem.pairId === itemToUnequip.pairId ? null : updatedCharacter.gearSlots.rightHand,
+        leftHand: otherItem && otherItem.pairId === itemToUnequip.pairId ? null : updatedCharacter.gearSlots.leftHand,
+      };
+      // Ensure the actual slot cleared as well
+      updatedCharacter.gearSlots[slotName] = null;
+      updatedCharacter.gearSlots[otherSlot] = null;
+    } else {
+      // Move item to backpack
+      updatedCharacter.backpack = [...(updatedCharacter.backpack || []), itemToUnequip];
+      // Clear the slot
+      updatedCharacter.gearSlots = {
+        ...updatedCharacter.gearSlots,
+        [slotName]: null
+      };
+    }
     
     onCharacterChange(updatedCharacter);
   };

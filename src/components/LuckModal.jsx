@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from './Modal';
+import InfoIcon from './InfoIcon.jsx';
+import { useGearEffects } from '../hooks/useGearEffects';
 
 const LuckModal = ({ 
   show, 
@@ -12,6 +14,14 @@ const LuckModal = ({
   onKeepRoll 
 }) => {
   if (!show || !pendingAttack) return null;
+
+  const gearEffects = useGearEffects(character);
+  const abilityType = pendingAttack.abilityType || 'Strength';
+  const abilityMod = (character?.modifiers && character.modifiers[abilityType]) || 0;
+  const gearAtkBonus = gearEffects?.attackBonus || 0;
+  const atkBreakdown = `d20 ${pendingAttack.rawAttackRoll} + ${abilityType} ${abilityMod >= 0 ? '+' : ''}${abilityMod}` +
+    (gearAtkBonus ? ` + Gear ATK ${gearAtkBonus >= 0 ? '+' : ''}${gearAtkBonus}` : '') +
+    ` = ${pendingAttack.charAttackRoll}`;
 
   const maxLuck = character.Luck;
 
@@ -32,7 +42,10 @@ const LuckModal = ({
                 <div className="attack-details">
                   <div className="detail-item">
                     <span className="detail-label">Your Attack Roll:</span>
-                    <span className="detail-value attack-roll">{pendingAttack?.charAttackRoll}</span>
+                    <span className="detail-value attack-roll" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      {pendingAttack?.charAttackRoll}
+                      <InfoIcon text={atkBreakdown} />
+                    </span>
                   </div>
                   <div className="detail-item">
                     <span className="detail-label">Result:</span>

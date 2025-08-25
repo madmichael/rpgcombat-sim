@@ -15,15 +15,23 @@ export const useLoot = () => {
    * @returns {Array} Generated loot items
    */
   const generateMonsterLoot = (monster, character) => {
-    // Determine loot count and difficulty based on monster
-    const monsterLevel = monster.level || 1;
-    const itemCount = Math.max(1, Math.floor(monsterLevel / 2) + Math.floor(Math.random() * 3));
-    
-    // Determine difficulty based on monster challenge
+    // Determine difficulty from monster.challengeLevel (fallback to legacy level if present)
+    const cl = monster.challengeLevel || '';
     let difficulty = 'normal';
-    if (monsterLevel >= 8) difficulty = 'boss';
-    else if (monsterLevel >= 5) difficulty = 'hard';
-    else if (monsterLevel <= 2) difficulty = 'easy';
+    if (/pathetic|veryWeak|weak/i.test(cl)) difficulty = 'easy';
+    else if (/standard/i.test(cl)) difficulty = 'normal';
+    else if (/strong|veryStrong/i.test(cl)) difficulty = 'hard';
+    else if (/extreme/i.test(cl)) difficulty = 'boss';
+
+    // Determine loot count scaled by difficulty (not by level)
+    let itemCount = 1;
+    if (difficulty === 'normal') {
+      itemCount = 1 + (Math.random() < 0.3 ? 1 : 0); // 1-2
+    } else if (difficulty === 'hard') {
+      itemCount = 2 + (Math.random() < 0.5 ? 1 : 0); // 2-3
+    } else if (difficulty === 'boss') {
+      itemCount = 3 + (Math.random() < 0.7 ? 1 : 0); // 3-4
+    }
     
     // Generate items
     const lootItems = generateLootItems(itemCount, difficulty);

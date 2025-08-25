@@ -74,8 +74,29 @@ const GearManagementModal = ({
   const availableRarities = ['all', 'common', 'uncommon', 'rare', 'epic', 'legendary'];
   const availableSlots = ['all', ...gearSlots];
 
+  // Normalize potential slot aliases coming from legacy items
+  const normalizeSlotName = (slot) => {
+    if (!slot) return slot;
+    const s = String(slot).toLowerCase();
+    const map = {
+      armor: 'body',
+      chest: 'body',
+      torso: 'body',
+      helm: 'head',
+      helmet: 'head',
+      ring: 'ring',
+      rings: 'ring',
+      finger: 'rightFingers',
+      hand_right: 'rightHand',
+      hand_left: 'leftHand'
+    };
+    // Gloves/Gauntlets that occupy both hands
+    if (s === 'gloves' || s === 'gauntlets' || s === 'hands') return 'hands';
+    return map[s] || slot;
+  };
+
   const handleEquipFromBackpack = (item) => {
-    let targetSlot = item.slot;
+    let targetSlot = normalizeSlotName(item.slot);
     
     // Fallback for items without slot property (legacy weapons)
     if (!targetSlot && item.name && item.damage) {
@@ -85,9 +106,22 @@ const GearManagementModal = ({
       targetSlot = isRanged ? 'rangedWeapon' : 'meleeWeapon';
     }
     
-    if (targetSlot && onEquipItem) {
-      onEquipItem(item, targetSlot);
-      showSuccess(`Equipped ${item.name} to ${gearTypes[targetSlot]?.name || targetSlot}`);
+    // Determine final slot. Special handling:
+    let finalSlot = normalizeSlotName(targetSlot);
+    if (finalSlot === 'ring') {
+      // Choose first available finger slot
+      const rightFree = !character.gearSlots?.rightFingers;
+      const leftFree = !character.gearSlots?.leftFingers;
+      if (rightFree) finalSlot = 'rightFingers';
+      else if (leftFree) finalSlot = 'leftFingers';
+      else finalSlot = 'rightFingers'; // default if both filled
+    }
+    // 'hands' is a valid multi-slot signal handled by GearSlots
+    const isValidSlot = finalSlot === 'hands' || gearSlots.includes(finalSlot);
+    if (isValidSlot && onEquipItem) {
+      onEquipItem(item, finalSlot);
+      const display = finalSlot === 'hands' ? 'Both Hands' : (gearTypes[finalSlot]?.name || finalSlot);
+      showSuccess(`Equipped ${item.name} to ${display}`);
     } else {
       showError('Cannot equip item - invalid slot or missing function');
     }

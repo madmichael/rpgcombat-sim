@@ -5,6 +5,16 @@
   text-align: center;
 }
 
+/* Tighter footer at very small widths to prevent layout feedback (e.g., ~457px) */
+@media (max-width: 480px) {
+  .modal-container {
+    --actions-h: 170px; /* reduce reserved space to stabilize layout */
+  }
+  .modal-actions {
+    padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0));
+  }
+}
+
 /* Screen reader only content */
 .sr-only {
   position: absolute;
@@ -1708,8 +1718,10 @@ body {
   max-width: 90vw;
   width: auto;
   /* Use min of legacy vh and new dvh to maximize compatibility */
-  max-height: min(92vh, 92dvh);
+  height: min(92vh, 92dvh);
   position: relative;
+  /* Default height reserved for actions/footer inside modal */
+  --actions-h: 120px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: modalSlideIn 0.4s ease-out;
   /* Make header/footer fixed height and content scrollable */
@@ -1718,8 +1730,14 @@ body {
   min-height: 0; /* allow inner flex children to shrink and scroll */
   overflow: hidden;
   z-index: 2001; /* create stacking context above overlay contents */
-  /* footer height variable used to pad scrollable content (measured on mount) */
-  --actions-h: 0px;
+  pointer-events: auto; /* ensure container and descendants receive clicks */
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    --actions-h: 180px;
+  }
 }
 
 /* Generic modal content spacing */
@@ -1727,28 +1745,37 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 0; /* critical for child overflow-y to work in flex */
-  position: relative;
+  position: static; /* let absolute footer anchor to .modal-container */
+  flex: 1 1 auto; /* fill the container's fixed height */
 }
 
 .modal-content {
   padding: 24px 28px;
-  flex: 1 1 auto;
+  flex: 1 1 0%; /* avoid auto basis measuring that can cause reflow loops */
   overflow-y: auto;
   overflow-anchor: none; /* avoid auto scroll jumps when layout changes */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   touch-action: pan-y;
+  box-sizing: border-box; /* include padding in scrollable height calc */
   /* ensure room for sticky actions footer on small viewports */
-  padding-bottom: var(--actions-h);
+  padding-bottom: calc(var(--actions-h) + 16px);
+  scroll-padding-bottom: calc(var(--actions-h) + 16px);
   min-height: 0; /* allow this flex child to become scroll container */
 }
 
-/* Extra spacer so users can scroll past content hidden behind footer */
-.modal-content::after {
-  content: "";
-  display: block;
-  height: calc(var(--actions-h) + 32px);
+/* Cap only the confirm modal content to container height minus footer */
+.modal-content.luck-confirm-content {
+  /* Let flex sizing determine height under the header */
+  max-height: none;
+  padding-bottom: calc(var(--actions-h) + 16px); /* allow scrolling past the fixed footer */
+  scroll-padding-bottom: calc(var(--actions-h) + 16px);
 }
+
+/* Extra spacer so users can scroll past content hidden behind footer */
+/* Removed extra spacer to avoid compounding scroll height */
+/* .modal-content::after { }
+*/
 
 .modal-content h2 {
   margin: 0 0 12px;
@@ -1768,13 +1795,19 @@ body {
   left: 0;
   right: 0;
   bottom: env(safe-area-inset-bottom, 0);
-  z-index: 5; /* above content */
+  z-index: 2010; /* above any modal content or pseudo-elements */
   background: #ffffffee; /* subtle translucency over content */
   backdrop-filter: blur(2px);
   padding: 0.75rem 0.75rem calc(0.75rem + env(safe-area-inset-bottom, 0));
   border-top: 1px solid #e9ecef;
+  pointer-events: none; /* allow interactions to pass through except on buttons */
+  height: var(--actions-h); /* fix footer height to avoid reflow loops */
+  box-sizing: border-box;
+}
+
+/* Make only the actionable controls clickable inside the footer */
+.modal-actions > * {
   pointer-events: auto;
-  min-height: var(--actions-h);
 }
 
 /* Generic modal header/footer */
@@ -2021,10 +2054,10 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
-@media (max-width: 600px) {
+/* Keep single-column layout on tablets/phones */
+@media (max-width: 768px) {
   .attack-info {
     grid-template-columns: 1fr;
   }
@@ -2235,7 +2268,6 @@ body {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-bottom: 1rem;
 }
 
 @media (max-width: 600px) {
@@ -2249,8 +2281,7 @@ body {
     padding: 1.25rem;
   }
 
-  .modal-content.luck-modal-content,
-  .modal-content.luck-confirm-content {
+  .modal-content.luck-modal-content {
     padding: 16px 18px;
     padding-bottom: var(--actions-h); /* extra space for fixed footer */
   }

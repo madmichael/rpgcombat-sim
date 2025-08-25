@@ -1,5 +1,8 @@
 import React from 'react';
 import Modal from './Modal';
+import InfoIcon from './InfoIcon.jsx';
+import { useGearEffects } from '../hooks/useGearEffects';
+import { isRangedWeapon } from '../utils/diceUtils';
 
 const LuckConfirmModal = ({ 
   show, 
@@ -10,6 +13,19 @@ const LuckConfirmModal = ({
   onNo
 }) => {
   if (!show) return null;
+
+  const gearEffects = useGearEffects(character);
+  // Determine currently equipped weapon name from gear slots (fallback to legacy character.weapon)
+  const meleeWeapon = character?.gearSlots?.meleeWeapon;
+  const rangedWeapon = character?.gearSlots?.rangedWeapon;
+  const rightHand = character?.gearSlots?.rightHand;
+  const weaponName = (meleeWeapon?.name || rangedWeapon?.name || rightHand?.name || character?.weapon?.name || '').toString();
+  const abilityType = isRangedWeapon(weaponName) ? 'Agility' : 'Strength';
+  const abilityMod = (character?.modifiers && character.modifiers[abilityType]) || 0;
+  const gearAtkBonus = gearEffects?.attackBonus || 0;
+  const atkBreakdown = `d20 + ${abilityType} ${abilityMod >= 0 ? '+' : ''}${abilityMod}` +
+    (gearAtkBonus ? ` + Gear ATK ${gearAtkBonus >= 0 ? '+' : ''}${gearAtkBonus}` : '') +
+    ` = ${attackRoll}`;
 
   return (
     <Modal onClose={onClose}>
@@ -25,7 +41,10 @@ const LuckConfirmModal = ({
             <div className="attack-info">
               <div className="detail-item">
                 <span className="detail-label">Your Attack Roll:</span>
-                <span className="detail-value attack-roll">{attackRoll}</span>
+                <span className="detail-value attack-roll" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                  {attackRoll}
+                  <InfoIcon text={atkBreakdown} />
+                </span>
               </div>
             </div>
           </div>

@@ -24,31 +24,10 @@ const Modal = ({ children, onClose }) => {
     };
     document.addEventListener('keydown', handleEscape);
 
-    // Measure footer height and set CSS variable for content padding
-    const updateFooterHeight = () => {
-      const container = containerRef.current;
-      if (!container) return;
-      const actions = container.querySelector('.modal-actions');
-      const h = actions ? Math.ceil(actions.getBoundingClientRect().height) : 0;
-      // add small buffer to ensure content can scroll a little past the footer
-      const buffer = 24;
-      container.style.setProperty('--actions-h', `${h + buffer}px`);
-    };
-
-    // Observe actions resizing (e.g., when buttons wrap) and window resizes
-    let ro;
-    const container = containerRef.current;
-    const actions = container ? container.querySelector('.modal-actions') : null;
-    if (actions && 'ResizeObserver' in window) {
-      ro = new ResizeObserver(() => updateFooterHeight());
-      ro.observe(actions);
-    }
-    window.addEventListener('resize', updateFooterHeight);
-    // initial measure after layout and pin scrollTop=0 for a few frames
+    // Ensure content starts at the top for a few frames after mount
     let rafId;
     let frameCount = 0;
     const pinTop = () => {
-      updateFooterHeight();
       const content = containerRef.current?.querySelector('.modal-content');
       if (content) {
         content.scrollTop = 0;
@@ -67,9 +46,7 @@ const Modal = ({ children, onClose }) => {
       document.body.style.width = prev.width;
       const y = Math.abs(parseInt(prev.top || `-${scrollY}`, 10)) || scrollY;
       window.scrollTo(0, y);
-      window.removeEventListener('resize', updateFooterHeight);
       if (rafId) cancelAnimationFrame(rafId);
-      if (ro && actions) ro.disconnect();
     };
   }, [onClose]);
 

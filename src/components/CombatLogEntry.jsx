@@ -1,4 +1,5 @@
 import React from 'react';
+import InfoIcon from './InfoIcon.jsx';
 
 const CombatLogEntry = ({ entry, index }) => {
   // Handle both string entries and object entries (for summary messages)
@@ -118,6 +119,16 @@ const CombatLogEntry = ({ entry, index }) => {
   };
 
   const style = formatEntry(message, entryType);
+
+  // Extract optional breakdown from messages like "... damage [d8 + STR + ...] ..."
+  let breakdown = null;
+  let displayMessage = message;
+  const bStart = message.indexOf('[');
+  const bEnd = bStart !== -1 ? message.indexOf(']', bStart + 1) : -1;
+  if (bStart !== -1 && bEnd !== -1) {
+    breakdown = message.slice(bStart + 1, bEnd);
+    displayMessage = message.slice(0, bStart).trimEnd() + message.slice(bEnd + 1);
+  }
   
   return (
     <li 
@@ -138,7 +149,10 @@ const CombatLogEntry = ({ entry, index }) => {
       }}
     >
       <span style={{ fontSize: '16px', flexShrink: 0 }}>{style.icon}</span>
-      <span style={{ flex: 1 }}>{message}</span>
+      <span style={{ flex: 1, display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+        {displayMessage}
+        {breakdown && <InfoIcon text={breakdown} />}
+      </span>
       {entryType === 'summary' && typeof entry === 'object' && entry.timestamp && (
         <span style={{ fontSize: '12px', opacity: 0.7, marginLeft: '8px' }}>
           {entry.timestamp}

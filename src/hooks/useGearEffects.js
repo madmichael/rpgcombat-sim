@@ -56,7 +56,9 @@ export const useGearEffects = (character) => {
       const itemEffects = item.effects || {};
 
       // Armor Class bonus
-      if (itemEffects.armorClass) {
+      // If item has a numeric top-level armor_bonus (mundane armor), we count it via armorBonusTotal only.
+      // Only count effects.armorClass when armor_bonus is not present as a number (e.g., magical gear pieces).
+      if (itemEffects.armorClass && typeof item.armor_bonus !== 'number') {
         effects.armorClass += itemEffects.armorClass;
       }
 
@@ -136,12 +138,26 @@ export const useGearEffects = (character) => {
     });
 
     // Calculate totals including base character stats
-    const baseAC = 10 + (character.modifiers?.Agility || 0);
+    // Derive modified Agility modifier from base ability score + gear bonus to the score (not the modifier)
+    const baseAgilityScore = (character.abilities?.Agility ?? character.Agility) || 0;
+    const gearAgilityScoreBonus = effects.abilityModifiers.Agility || 0;
+    const modifiedAgilityScore = baseAgilityScore + gearAgilityScoreBonus;
+    const modifiedAgilityMod = Math.floor((modifiedAgilityScore - 10) / 2);
+
     const baseAttackBonus = character.modifiers?.Strength || 0;
     const baseDamageBonus = character.modifiers?.Strength || 0;
 
-    // Include armor bonus from mundane armor plus any generic armorClass bonuses and agility boosts from gear
-    effects.totalArmorClass = baseAC + effects.armorClass + effects.armorBonusTotal + effects.abilityModifiers.Agility;
+    // AC = 10 + modified Agility modifier + armor bonuses (from items)
+    // Do NOT add the raw Agility score bonus directly (that would double-count and be incorrect scale)
+    effects.totalArmorClass = 10 + modifiedAgilityMod + effects.armorClass + effects.armorBonusTotal;
+    // Provide a breakdown for UI/debugging
+    effects.acBreakdown = {
+      base: 10,
+      agilityMod: modifiedAgilityMod,
+      gearACBonus: effects.armorClass,
+      armorBonus: effects.armorBonusTotal,
+      total: effects.totalArmorClass
+    };
     effects.totalAttackBonus = baseAttackBonus + effects.attackBonus + effects.abilityModifiers.Strength;
     effects.totalDamageBonus = baseDamageBonus + effects.damageBonus + effects.abilityModifiers.Strength;
 

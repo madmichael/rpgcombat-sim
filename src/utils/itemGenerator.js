@@ -299,10 +299,11 @@ export const generateMundaneArmor = () => {
   if (armor.type === 'shield') slot = 'leftHand';
   else if (armor.type === 'helmet') slot = 'head';
 
-  const effects = {
-    armorClass: armor.armor_bonus || 0
-  };
-  if (normalizedDie) effects.fumble_die = normalizedDie;
+  // For mundane armor, do NOT map armor_bonus into effects.armorClass to avoid double-counting.
+  // AC for mundane armor will be taken from the top-level armor_bonus field in useGearEffects().
+  const effects = {};
+  // We keep fumble die as a top-level field; useGearEffects can read either top-level or effects
+  // if needed, but we avoid duplicating it in both places.
 
   return {
     id: `armor_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -359,18 +360,23 @@ export const generateGemItem = () => {
 export const generateLootItems = (count = 1, difficulty = 'normal') => {
   const items = [];
 
-  // Adjust rarity chances based on difficulty - grimdark distribution
+  // Adjust rarity chances based on difficulty - enforce low tiers on low challenges
   const rarityWeights = {
-    'easy': { common: 0.95, uncommon: 0.05, rare: 0, epic: 0, legendary: 0 },
-    'normal': { common: 0.9, uncommon: 0.09, rare: 0.01, epic: 0, legendary: 0 },
-    'hard': { common: 0.85, uncommon: 0.13, rare: 0.019, epic: 0.001, legendary: 0 },
-    'boss': { common: 0.75, uncommon: 0.2, rare: 0.045, epic: 0.004, legendary: 0.001 }
+    // Low challenge: only common/uncommon
+    'easy':   { common: 0.97, uncommon: 0.03, rare: 0,     epic: 0,      legendary: 0 },
+    // Mid: tiny chance of rare
+    'normal': { common: 0.93, uncommon: 0.06, rare: 0.01,  epic: 0,      legendary: 0 },
+    // High: rare becomes possible, epic extremely rare
+    'hard':   { common: 0.85, uncommon: 0.12, rare: 0.03,  epic: 0.00,   legendary: 0 },
+    // Boss: allow rare, tiny epic, vanishing legendary
+    'boss':   { common: 0.72, uncommon: 0.2,  rare: 0.07,  epic: 0.009, legendary: 0.001 }
   };
+  // Item type gating by difficulty - gems only at higher challenges
   const typeWeights = {
-    'easy':   { mundane: 0.7, armor: 0.18, gem: 0.02, vegetable: 0.10 },
-    'normal': { mundane: 0.6, armor: 0.25, gem: 0.05, vegetable: 0.10 },
-    'hard':   { mundane: 0.55, armor: 0.3, gem: 0.1, vegetable: 0.05 },
-    'boss':   { mundane: 0.4, armor: 0.35, gem: 0.22, vegetable: 0.03 }
+    'easy':   { mundane: 0.74, armor: 0.20, gem: 0.00, vegetable: 0.06 },
+    'normal': { mundane: 0.64, armor: 0.28, gem: 0.02, vegetable: 0.06 },
+    'hard':   { mundane: 0.55, armor: 0.32, gem: 0.08, vegetable: 0.05 },
+    'boss':   { mundane: 0.42, armor: 0.36, gem: 0.19, vegetable: 0.03 }
   };
 
   const rWeights = rarityWeights[difficulty] || rarityWeights['normal'];
